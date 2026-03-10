@@ -8,6 +8,7 @@ def create_frequency():
     frequency += list(range(0, 101, 10))
     frequency += list(range(200, 1001, 100))
     frequency += list(range(2000, 10001, 1000))
+    #frequency += list(range(20000, 100001, 10000))
     frequency.pop(0)
     return frequency
 

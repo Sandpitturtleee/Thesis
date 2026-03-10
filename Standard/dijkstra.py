@@ -1,5 +1,9 @@
 import heapq
 
+from Data.helpers import timing_decorator
+from fibheap import *
+
+@timing_decorator
 def dijkstra_binheap(graph, start):
     # Inicjalizacja odległości i zbioru odwiedzonych
     distances = {node: float('inf') for node in graph}
@@ -23,8 +27,7 @@ def dijkstra_binheap(graph, start):
 
     return distances, previous
 
-from fibheap import *
-
+@timing_decorator
 def dijkstra_fibheap(graph, start):
     # Zainicjuj odległości i poprzedników
     distances = {node: float('inf') for node in graph}
