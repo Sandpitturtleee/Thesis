@@ -1,23 +1,23 @@
 import heapq
-
-from Data.helpers import timing_decorator
+import matplotlib.pyplot as plt
+from Data.helpers import timing_decorator, create_frequency, load_graph_from_json
 from fibheap import *
 
+from config import RANDOM, WORST_CASE
+
+
 @timing_decorator
-def dijkstra_binheap(graph, start):
+def dijkstra_binary_heap(graph, start_node):
     # Inicjalizacja odległości i zbioru odwiedzonych
     distances = {node: float('inf') for node in graph}
     previous = {node: None for node in graph}
-    distances[start] = 0
-    queue = [(0, start)]
-
+    distances[start_node] = 0
+    queue = [(0, start_node)]
     while queue:
         dist_u, u = heapq.heappop(queue)
-
         # Jeśli znaleźliśmy już krótszą drogę - pomijamy
         if dist_u > distances[u]:
             continue
-
         for v, weight in graph[u]:
             new_distance = distances[u] + weight
             if new_distance < distances[v]:
@@ -26,6 +26,38 @@ def dijkstra_binheap(graph, start):
                 heapq.heappush(queue, (new_distance, v))
 
     return distances, previous
+
+
+def run_dijkstra_binary_heap(graph, start_node, times):
+    elapsed_sum = 0
+    for i in range(times):
+        (results, elapsed) = dijkstra_binary_heap(graph=graph, start_node=start_node)
+        elapsed_sum += elapsed
+    mean = elapsed_sum / times
+    return mean
+
+
+def run_for_multiple_json():
+    frequency = create_frequency()
+    times_random = []
+    times_worst = []
+    for i in frequency:
+        loaded_graph_random = load_graph_from_json(name=f"{i}{RANDOM}")
+        loaded_graph_worst_case = load_graph_from_json(name=f"{i}{WORST_CASE}")
+        result1 = run_dijkstra_binary_heap(graph=loaded_graph_random, start_node='V0', times=100)
+        result2 = run_dijkstra_binary_heap(graph=loaded_graph_worst_case, start_node='V0', times=100)
+        times_random.append(result1)
+        times_worst.append(result2)
+    plt.figure(figsize=(8, 6))
+    plt.plot(frequency, times_random, marker='o', label='Random graphs')
+    plt.plot(frequency, times_worst, marker='s', label='Worst-case graphs')
+    plt.xlabel('Graph Size')
+    plt.ylabel('Elapsed Time [s]')
+    plt.title('Dijkstra Algorithm Performance')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
 
 @timing_decorator
 def dijkstra_fibheap(graph, start):

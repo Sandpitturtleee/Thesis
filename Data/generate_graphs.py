@@ -1,25 +1,38 @@
 import random
-
-from Data.helpers import save_graph_to_json
-
-
-def create_frequency():
-    frequency = []
-    frequency += list(range(0, 101, 10))
-    frequency += list(range(200, 1001, 100))
-    frequency += list(range(2000, 10001, 1000))
-    #frequency += list(range(20000, 100001, 10000))
-    frequency.pop(0)
-    return frequency
+from Data.helpers import save_graph_to_json, create_frequency
+from config import RANDOM, WORST_CASE
 
 
-def generate_random_graph(num_vertices, min_edges=2, max_edges=5, min_weight=1, max_weight=10):
+def generate_random_graph(num_vertices, min_weight=1, max_weight=10):
     nodes = [f"V{i}" for i in range(num_vertices)]
     graph = {node: [] for node in nodes}
 
     for i, node in enumerate(nodes):
-        # Losuj liczbę połączeń (nie więcej niż liczba wierzchołków - 1)
-        num_edges = random.randint(min_edges, min(max_edges, num_vertices - 1))
+        # Losuj liczbę połączeń (1 <= x <= liczba wierzchołków - 1)
+        num_edges = random.randint(1, num_vertices - 1)
+        neighbors = set()
+        while len(neighbors) < num_edges:
+            neighbor = random.choice(nodes)
+            if neighbor != node:
+                neighbors.add(neighbor)
+        for neighbor in neighbors:
+            weight = random.randint(min_weight, max_weight)
+            # Dodaj krawędź (nieskierowaną!)
+            if (neighbor, weight) not in graph[node]:
+                graph[node].append((neighbor, weight))
+            if (node, weight) not in graph[neighbor]:
+                graph[neighbor].append((node, weight))
+
+    return graph
+
+
+def generate_random_graph_worst_case(num_vertices, min_weight=1, max_weight=10):
+    nodes = [f"V{i}" for i in range(num_vertices)]
+    graph = {node: [] for node in nodes}
+
+    for i, node in enumerate(nodes):
+        # Losuj połączen tyle co liczba wierzchołków
+        num_edges = num_vertices
         neighbors = set()
         while len(neighbors) < num_edges:
             neighbor = random.choice(nodes)
@@ -38,6 +51,8 @@ def generate_random_graph(num_vertices, min_edges=2, max_edges=5, min_weight=1, 
 
 def generate_graphs():
     frequency = create_frequency()
-    for n in frequency:
-        graph = generate_random_graph(num_vertices=n)
-        save_graph_to_json(graph=graph, name=n)
+    for i in frequency:
+        random_graph = generate_random_graph(num_vertices=i)
+        worst_case_graph = generate_random_graph(num_vertices=i)
+        save_graph_to_json(graph=random_graph, name=f"{i}{RANDOM}")
+        save_graph_to_json(graph=worst_case_graph, name=f"{i}{WORST_CASE}")
