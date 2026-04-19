@@ -25,19 +25,22 @@ import time
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from config import JSON_DICT_DIRECTORY, JSON_LIST_DIRECTORY
+
 GraphDict = Dict[str, List[Tuple[str, int]]]
 GraphList = List[List[Tuple[int, int]]]
 
 
-# TODO load_graph_from_json_LIST with test
-def create_file_path(name: str) -> Path:
+def create_file_path(directory: str, name: str) -> Path:
     """
     Create the appropriate file path for saving or loading a graph's JSON file by name.
 
-    The file will be placed in ../data/json/ relative to this file.
+    The file will be placed in ../data/directory/ relative to this file.
 
     Parameters
     ----------
+    directory : str
+        The base name of a parent directory
     name : str
         The base name (without extension) for the JSON file.
 
@@ -46,7 +49,7 @@ def create_file_path(name: str) -> Path:
     Path
         The full path to the target JSON file.
     """
-    base_path = Path(__file__).parent.parent / "json"
+    base_path = Path(__file__).parent.parent / directory
     base_path.mkdir(parents=True, exist_ok=True)
     file_name = f"{name}.json"
     file_path = base_path / file_name
@@ -69,7 +72,7 @@ def save_graph_to_json_dict(graph: GraphDict, name: str) -> None:
     None
     """
     graph = {node: [list(edge) for edge in edges] for node, edges in graph.items()}
-    file_path = create_file_path(name=name)
+    file_path = create_file_path(directory=JSON_DICT_DIRECTORY, name=name)
     with open(file_path, "w") as f:
         json.dump(graph, f, separators=(",", ":"))
 
@@ -89,7 +92,7 @@ def save_graph_to_json_list(graph: GraphList, name: str) -> None:
     -------
     None
     """
-    file_path = create_file_path(name=name)
+    file_path = create_file_path(directory=JSON_LIST_DIRECTORY, name=name)
     with open(file_path, "w") as f:
         f.write("[\n")
         for idx, neighbors in enumerate(graph):
@@ -114,7 +117,7 @@ def load_graph_from_json_dict(name: str) -> dict:
     dict
         The graph as a dict mapping node str to list of [neighbor str, weight int] lists.
     """
-    file_path = create_file_path(name=name)
+    file_path = create_file_path(directory=JSON_DICT_DIRECTORY, name=name)
     with open(file_path, "r") as f:
         data = json.load(f)
     graph_dict = {node: [list(edge) for edge in edges] for node, edges in data.items()}
@@ -135,7 +138,7 @@ def load_graph_from_json_list(name: str) -> list:
     list
         The graph as a list of adjacency lists, as in [[neighbor, weight], ...] per node.
     """
-    file_path = create_file_path(name=name)
+    file_path = create_file_path(directory=JSON_LIST_DIRECTORY,name=name)
     with open(file_path, "r") as f:
         graph_list = json.load(f)
     return graph_list
