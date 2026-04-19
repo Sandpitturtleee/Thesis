@@ -10,7 +10,7 @@ Functions:
 - create_file_path: Create and return a JSON file path for persisting graph data.
 - save_graph_to_json_dict: Save a dictionary-format graph as a compact JSON file.
 - save_graph_to_json_list: Save a list-format (adjacency list) graph as a pretty-printed JSON array.
-- load_graph_from_json: Load and convert a dictionary-format graph from a JSON file.
+- load_graph_from_json_dict: Load and convert a dictionary-format graph from a JSON file.
 - timing_decorator: Decorator for measuring the execution time of any function.
 - create_frequency: Generate a list of sizes for graph generation batches.
 
@@ -29,6 +29,7 @@ GraphDict = Dict[str, List[Tuple[str, int]]]
 GraphList = List[List[Tuple[int, int]]]
 
 
+# TODO load_graph_from_json_LIST with test
 def create_file_path(name: str) -> Path:
     """
     Create the appropriate file path for saving or loading a graph's JSON file by name.
@@ -100,9 +101,9 @@ def save_graph_to_json_list(graph: GraphList, name: str) -> None:
         f.write("]")
 
 
-def load_graph_from_json(name: str) -> GraphDict:
+def load_graph_from_json_dict(name: str) -> dict:
     """
-    Load a graph (dictionary adjacency format) from a JSON file.
+    Load a graph (dictionary adjacency format) from a JSON file, returning all edges as lists (not tuples).
 
     Parameters
     ----------
@@ -111,13 +112,13 @@ def load_graph_from_json(name: str) -> GraphDict:
 
     Returns
     -------
-    GraphDict
-        The graph as a dict mapping node str to list of (neighbor str, weight int).
+    dict
+        The graph as a dict mapping node str to list of [neighbor str, weight int] lists.
     """
     file_path = create_file_path(name=name)
     with open(file_path, "r") as f:
         data = json.load(f)
-    graph = {node: [tuple(edge) for edge in edges] for node, edges in data.items()}
+    graph = {node: [list(edge) for edge in edges] for node, edges in data.items()}
     return graph
 
 
