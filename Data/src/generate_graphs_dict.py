@@ -53,21 +53,26 @@ def generate_graph_dict(num_vertices: int, min_weight: int = 1) -> GraphDict:
     max_weight = num_vertices
     nodes = [f"V{i}" for i in range(num_vertices)]
     graph = {node: [] for node in nodes}
+    edge_set = set()
 
-    for i, node in enumerate(nodes):
-        num_edges = random.randint(1, num_vertices - 1)
-        neighbors = set()
-        while len(neighbors) < num_edges:
-            neighbor = random.choice(nodes)
-            if neighbor != node:
-                neighbors.add(neighbor)
-        for neighbor in neighbors:
-            weight = random.randint(min_weight, max_weight)
-            if (neighbor, weight) not in graph[node]:
+    for node in nodes:
+        possible_neighbors = [
+            nbr
+            for nbr in nodes
+            if nbr != node and tuple(sorted([node, nbr])) not in edge_set
+        ]
+
+        random.shuffle(possible_neighbors)
+        num_edges = min(random.randint(1, num_vertices - 1), len(possible_neighbors))
+        selected_neighbors = possible_neighbors[:num_edges]
+
+        for neighbor in selected_neighbors:
+            pair = tuple(sorted([node, neighbor]))
+            if pair not in edge_set:
+                weight = random.randint(min_weight, max_weight)
                 graph[node].append((neighbor, weight))
-            if (node, weight) not in graph[neighbor]:
                 graph[neighbor].append((node, weight))
-
+                edge_set.add(pair)
     return graph
 
 
@@ -96,19 +101,11 @@ def generate_graph_worst_case_dict(num_vertices: int, min_weight: int = 1) -> Gr
     graph = {node: [] for node in nodes}
 
     for i, node in enumerate(nodes):
-        num_edges = num_vertices - 1
-        neighbors = set()
-        while len(neighbors) < num_edges:
-            neighbor = random.choice(nodes)
-            if neighbor != node:
-                neighbors.add(neighbor)
-        for neighbor in neighbors:
+        for j in range(i + 1, num_vertices):
+            neighbor = nodes[j]
             weight = random.randint(min_weight, max_weight)
-            if (neighbor, weight) not in graph[node]:
-                graph[node].append((neighbor, weight))
-            if (node, weight) not in graph[neighbor]:
-                graph[neighbor].append((node, weight))
-
+            graph[node].append((neighbor, weight))
+            graph[neighbor].append((node, weight))
     return graph
 
 
@@ -124,7 +121,6 @@ def generate_graphs_dict() -> None:
     None
     """
     frequency = create_frequency()
-    frequency = [10]
     for i in frequency:
         random_graph = generate_graph_dict(num_vertices=i)
         worst_case_graph = generate_graph_worst_case_dict(num_vertices=i)
