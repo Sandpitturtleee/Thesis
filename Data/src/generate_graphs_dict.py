@@ -96,7 +96,7 @@ def generate_graph_worst_case_dict(num_vertices: int, min_weight: int = 1) -> Gr
     graph = {node: [] for node in nodes}
 
     for i, node in enumerate(nodes):
-        num_edges = num_vertices
+        num_edges = num_vertices - 1
         neighbors = set()
         while len(neighbors) < num_edges:
             neighbor = random.choice(nodes)
