@@ -1,15 +1,18 @@
 import random
-from Data.src.helpers import save_graph_to_json_dict, create_frequency
+from typing import Dict, List, Tuple
+
 from config import RANDOM, WORST_CASE
+from Data.src.helpers import create_frequency, save_graph_to_json_dict
+
+GraphDict = Dict[str, List[Tuple[str, int]]]
 
 
-def generate_random_graph_dict(num_vertices, min_weight=1, max_weight=10):
+def generate_random_graph_dict(num_vertices: int, min_weight: int = 1) -> GraphDict:
     max_weight = num_vertices
     nodes = [f"V{i}" for i in range(num_vertices)]
     graph = {node: [] for node in nodes}
 
     for i, node in enumerate(nodes):
-        # Losuj liczbę połączeń (1 <= x <= liczba wierzchołków - 1)
         num_edges = random.randint(1, num_vertices - 1)
         neighbors = set()
         while len(neighbors) < num_edges:
@@ -18,7 +21,6 @@ def generate_random_graph_dict(num_vertices, min_weight=1, max_weight=10):
                 neighbors.add(neighbor)
         for neighbor in neighbors:
             weight = random.randint(min_weight, max_weight)
-            # Dodaj krawędź (nieskierowaną!)
             if (neighbor, weight) not in graph[node]:
                 graph[node].append((neighbor, weight))
             if (node, weight) not in graph[neighbor]:
@@ -27,12 +29,13 @@ def generate_random_graph_dict(num_vertices, min_weight=1, max_weight=10):
     return graph
 
 
-def generate_random_graph_worst_case_dict(num_vertices, min_weight=1, max_weight=10):
+def generate_random_graph_worst_case_dict(
+    num_vertices: int, min_weight: int = 1, max_weight: int = 10
+) -> GraphDict:
     nodes = [f"V{i}" for i in range(num_vertices)]
     graph = {node: [] for node in nodes}
 
     for i, node in enumerate(nodes):
-        # Losuj połączen tyle co liczba wierzchołków
         num_edges = num_vertices
         neighbors = set()
         while len(neighbors) < num_edges:
@@ -41,7 +44,6 @@ def generate_random_graph_worst_case_dict(num_vertices, min_weight=1, max_weight
                 neighbors.add(neighbor)
         for neighbor in neighbors:
             weight = random.randint(min_weight, max_weight)
-            # Dodaj krawędź (nieskierowaną!)
             if (neighbor, weight) not in graph[node]:
                 graph[node].append((neighbor, weight))
             if (node, weight) not in graph[neighbor]:
@@ -50,7 +52,7 @@ def generate_random_graph_worst_case_dict(num_vertices, min_weight=1, max_weight
     return graph
 
 
-def generate_graphs_dict():
+def generate_graphs_dict() -> None:
     frequency = create_frequency()
     for i in frequency:
         random_graph = generate_random_graph_dict(num_vertices=i)
