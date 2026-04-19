@@ -11,11 +11,22 @@ def create_file_path(name):
     return file_path
 
 
-def save_graph_to_json(graph, name):
+def save_graph_to_json_dict(graph, name):
     graph = {node: [list(edge) for edge in edges] for node, edges in graph.items()}
     file_path = create_file_path(name=name)
     with open(file_path, 'w') as f:
         json.dump(graph, f, separators=(',', ':'))  # compact/minified JSON
+
+def save_graph_to_json_list(graph, name):
+    file_path = create_file_path(name=name)
+    with open(file_path, 'w') as f:
+        f.write("[\n")
+        for idx, neighbors in enumerate(graph):
+            line = "  " + json.dumps(neighbors)
+            if idx != len(graph) - 1:
+                line += ","
+            f.write(line + "\n")
+        f.write("]")
 
 
 def load_graph_from_json(name):
@@ -41,7 +52,7 @@ def timing_decorator(func):
 def create_frequency():
     frequency = []
     frequency += list(range(0, 101, 10))
-    frequency += list(range(200, 1001, 100))
+    # frequency += list(range(200, 1001, 100))
     # frequency += list(range(2000, 10001, 1000))
     # frequency += list(range(20000, 100001, 10000))
     frequency.pop(0)

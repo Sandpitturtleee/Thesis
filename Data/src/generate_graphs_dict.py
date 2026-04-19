@@ -1,9 +1,10 @@
 import random
-from Data.helpers import save_graph_to_json, create_frequency
+from Data.src.helpers import save_graph_to_json_dict, create_frequency
 from config import RANDOM, WORST_CASE
 
 
-def generate_random_graph(num_vertices, min_weight=1, max_weight=10):
+def generate_random_graph_dict(num_vertices, min_weight=1, max_weight=10):
+    max_weight = num_vertices
     nodes = [f"V{i}" for i in range(num_vertices)]
     graph = {node: [] for node in nodes}
 
@@ -26,7 +27,7 @@ def generate_random_graph(num_vertices, min_weight=1, max_weight=10):
     return graph
 
 
-def generate_random_graph_worst_case(num_vertices, min_weight=1, max_weight=10):
+def generate_random_graph_worst_case_dict(num_vertices, min_weight=1, max_weight=10):
     nodes = [f"V{i}" for i in range(num_vertices)]
     graph = {node: [] for node in nodes}
 
@@ -49,10 +50,10 @@ def generate_random_graph_worst_case(num_vertices, min_weight=1, max_weight=10):
     return graph
 
 
-def generate_graphs():
+def generate_graphs_dict():
     frequency = create_frequency()
     for i in frequency:
-        random_graph = generate_random_graph(num_vertices=i)
-        worst_case_graph = generate_random_graph(num_vertices=i)
-        save_graph_to_json(graph=random_graph, name=f"{i}{RANDOM}")
-        save_graph_to_json(graph=worst_case_graph, name=f"{i}{WORST_CASE}")
+        random_graph = generate_random_graph_dict(num_vertices=i)
+        worst_case_graph = generate_random_graph_dict(num_vertices=i)
+        save_graph_to_json_dict(graph=random_graph, name=f"{i}{RANDOM}")
+        save_graph_to_json_dict(graph=worst_case_graph, name=f"{i}{WORST_CASE}")
