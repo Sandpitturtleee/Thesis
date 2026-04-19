@@ -9,6 +9,7 @@ from Data.src.helpers import (
     create_file_path,
     create_frequency,
     load_graph_from_json_dict,
+    load_graph_from_json_list,
     save_graph_to_json_dict,
     save_graph_to_json_list,
     timing_decorator,
@@ -74,10 +75,16 @@ def test_save_graph_to_json_list(sample_graph_list):
     assert data == sample_graph_list
 
 
-def test_load_graph_from_json(sample_graph_dict):
+def test_load_graph_from_json_dict(sample_graph_dict):
     save_graph_to_json_dict(sample_graph_dict, "testdict")
     loaded_graph = load_graph_from_json_dict("testdict")
     assert loaded_graph == sample_graph_dict
+
+
+def test_load_graph_from_json_list(sample_graph_list):
+    save_graph_to_json_list(sample_graph_list, "testlist")
+    loaded_graph = load_graph_from_json_list("testlist")
+    assert loaded_graph == sample_graph_list
 
 
 def test_timing_decorator():

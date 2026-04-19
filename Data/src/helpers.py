@@ -90,7 +90,6 @@ def save_graph_to_json_list(graph: GraphList, name: str) -> None:
     None
     """
     file_path = create_file_path(name=name)
-    print(file_path)
     with open(file_path, "w") as f:
         f.write("[\n")
         for idx, neighbors in enumerate(graph):
@@ -118,8 +117,28 @@ def load_graph_from_json_dict(name: str) -> dict:
     file_path = create_file_path(name=name)
     with open(file_path, "r") as f:
         data = json.load(f)
-    graph = {node: [list(edge) for edge in edges] for node, edges in data.items()}
-    return graph
+    graph_dict = {node: [list(edge) for edge in edges] for node, edges in data.items()}
+    return graph_dict
+
+
+def load_graph_from_json_list(name: str) -> list:
+    """
+    Load a graph from a JSON file already in adjacency-list list format.
+
+    Parameters
+    ----------
+    name : str
+        The base file name (without extension).
+
+    Returns
+    -------
+    list
+        The graph as a list of adjacency lists, as in [[neighbor, weight], ...] per node.
+    """
+    file_path = create_file_path(name=name)
+    with open(file_path, "r") as f:
+        graph_list = json.load(f)
+    return graph_list
 
 
 def timing_decorator(func):
