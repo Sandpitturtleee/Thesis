@@ -1,5 +1,6 @@
 # config.py
 
+MAX_FREQUENCY = 1000
 RANDOM = "_random"
 WORST_CASE = "_worst_case"
 JSON_DICT_DIRECTORY = "Json_dict"

@@ -25,7 +25,7 @@ import time
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-from config import JSON_DICT_DIRECTORY, JSON_LIST_DIRECTORY
+from config import JSON_DICT_DIRECTORY, JSON_LIST_DIRECTORY, MAX_FREQUENCY
 
 GraphDict = Dict[str, List[Tuple[str, int]]]
 GraphList = List[List[Tuple[int, int]]]
@@ -138,7 +138,7 @@ def load_graph_from_json_list(name: str) -> list:
     list
         The graph as a list of adjacency lists, as in [[neighbor, weight], ...] per node.
     """
-    file_path = create_file_path(directory=JSON_LIST_DIRECTORY,name=name)
+    file_path = create_file_path(directory=JSON_LIST_DIRECTORY, name=name)
     with open(file_path, "r") as f:
         graph_list = json.load(f)
     return graph_list
@@ -174,17 +174,26 @@ def timing_decorator(func):
 
 def create_frequency() -> List[int]:
     """
-    Generate a list of sizes for use in batch graph generation.
+    Generate a list of sizes for use in batch graph generation, up to MAX_FREQUENCY.
 
     Returns
     -------
     List[int]
-        List of sizes (int), excluding 0.
+        List of sizes (int), excluding 0 and not exceeding MAX_FREQUENCY.
     """
+    intervals = [
+        (10, 100, 10),
+        (200, 1000, 100),
+        (2000, 10000, 1000),
+        (20000, 100000, 10000),
+        (200000, float("inf"), 100000),
+    ]
+
     frequency = []
-    frequency += list(range(0, 101, 10))
-    # frequency += list(range(200, 1001, 100))
-    # frequency += list(range(2000, 10001, 1000))
-    # frequency += list(range(20000, 100001, 10000))
-    frequency.pop(0)
-    return frequency
+    for start, stop, step in intervals:
+        actual_stop = min(stop, MAX_FREQUENCY)
+        if start > MAX_FREQUENCY:
+            continue
+        vals = list(range(start, actual_stop + 1, step))
+        frequency.extend(vals)
+    return sorted(set(filter(lambda x: x <= MAX_FREQUENCY, frequency)))

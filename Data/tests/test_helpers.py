@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 import Data.src.helpers
+from config import JSON_DICT_DIRECTORY, JSON_LIST_DIRECTORY, MAX_FREQUENCY
 from Data.src.helpers import (
     create_file_path,
     create_frequency,
@@ -15,7 +16,6 @@ from Data.src.helpers import (
     timing_decorator,
 )
 from Data.tests.data import FILE_NAMES, GRAPH_DICT, GRAPH_LIST
-from config import JSON_DICT_DIRECTORY, JSON_LIST_DIRECTORY
 
 
 @pytest.fixture
@@ -58,7 +58,9 @@ def test_create_file_path(tmp_path, monkeypatch):
     dummy_file.write_text("")
     monkeypatch.setattr(Data.src.helpers, "__file__", str(dummy_file))
 
-    path = Data.src.helpers.create_file_path(directory=JSON_DICT_DIRECTORY, name="10_random")
+    path = Data.src.helpers.create_file_path(
+        directory=JSON_DICT_DIRECTORY, name="10_random"
+    )
     assert path.name == "10_random.json"
     assert path.parent.name == JSON_DICT_DIRECTORY
 
@@ -109,4 +111,5 @@ def test_create_frequency():
     assert isinstance(freq, list)
     assert 0 not in freq
     assert freq[0] == 10
+    assert freq[-1] == MAX_FREQUENCY
     assert all(isinstance(x, int) for x in freq)
