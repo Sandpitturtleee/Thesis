@@ -1,6 +1,6 @@
 import pytest
 
-from Data.src.generate_graphs_list import (
+from graphs_creation.src.generate_graphs_list import (
     generate_graph_list,
     generate_graph_worst_case_list,
     generate_graphs_list,
@@ -47,7 +47,7 @@ def test_graph_generation_single_connection_per_pair_list(generator, num_vertice
 
 def test_generate_graphs_list(monkeypatch):
     monkeypatch.setattr(
-        "Data.src.generate_graphs_list.create_frequency", lambda: [2, 3]
+        "graphs_creation.src.generate_graphs_list.create_frequency", lambda: [2, 3]
     )
     called = []
 
@@ -55,7 +55,7 @@ def test_generate_graphs_list(monkeypatch):
         called.append((graph, name))
 
     monkeypatch.setattr(
-        "Data.src.generate_graphs_list.save_graph_to_json_list",
+        "graphs_creation.src.generate_graphs_list.save_graph_to_json_list",
         fake_save_graph_to_json_list,
     )
     generate_graphs_list()

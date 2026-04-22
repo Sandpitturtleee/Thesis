@@ -14,7 +14,7 @@ Functions:
 Dependencies:
 -------------
 - config.py (expects RANDOM and WORST_CASE for filename suffixes)
-- Data.src.helpers (expects create_frequency and save_graph_to_json_list)
+- graphs_creation.src.helpers (expects create_frequency and save_graph_to_json_list)
 
 Types:
 ------
@@ -25,7 +25,7 @@ import random
 from typing import List, Tuple
 
 from config import RANDOM, WORST_CASE
-from Data.src.helpers import create_frequency, save_graph_to_json_list
+from graphs_creation.src.helpers import create_frequency, save_graph_to_json_list
 
 GraphList = List[List[Tuple[int, int]]]
 

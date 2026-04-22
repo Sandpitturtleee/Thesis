@@ -19,14 +19,14 @@ Functions:
 Dependencies:
 -------------
 - `config.py` (expects RANDOM and WORST_CASE to be defined, e.g., as '_R' and '_W')
-- Data.src.helpers (expects create_frequency and save_graph_to_json_dict)
+- graphs_creation.src.helpers (expects create_frequency and save_graph_to_json_dict)
 
 Types:
 ------
 - GraphDict: type alias for Dict[str, List[Tuple[str, int]]]
 """
 
-from Data.src.helpers import create_frequency, save_graph_to_json_dict
+from graphs_creation.src.helpers import create_frequency, save_graph_to_json_dict
 
 GraphDict = Dict[str, List[Tuple[str, int]]]
 
