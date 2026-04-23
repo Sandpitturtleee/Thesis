@@ -1,15 +1,20 @@
 import heapq
+
 import matplotlib.pyplot as plt
-from Data.helpers import timing_decorator, create_frequency, load_graph_from_json
 from fibheap import *
 
 from config import RANDOM, WORST_CASE
+from graphs_analysis.src.helpers import (
+    create_frequency,
+    load_graph_from_json_dict,
+    timing_decorator,
+)
 
 
 @timing_decorator
 def dijkstra_binary_heap(graph, start_node):
     # Inicjalizacja odległości i zbioru odwiedzonych
-    distances = {node: float('inf') for node in graph}
+    distances = {node: float("inf") for node in graph}
     previous = {node: None for node in graph}
     distances[start_node] = 0
     queue = [(0, start_node)]
@@ -37,32 +42,10 @@ def run_dijkstra_binary_heap(graph, start_node, times):
     return mean
 
 
-def run_for_multiple_json():
-    frequency = create_frequency()
-    times_random = []
-    times_worst = []
-    for i in frequency:
-        loaded_graph_random = load_graph_from_json(name=f"{i}{RANDOM}")
-        loaded_graph_worst_case = load_graph_from_json(name=f"{i}{WORST_CASE}")
-        result1 = run_dijkstra_binary_heap(graph=loaded_graph_random, start_node='V0', times=100)
-        result2 = run_dijkstra_binary_heap(graph=loaded_graph_worst_case, start_node='V0', times=100)
-        times_random.append(result1)
-        times_worst.append(result2)
-    plt.figure(figsize=(8, 6))
-    plt.plot(frequency, times_random, marker='o', label='Random graphs')
-    plt.plot(frequency, times_worst, marker='s', label='Worst-case graphs')
-    plt.xlabel('Graph Size')
-    plt.ylabel('Elapsed Time [s]')
-    plt.title('Dijkstra Algorithm Performance')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-
 @timing_decorator
 def dijkstra_fibheap(graph, start):
     # Zainicjuj odległości i poprzedników
-    distances = {node: float('inf') for node in graph}
+    distances = {node: float("inf") for node in graph}
     previous = {node: None for node in graph}
     distances[start] = 0
 
@@ -97,3 +80,30 @@ def dijkstra_fibheap(graph, start):
                 heap.decrease_key(heap_nodes[v], alt)
 
     return distances, previous
+
+
+def run_for_multiple_json(times):
+    frequency = create_frequency()
+    print(frequency)
+    times_random = []
+    times_worst = []
+    for i in frequency:
+        loaded_graph_random = load_graph_from_json_dict(name=f"{i}{RANDOM}")
+        loaded_graph_worst_case = load_graph_from_json_dict(name=f"{i}{WORST_CASE}")
+        result1 = run_dijkstra_binary_heap(
+            graph=loaded_graph_random, start_node="V0", times=times
+        )
+        result2 = run_dijkstra_binary_heap(
+            graph=loaded_graph_worst_case, start_node="V0", times=times
+        )
+        times_random.append(result1)
+        times_worst.append(result2)
+    plt.figure(figsize=(8, 6))
+    plt.plot(frequency, times_random, marker="o", label="Random graphs")
+    plt.plot(frequency, times_worst, marker="s", label="Worst-case graphs")
+    plt.xlabel("Graph Size")
+    plt.ylabel("Elapsed Time [s]")
+    plt.title("Dijkstra Algorithm Performance")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
