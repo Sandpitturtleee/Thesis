@@ -1,5 +1,5 @@
-from graphs_analysis.src.standard.dijkstra import run_for_multiple_json
+from graphs_analysis.src.standard.dijkstra import run_all
 
 if __name__ == "__main__":
     print()
-    run_for_multiple_json(times=10)
+    run_all(times=10)

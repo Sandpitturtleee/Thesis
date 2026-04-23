@@ -1,3 +1,24 @@
+"""
+Graph Handling Utilities
+------------------------
+
+This module provides utility functions for loading graphs (in dictionary or adjacency list format) from JSON files,
+managing file paths, and constructing useful sizes for batch graph generation.
+
+Functions:
+----------
+- create_file_path: Create and return a JSON file path for persisting graph data.
+- create_frequency: Build standard batch sizes/frequencies up to MAX_FREQUENCY.
+- load_graph_from_json_dict: Load GraphDict-style graphs from JSON file.
+- load_graph_from_json_list: Load GraphList-style graphs from JSON file.
+- timing_decorator Decorator for timing any function, returns (result, elapsed_time).
+
+Types:
+------
+- GraphDict: type alias for Dict[str, List[Tuple[str, int]]]
+- GraphList: type alias for List[List[Tuple[int, int]]]
+"""
+
 import json
 import time
 from pathlib import Path
@@ -134,3 +155,10 @@ def load_graph_from_json_list(name: str) -> list:
     with open(file_path, "r") as f:
         graph_list = json.load(f)
     return graph_list
+
+
+def save_results_to_json(directory, name, vertices, count):
+    results = {"vertices": vertices, "count": count}
+    file_path = create_file_path(directory=directory, name=name)
+    with open(file_path, "w") as f:
+        json.dump(results, f, indent=4)
