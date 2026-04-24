@@ -21,7 +21,7 @@ def run_all(times):
         vertices=vertices,
         count=count,
     )
-    vertices, count = run_dijkstra_heap(times=times, graph_type=WORST_CASE)
+    vertices, count = run_dijkstra_heap(times=times, graph_type=WORSTCASE)
     save_results_to_json(
         directory=RESULTS_DIRECTORY,
         name=STANDARD_WORSTCASE_FILENAME,

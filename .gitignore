@@ -120,5 +120,4 @@ dmypy.json
 #Pycharm IDE
 .idea
 
-data/json_dict/
-data/json_list/
+data/
