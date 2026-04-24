@@ -9,8 +9,7 @@ Functions:
 ----------
 - create_file_path: Create and return a JSON file path for persisting graph data.
 - create_frequency: Generate a list of sizes for graph generation batches.
-- save_graph_to_json_dict: Save a dictionary-format graph as a compact JSON file.
-- save_graph_to_json_list: Save a list-format (adjacency list) graph as a pretty-printed JSON array.
+- save_graph_to_json: Save a list-format (adjacency list) graph as a pretty-printed JSON array.
 
 Types:
 ------
@@ -22,12 +21,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-from config import (
-    DATA_DIRECTORY,
-    JSON_DICT_DIRECTORY,
-    JSON_LIST_DIRECTORY,
-    MAX_FREQUENCY,
-)
+from config import DATA_DIRECTORY, GENERATED_GRAPHS_DIRECTORY, MAX_GRAPH_SIZE
 
 GraphDict = Dict[str, List[Tuple[str, int]]]
 GraphList = List[List[Tuple[int, int]]]
@@ -78,36 +72,15 @@ def create_frequency() -> List[int]:
 
     frequency = []
     for start, stop, step in intervals:
-        actual_stop = min(stop, MAX_FREQUENCY)
-        if start > MAX_FREQUENCY:
+        actual_stop = min(stop, MAX_GRAPH_SIZE)
+        if start > MAX_GRAPH_SIZE:
             continue
         vals = list(range(start, actual_stop + 1, step))
         frequency.extend(vals)
-    return sorted(set(filter(lambda x: x <= MAX_FREQUENCY, frequency)))
+    return sorted(set(filter(lambda x: x <= MAX_GRAPH_SIZE, frequency)))
 
 
-def save_graph_to_json_dict(graph: GraphDict, name: str) -> None:
-    """
-    Save a graph (in dictionary adjacency format) as a compact JSON file.
-
-    Parameters
-    ----------
-    graph : GraphDict
-        The graph to be saved, mapping node str -> list of (neighbor str, weight int).
-    name : str
-        The base file name (without extension).
-
-    Returns
-    -------
-    None
-    """
-    graph = {node: [list(edge) for edge in edges] for node, edges in graph.items()}
-    file_path = create_file_path(directory=JSON_DICT_DIRECTORY, name=name)
-    with open(file_path, "w") as f:
-        json.dump(graph, f, separators=(",", ":"))
-
-
-def save_graph_to_json_list(graph: GraphList, name: str) -> None:
+def save_graph_to_json(graph: GraphList, name: str) -> None:
     """
     Save a graph (in list adjacency format) as a pretty-printed JSON array.
 
@@ -122,7 +95,7 @@ def save_graph_to_json_list(graph: GraphList, name: str) -> None:
     -------
     None
     """
-    file_path = create_file_path(directory=JSON_LIST_DIRECTORY, name=name)
+    file_path = create_file_path(directory=GENERATED_GRAPHS_DIRECTORY, name=name)
     with open(file_path, "w") as f:
         f.write("[\n")
         for idx, neighbors in enumerate(graph):

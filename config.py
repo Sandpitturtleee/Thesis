@@ -1,11 +1,11 @@
 # config.py
 
-MAX_FREQUENCY = 1000
+MAX_GRAPH_SIZE = 1000
+SPARSE = "_sparse"
 RANDOM = "_random"
 WORSTCASE = "_worstcase"
 DATA_DIRECTORY = "data"
-JSON_DICT_DIRECTORY = "json_dict"
-JSON_LIST_DIRECTORY = "json_list"
+GENERATED_GRAPHS_DIRECTORY = "generated_graphs"
 
 RESULTS_DIRECTORY = "dijkstra_results"
 STANDARD_SPARSE_FILENAME = "standard_sparse"

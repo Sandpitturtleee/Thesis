@@ -7,14 +7,14 @@ It also provides tools for saving such graphs using external helper functions.
 
 Functions:
 ----------
-- generate_graph_list: Generate a random undirected weighted graph as an adjacency list.
-- generate_graph_worst_case_list: Generate a densely connected 'worst-case' random graph as an adjacency list.
-- generate_graphs_list: Generate and save graphs of varying sizes.
+- generate_graph_random: Generate a random undirected weighted graph as an adjacency list.
+- generate_graph_worstcase: Generate a densely connected 'worst-case' random graph as an adjacency list.
+- generate_graphs: Generate and save graphs of varying sizes.
 
 Dependencies:
 -------------
-- config.py (expects RANDOM and WORST_CASE for filename suffixes)
-- graphs_creation.src.helpers (expects create_frequency and save_graph_to_json_list)
+- config.py (expects RANDOM and WORSTCASE for filename suffixes)
+- graphs_creation.src.helpers (expects create_frequency and save_graph_to_json)
 
 Types:
 ------
@@ -25,12 +25,31 @@ import random
 from typing import List, Tuple
 
 from config import RANDOM, WORSTCASE
-from graphs_creation.src.helpers import create_frequency, save_graph_to_json_list
+from graphs_creation.src.helpers import create_frequency, save_graph_to_json
 
 GraphList = List[List[Tuple[int, int]]]
 
 
-def generate_graph_list(num_vertices: int, min_weight: int = 1) -> GraphList:
+def generate_graphs() -> None:
+    """
+    Generate and save random and dense worst-case graphs for several sizes.
+
+    For each value returned by create_frequency(), generates one random and one densely connected
+    (worst-case) graph and saves them using save_graph_to_json_list().
+
+    Returns
+    -------
+    None
+    """
+    frequency = create_frequency()
+    for i in frequency:
+        random_graph = generate_graph_random(num_vertices=i)
+        worst_case_graph = generate_graph_worstcase(num_vertices=i)
+        save_graph_to_json(graph=random_graph, name=f"{i}{RANDOM}")
+        save_graph_to_json(graph=worst_case_graph, name=f"{i}{WORSTCASE}")
+
+
+def generate_graph_random(num_vertices: int, min_weight: int = 1) -> GraphList:
     """
     Generate an undirected random weighted graph as an adjacency list.
 
@@ -68,7 +87,7 @@ def generate_graph_list(num_vertices: int, min_weight: int = 1) -> GraphList:
     return graph
 
 
-def generate_graph_worst_case_list(num_vertices: int, min_weight: int = 1) -> GraphList:
+def generate_graph_worstcase(num_vertices: int, min_weight: int = 1) -> GraphList:
     """
     Generate a dense (worst-case) undirected random weighted graph as an adjacency list.
 
@@ -102,22 +121,3 @@ def generate_graph_worst_case_list(num_vertices: int, min_weight: int = 1) -> Gr
             if i not in [v for v, w in graph[neighbor]]:
                 graph[neighbor].append((i, weight))
     return graph
-
-
-def generate_graphs_list() -> None:
-    """
-    Generate and save random and dense worst-case graphs for several sizes.
-
-    For each value returned by create_frequency(), generates one random and one densely connected
-    (worst-case) graph and saves them using save_graph_to_json_list().
-
-    Returns
-    -------
-    None
-    """
-    frequency = create_frequency()
-    for i in frequency:
-        random_graph = generate_graph_list(num_vertices=i)
-        worst_case_graph = generate_graph_worst_case_list(num_vertices=i)
-        save_graph_to_json_list(graph=random_graph, name=f"{i}{RANDOM}")
-        save_graph_to_json_list(graph=worst_case_graph, name=f"{i}{WORSTCASE}")

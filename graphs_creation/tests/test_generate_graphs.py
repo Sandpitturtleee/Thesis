@@ -1,9 +1,9 @@
 import pytest
 
-from graphs_creation.src.generate_graphs_list import (
-    generate_graph_list,
-    generate_graph_worst_case_list,
-    generate_graphs_list,
+from graphs_creation.src.generate_graphs import (
+    generate_graph_random,
+    generate_graph_worstcase,
+    generate_graphs,
 )
 
 
@@ -13,7 +13,6 @@ def is_one_edge_per_pair_list(graph):
     Also checks that undirected property (reciprocity) holds.
     """
     edges_seen = set()
-    n = len(graph)
     for node, edges in enumerate(graph):
         for neighbor, weight in edges:
             assert weight == int(
@@ -35,8 +34,8 @@ def is_one_edge_per_pair_list(graph):
 @pytest.mark.parametrize(
     "generator",
     [
-        generate_graph_list,
-        generate_graph_worst_case_list,
+        generate_graph_random,
+        generate_graph_worstcase,
     ],
 )
 @pytest.mark.parametrize("num_vertices", [2, 3, 10])
@@ -47,16 +46,16 @@ def test_graph_generation_single_connection_per_pair_list(generator, num_vertice
 
 def test_generate_graphs_list(monkeypatch):
     monkeypatch.setattr(
-        "graphs_creation.src.generate_graphs_list.create_frequency", lambda: [2, 3]
+        "graphs_creation.src.generate_graphs.create_frequency", lambda: [2, 3]
     )
     called = []
 
-    def fake_save_graph_to_json_list(graph, name):
+    def fake_save_graph_to_json(graph, name):
         called.append((graph, name))
 
     monkeypatch.setattr(
-        "graphs_creation.src.generate_graphs_list.save_graph_to_json_list",
-        fake_save_graph_to_json_list,
+        "graphs_creation.src.generate_graphs.save_graph_to_json",
+        fake_save_graph_to_json,
     )
-    generate_graphs_list()
+    generate_graphs()
     assert len(called) == 2 * len([2, 3])

@@ -9,8 +9,7 @@ Functions:
 ----------
 - create_file_path: Create and return a JSON file path for persisting graph data.
 - create_frequency: Build standard batch sizes/frequencies up to MAX_FREQUENCY.
-- load_graph_from_json_dict: Load GraphDict-style graphs from JSON file.
-- load_graph_from_json_list: Load GraphList-style graphs from JSON file.
+- load_graph_from_json: Load GraphList-style graphs from JSON file.
 - timing_decorator Decorator for timing any function, returns (result, elapsed_time).
 
 Types:
@@ -24,12 +23,7 @@ import time
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-from config import (
-    DATA_DIRECTORY,
-    JSON_DICT_DIRECTORY,
-    JSON_LIST_DIRECTORY,
-    MAX_FREQUENCY,
-)
+from config import DATA_DIRECTORY, GENERATED_GRAPHS_DIRECTORY, MAX_GRAPH_SIZE
 
 GraphDict = Dict[str, List[Tuple[str, int]]]
 GraphList = List[List[Tuple[int, int]]]
@@ -80,12 +74,12 @@ def create_frequency() -> List[int]:
 
     frequency = []
     for start, stop, step in intervals:
-        actual_stop = min(stop, MAX_FREQUENCY)
-        if start > MAX_FREQUENCY:
+        actual_stop = min(stop, MAX_GRAPH_SIZE)
+        if start > MAX_GRAPH_SIZE:
             continue
         vals = list(range(start, actual_stop + 1, step))
         frequency.extend(vals)
-    return sorted(set(filter(lambda x: x <= MAX_FREQUENCY, frequency)))
+    return sorted(set(filter(lambda x: x <= MAX_GRAPH_SIZE, frequency)))
 
 
 def timing_decorator(func):
@@ -116,28 +110,7 @@ def timing_decorator(func):
     return wrapper
 
 
-def load_graph_from_json_dict(name: str) -> dict:
-    """
-    Load a graph (dictionary adjacency format) from a JSON file, returning all edges as lists (not tuples).
-
-    Parameters
-    ----------
-    name : str
-        The base file name (without extension).
-
-    Returns
-    -------
-    dict
-        The graph as a dict mapping node str to list of [neighbor str, weight int] lists.
-    """
-    file_path = create_file_path(directory=JSON_DICT_DIRECTORY, name=name)
-    with open(file_path, "r") as f:
-        data = json.load(f)
-    graph_dict = {node: [list(edge) for edge in edges] for node, edges in data.items()}
-    return graph_dict
-
-
-def load_graph_from_json_list(name: str) -> list:
+def load_graph_from_json(name: str) -> list:
     """
     Load a graph from a JSON file already in adjacency-list list format.
 
@@ -151,7 +124,7 @@ def load_graph_from_json_list(name: str) -> list:
     list
         The graph as a list of adjacency lists, as in [[neighbor, weight], ...] per node.
     """
-    file_path = create_file_path(directory=JSON_LIST_DIRECTORY, name=name)
+    file_path = create_file_path(directory=GENERATED_GRAPHS_DIRECTORY, name=name)
     with open(file_path, "r") as f:
         graph_list = json.load(f)
     return graph_list

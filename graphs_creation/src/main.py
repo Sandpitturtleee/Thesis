@@ -1,7 +1,5 @@
-from graphs_creation.src.generate_graphs_dict import generate_graphs_dict
-from graphs_creation.src.generate_graphs_list import generate_graphs_list
+from graphs_creation.src.generate_graphs import generate_graphs
 
 if __name__ == "__main__":
     print()
-    generate_graphs_dict()
-    generate_graphs_list()
+    generate_graphs()

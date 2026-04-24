@@ -1,4 +1,27 @@
+from pathlib import Path
+
 import pytest
+
+from config import DATA_DIRECTORY, GENERATED_GRAPHS_DIRECTORY
+
+
+def remove_test_json_files(file_names):
+    if isinstance(file_names, str):
+        file_names = [file_names]
+    json_dir = (
+        Path(__file__).parent / DATA_DIRECTORY / GENERATED_GRAPHS_DIRECTORY
+    ).resolve()
+    for name in file_names:
+        fpath = json_dir / name
+        if fpath.exists() and fpath.is_file():
+            fpath.unlink()
+
+
+@pytest.fixture(autouse=True)
+def cleanup_json_folder(file_names):
+    remove_test_json_files(file_names)
+    yield
+    remove_test_json_files(file_names)
 
 
 @pytest.fixture
@@ -130,4 +153,4 @@ def sample_graph_list():
 
 @pytest.fixture
 def file_names():
-    return ["testdict.json", "testlist.json"]
+    return ["test.json"]

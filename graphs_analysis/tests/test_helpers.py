@@ -1,24 +1,17 @@
 import time
 
-from config import MAX_FREQUENCY
+from config import MAX_GRAPH_SIZE
 from graphs_analysis.src.helpers import (
     create_frequency,
-    load_graph_from_json_dict,
-    load_graph_from_json_list,
+    load_graph_from_json,
     timing_decorator,
 )
-from graphs_creation.src.helpers import save_graph_to_json_dict, save_graph_to_json_list
+from graphs_creation.src.helpers import save_graph_to_json
 
 
-def test_load_graph_from_json_dict(sample_graph_dict):
-    save_graph_to_json_dict(sample_graph_dict, "testdict")
-    loaded_graph = load_graph_from_json_dict("testdict")
-    assert loaded_graph == sample_graph_dict
-
-
-def test_load_graph_from_json_list(sample_graph_list):
-    save_graph_to_json_list(sample_graph_list, "testlist")
-    loaded_graph = load_graph_from_json_list("testlist")
+def test_load_graph_from(sample_graph_list):
+    save_graph_to_json(sample_graph_list, "test")
+    loaded_graph = load_graph_from_json("test")
     assert loaded_graph == sample_graph_list
 
 
@@ -38,5 +31,5 @@ def test_create_frequency():
     assert isinstance(freq, list)
     assert 0 not in freq
     assert freq[0] == 10
-    assert freq[-1] == MAX_FREQUENCY
+    assert freq[-1] == MAX_GRAPH_SIZE
     assert all(isinstance(x, int) for x in freq)
