@@ -24,7 +24,7 @@ Types:
 import random
 from typing import List, Tuple
 
-from config import RANDOM, WORST_CASE
+from config import RANDOM, WORSTCASE
 from graphs_creation.src.helpers import create_frequency, save_graph_to_json_list
 
 GraphList = List[List[Tuple[int, int]]]
@@ -120,4 +120,4 @@ def generate_graphs_list() -> None:
         random_graph = generate_graph_list(num_vertices=i)
         worst_case_graph = generate_graph_worst_case_list(num_vertices=i)
         save_graph_to_json_list(graph=random_graph, name=f"{i}{RANDOM}")
-        save_graph_to_json_list(graph=worst_case_graph, name=f"{i}{WORST_CASE}")
+        save_graph_to_json_list(graph=worst_case_graph, name=f"{i}{WORSTCASE}")

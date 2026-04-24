@@ -1,7 +1,7 @@
 import random
 from typing import Dict, List, Tuple
 
-from config import RANDOM, WORST_CASE
+from config import RANDOM, WORSTCASE
 
 """
 Graph Generation Utilities
@@ -125,4 +125,4 @@ def generate_graphs_dict() -> None:
         random_graph = generate_graph_dict(num_vertices=i)
         worst_case_graph = generate_graph_worst_case_dict(num_vertices=i)
         save_graph_to_json_dict(graph=random_graph, name=f"{i}{RANDOM}")
-        save_graph_to_json_dict(graph=worst_case_graph, name=f"{i}{WORST_CASE}")
+        save_graph_to_json_dict(graph=worst_case_graph, name=f"{i}{WORSTCASE}")
