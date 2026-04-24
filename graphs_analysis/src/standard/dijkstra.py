@@ -3,7 +3,7 @@ from config import (
     RESULTS_DIRECTORY,
     STANDARD_RANDOM_FILENAME,
     STANDARD_WORSTCASE_FILENAME,
-    WORST_CASE,
+    WORSTCASE,
 )
 from graphs_analysis.src.helpers import (
     create_frequency,
