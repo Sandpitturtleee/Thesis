@@ -3,7 +3,7 @@ import pytest
 from graphs_creation.src.generate_graphs import (
     generate_graph_random,
     generate_graph_worstcase,
-    generate_graphs,
+    generate_graphs, generate_graph_sparse,
 )
 
 
@@ -36,6 +36,7 @@ def is_one_edge_per_pair_list(graph):
     [
         generate_graph_random,
         generate_graph_worstcase,
+        generate_graph_sparse,
     ],
 )
 @pytest.mark.parametrize("num_vertices", [2, 3, 10])
@@ -44,7 +45,7 @@ def test_graph_generation_single_connection_per_pair_list(generator, num_vertice
     is_one_edge_per_pair_list(graph)
 
 
-def test_generate_graphs_list(monkeypatch):
+def test_generate_graphs(monkeypatch):
     monkeypatch.setattr(
         "graphs_creation.src.generate_graphs.create_frequency", lambda: [2, 3]
     )
@@ -58,4 +59,4 @@ def test_generate_graphs_list(monkeypatch):
         fake_save_graph_to_json,
     )
     generate_graphs()
-    assert len(called) == 2 * len([2, 3])
+    assert len(called) == 3 * len([2, 3])

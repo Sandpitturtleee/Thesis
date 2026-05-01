@@ -22,9 +22,10 @@ Types:
 """
 
 import random
-from typing import List, Tuple
+import math
+from typing import List, Tuple, Set
 
-from config import RANDOM, WORSTCASE
+from config import RANDOM, WORSTCASE, SPARSE
 from graphs_creation.src.helpers import create_frequency, save_graph_to_json
 
 GraphList = List[List[Tuple[int, int]]]
@@ -45,8 +46,10 @@ def generate_graphs() -> None:
     for i in frequency:
         random_graph = generate_graph_random(num_vertices=i)
         worst_case_graph = generate_graph_worstcase(num_vertices=i)
+        sparse_graph = generate_graph_sparse(num_vertices=i)
         save_graph_to_json(graph=random_graph, name=f"{i}{RANDOM}")
         save_graph_to_json(graph=worst_case_graph, name=f"{i}{WORSTCASE}")
+        save_graph_to_json(graph=sparse_graph, name=f"{i}{SPARSE}")
 
 
 def generate_graph_random(num_vertices: int, min_weight: int = 1) -> GraphList:
@@ -120,4 +123,47 @@ def generate_graph_worstcase(num_vertices: int, min_weight: int = 1) -> GraphLis
                 graph[i].append((neighbor, weight))
             if i not in [v for v, w in graph[neighbor]]:
                 graph[neighbor].append((i, weight))
+    return graph
+
+
+def generate_graph_sparse(num_vertices: int, min_weight: int = 1) -> GraphList:
+    """
+    Generate an undirected sparse random weighted graph as an adjacency list.
+    The total number of edges will be equal to the number of vertices.
+
+    Parameters
+    ----------
+    num_vertices : int
+        Number of vertices in the graph.
+    min_weight : int, optional
+        The minimum weight assigned to any edge (default is 1).
+
+    Returns
+    -------
+    GraphList
+        A list of adjacency lists, each containing (neighbor_index, weight) tuples.
+    """
+    if num_vertices < 2:
+        return [[] for _ in range(num_vertices)]
+
+    max_weight = num_vertices
+    graph = [[] for _ in range(num_vertices)]
+    existing_edges: Set[Tuple[int, int]] = set()
+    max_possible = num_vertices * (num_vertices - 1) // 2
+
+    num_edges = min(num_vertices, max_possible)  # At most, the graph can have C(n,2) simple edges
+
+    while len(existing_edges) < num_edges:
+        u = random.randint(0, num_vertices - 1)
+        v = random.randint(0, num_vertices - 1)
+        if u == v:
+            continue
+        a, b = min(u, v), max(u, v)
+        if (a, b) in existing_edges:
+            continue
+        weight = random.randint(min_weight, max_weight)
+        graph[a].append((b, weight))
+        graph[b].append((a, weight))
+        existing_edges.add((a, b))
+
     return graph
