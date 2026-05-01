@@ -6,6 +6,7 @@ RANDOM = "_random"
 WORSTCASE = "_worstcase"
 DATA_DIRECTORY = "data"
 GENERATED_GRAPHS_DIRECTORY = "generated_graphs"
+DIJKSTRA_RESULTS_DIRECTORY = "dijkstra_results"
 
 RESULTS_DIRECTORY = "dijkstra_results"
 STANDARD_SPARSE_FILENAME = "standard_sparse"

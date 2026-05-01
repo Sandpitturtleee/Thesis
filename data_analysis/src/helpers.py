@@ -1,43 +1,43 @@
+"""
+Dijkstra Results Loader
+-----------------------
+
+This module provides a utility function to load all JSON result files for Dijkstra algorithm runs
+from a specified results directory.
+
+Functions:
+----------
+- read_results_from_json: Loads all JSON files from `../data/dijkstra_results/`
+  and returns their contents in a dictionary.
+"""
+
 import json
+import os
 from pathlib import Path
-from typing import Dict, List, Tuple
 
-from config import DATA_DIRECTORY
-
-GraphDict = Dict[str, List[Tuple[str, int]]]
-GraphList = List[List[Tuple[int, int]]]
+from config import DATA_DIRECTORY, DIJKSTRA_RESULTS_DIRECTORY
 
 
-def create_file_path(directory: str, name: str) -> Path:
+def read_results_from_json() -> dict:
     """
-    Create the appropriate file path for saving or loading a graph's JSON file by name.
+    Reads all JSON result files for Dijkstra algorithm runs from the results directory.
 
-    The file will be placed in ../data/directory/ relative to this file.
-
-    Parameters
-    ----------
-    directory : str
-        The base name of a parent directory
-    name : str
-        The base name (without extension) for the JSON file.
+    For each `.json` file found in the `../data/dijkstra_results/` directory (relative to this file),
+    the function loads its contents and adds it to a dictionary using the filename as the key.
 
     Returns
     -------
-    Path
-        The full path to the target JSON file.
+    dict
+        A dictionary where keys are JSON file names and values are the parsed JSON data for each file.
     """
     project_root = Path(__file__).parent.parent.parent
-    base_path = project_root / DATA_DIRECTORY / directory
-    base_path.mkdir(parents=True, exist_ok=True)
-    file_name = f"{name}.json"
-    file_path = base_path / file_name
-    return file_path
-
-
-def read_results_from_json(directory, name):
-    file_path = create_file_path(directory=directory, name=name)
-    with open(file_path, "r") as f:
-        results = json.load(f)
-    vertices = results["vertices"]
-    count = results["count"]
-    return vertices, count
+    path = project_root / DATA_DIRECTORY / DIJKSTRA_RESULTS_DIRECTORY
+    path.mkdir(parents=True, exist_ok=True)
+    data = {}
+    for filename in os.listdir(path):
+        if filename.endswith(".json"):
+            filepath = os.path.join(path, filename)
+            with open(filepath, "r") as file:
+                file_data = json.load(file)
+                data[filename] = file_data
+    return data
