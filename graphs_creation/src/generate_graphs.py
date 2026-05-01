@@ -9,6 +9,7 @@ Functions:
 ----------
 - generate_graph_random: Generate a random undirected weighted graph as an adjacency list.
 - generate_graph_worstcase: Generate a densely connected 'worst-case' random graph as an adjacency list.
+- generate_graph_sparse: Generate a sparse graph with number of edges the sam as vertices.
 - generate_graphs: Generate and save graphs of varying sizes.
 
 Dependencies:
@@ -22,10 +23,9 @@ Types:
 """
 
 import random
-import math
-from typing import List, Tuple, Set
+from typing import List, Set, Tuple
 
-from config import RANDOM, WORSTCASE, SPARSE
+from config import RANDOM, SPARSE, WORSTCASE
 from graphs_creation.src.helpers import create_frequency, save_graph_to_json
 
 GraphList = List[List[Tuple[int, int]]]
@@ -151,7 +151,9 @@ def generate_graph_sparse(num_vertices: int, min_weight: int = 1) -> GraphList:
     existing_edges: Set[Tuple[int, int]] = set()
     max_possible = num_vertices * (num_vertices - 1) // 2
 
-    num_edges = min(num_vertices, max_possible)  # At most, the graph can have C(n,2) simple edges
+    num_edges = min(
+        num_vertices, max_possible
+    )  # At most, the graph can have C(n,2) simple edges
 
     while len(existing_edges) < num_edges:
         u = random.randint(0, num_vertices - 1)

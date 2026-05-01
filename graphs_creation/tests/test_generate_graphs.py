@@ -2,8 +2,9 @@ import pytest
 
 from graphs_creation.src.generate_graphs import (
     generate_graph_random,
+    generate_graph_sparse,
     generate_graph_worstcase,
-    generate_graphs, generate_graph_sparse,
+    generate_graphs,
 )
 
 
