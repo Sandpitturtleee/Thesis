@@ -1,4 +1,4 @@
-from graphs_analysis.src.standard.dijkstra import dijkstra_heap, run_dijkstra_heap
+from graphs_analysis.src.standard.dijkstra_heap import dijkstra_heap, run_dijkstra_heap
 
 
 def test_dijkstra_heap_correctness():
@@ -18,10 +18,10 @@ def test_run_dijkstra_heap_averages(monkeypatch):
         return [[(min(i + 1, n - 1), 2)] for i in range(n)]
 
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra.dijkstra_heap", fake_dijkstra_heap
+        "graphs_analysis.src.standard.dijkstra_heap.dijkstra_heap", fake_dijkstra_heap
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra.load_graph_from_json",
+        "graphs_analysis.src.standard.dijkstra_heap.load_graph_from_json",
         fake_load_graph_from_json,
     )
     monkeypatch.setattr(
@@ -89,33 +89,35 @@ def test_run_all(monkeypatch):
         call_args.append(kwargs)
 
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra.run_dijkstra_heap",
+        "graphs_analysis.src.standard.dijkstra_heap.run_dijkstra_heap",
         fake_run_dijkstra_heap,
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra.save_results_to_json",
+        "graphs_analysis.src.standard.dijkstra_heap.save_results_to_json",
         fake_save_results_to_json,
     )
-    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra.RANDOM", "_R")
-    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra.WORSTCASE", "_WC")
-    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra.SPARSE", "_S")
+    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_heap.RANDOM", "_R")
+    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_heap.WORSTCASE", "_WC")
+    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_heap.SPARSE", "_S")
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra.RESULTS_DIRECTORY", "/tmp"
+        "graphs_analysis.src.standard.dijkstra_heap.RESULTS_DIRECTORY", "/tmp"
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra.STANDARD_RANDOM_FILENAME", "random.json"
+        "graphs_analysis.src.standard.dijkstra_heap.STANDARD_RANDOM_FILENAME",
+        "random.json",
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra.STANDARD_SPARSE_FILENAME", "sparse.json"
+        "graphs_analysis.src.standard.dijkstra_heap.STANDARD_SPARSE_FILENAME",
+        "sparse.json",
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra.STANDARD_WORSTCASE_FILENAME",
+        "graphs_analysis.src.standard.dijkstra_heap.STANDARD_WORSTCASE_FILENAME",
         "worstcase.json",
     )
 
-    from graphs_analysis.src.standard.dijkstra import run_all
+    from graphs_analysis.src.standard.dijkstra_heap import run_all_dijkstra_heap
 
-    run_all(times=1)
+    run_all_dijkstra_heap(times=1)
 
     # Assure the fake save is called with correct args
     assert call_args[0]["name"] == "random.json"

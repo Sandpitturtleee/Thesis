@@ -54,7 +54,7 @@ from graphs_analysis.src.helpers import (
 from graphs_analysis.src.standard.heap import MinHeap
 
 
-def run_all(times):
+def run_all_dijkstra_heap(times):
     """
     Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
 
