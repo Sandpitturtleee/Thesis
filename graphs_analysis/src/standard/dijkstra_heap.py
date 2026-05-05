@@ -19,7 +19,7 @@ This module comprises the following main parts:
 Functions
 ---------
 
-- run_all(times):
+- run_all_dijkstra_heap(times):
     Orchestrates benchmarking Dijkstra’s algorithm for various graph types and saves results as JSON.
 - dijkstra_heap(graph, start_node):
     Runs Dijkstra’s algorithm with a MinHeap and returns distances, predecessor info, and heap operation count.
@@ -41,9 +41,9 @@ from config import (
     RANDOM,
     RESULTS_DIRECTORY,
     SPARSE,
-    STANDARD_RANDOM_FILENAME,
-    STANDARD_SPARSE_FILENAME,
-    STANDARD_WORSTCASE_FILENAME,
+    STANDARD_HEAP_RANDOM_FILENAME,
+    STANDARD_HEAP_SPARSE_FILENAME,
+    STANDARD_HEAP_WORSTCASE_FILENAME,
     WORSTCASE,
 )
 from graphs_analysis.src.helpers import (
@@ -66,21 +66,21 @@ def run_all_dijkstra_heap(times):
     vertices, count = run_dijkstra_heap(times=times, graph_type=RANDOM)
     save_results_to_json(
         directory=RESULTS_DIRECTORY,
-        name=STANDARD_RANDOM_FILENAME,
+        name=STANDARD_HEAP_RANDOM_FILENAME,
         vertices=vertices,
         count=count,
     )
     vertices, count = run_dijkstra_heap(times=times, graph_type=WORSTCASE)
     save_results_to_json(
         directory=RESULTS_DIRECTORY,
-        name=STANDARD_WORSTCASE_FILENAME,
+        name=STANDARD_HEAP_WORSTCASE_FILENAME,
         vertices=vertices,
         count=count,
     )
     vertices, count = run_dijkstra_heap(times=times, graph_type=SPARSE)
     save_results_to_json(
         directory=RESULTS_DIRECTORY,
-        name=STANDARD_SPARSE_FILENAME,
+        name=STANDARD_HEAP_SPARSE_FILENAME,
         vertices=vertices,
         count=count,
     )

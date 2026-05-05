@@ -1,16 +1,19 @@
-from graphs_analysis.src.standard.dijkstra_heap import dijkstra_heap, run_dijkstra_heap
+from graphs_analysis.src.standard.dijkstra_naive import (
+    dijkstra_naive,
+    run_dijkstra_naive,
+)
 
 
-def test_dijkstra_heap_correctness():
+def test_dijkstra_naive_correctness():
     graph = [[(1, 2), (2, 10)], [(2, 3)], []]
-    distances, previous, heap_ops = dijkstra_heap(graph, 0)
+    distances, previous, heap_ops = dijkstra_naive(graph, 0)
     assert distances == [0, 2, 5]
     assert previous == [None, 0, 1]
     assert heap_ops > 0
 
 
-def test_run_dijkstra_heap_averages(monkeypatch):
-    def fake_dijkstra_heap(graph, start_node):
+def test_run_dijkstra_naive_averages(monkeypatch):
+    def fake_dijkstra_naive(graph, start_node):
         return [], [], 10 * len(graph)
 
     def fake_load_graph_from_json(name):
@@ -18,17 +21,18 @@ def test_run_dijkstra_heap_averages(monkeypatch):
         return [[(min(i + 1, n - 1), 2)] for i in range(n)]
 
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra_heap.dijkstra_heap", fake_dijkstra_heap
+        "graphs_analysis.src.standard.dijkstra_naive.dijkstra_naive",
+        fake_dijkstra_naive,
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra_heap.load_graph_from_json",
+        "graphs_analysis.src.standard.dijkstra_naive.load_graph_from_json",
         fake_load_graph_from_json,
     )
     monkeypatch.setattr(
         "graphs_analysis.src.helpers.create_frequency", lambda *a, **k: [1, 2, 3, 4]
     )
 
-    vertices, count = run_dijkstra_heap(times=10, graph_type="_R")
+    vertices, count = run_dijkstra_naive(times=10, graph_type="_R")
 
     assert vertices == [
         10,
@@ -74,7 +78,7 @@ def test_run_dijkstra_heap_averages(monkeypatch):
     ]
 
 
-def test_run_all_dijkstra_heap(monkeypatch):
+def test_run_all_dijkstra_naive(monkeypatch):
     result_side_effects = [
         ([10, 20], [5, 6]),  # RANDOM
         ([10, 20], [7, 8]),  # WORSTCASE
@@ -82,42 +86,42 @@ def test_run_all_dijkstra_heap(monkeypatch):
     ]
     call_args = []
 
-    def fake_run_dijkstra_heap(times, graph_type):
+    def fake_run_dijkstra_naive(times, graph_type):
         return result_side_effects.pop(0)
 
     def fake_save_results_to_json(**kwargs):
         call_args.append(kwargs)
 
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra_heap.run_dijkstra_heap",
-        fake_run_dijkstra_heap,
+        "graphs_analysis.src.standard.dijkstra_naive.run_dijkstra_naive",
+        fake_run_dijkstra_naive,
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra_heap.save_results_to_json",
+        "graphs_analysis.src.standard.dijkstra_naive.save_results_to_json",
         fake_save_results_to_json,
     )
-    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_heap.RANDOM", "_R")
-    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_heap.WORSTCASE", "_WC")
-    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_heap.SPARSE", "_S")
+    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_naive.RANDOM", "_R")
+    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_naive.WORSTCASE", "_WC")
+    monkeypatch.setattr("graphs_analysis.src.standard.dijkstra_naive.SPARSE", "_S")
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra_heap.RESULTS_DIRECTORY", "/tmp"
+        "graphs_analysis.src.standard.dijkstra_naive.RESULTS_DIRECTORY", "/tmp"
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra_heap.STANDARD_HEAP_RANDOM_FILENAME",
+        "graphs_analysis.src.standard.dijkstra_naive.STANDARD_NAIVE_RANDOM_FILENAME",
         "random.json",
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra_heap.STANDARD_HEAP_SPARSE_FILENAME",
+        "graphs_analysis.src.standard.dijkstra_naive.STANDARD_NAIVE_SPARSE_FILENAME",
         "sparse.json",
     )
     monkeypatch.setattr(
-        "graphs_analysis.src.standard.dijkstra_heap.STANDARD_HEAP_WORSTCASE_FILENAME",
+        "graphs_analysis.src.standard.dijkstra_naive.STANDARD_NAIVE_WORSTCASE_FILENAME",
         "worstcase.json",
     )
 
-    from graphs_analysis.src.standard.dijkstra_heap import run_all_dijkstra_heap
+    from graphs_analysis.src.standard.dijkstra_naive import run_all_dijkstra_naive
 
-    run_all_dijkstra_heap(times=1)
+    run_all_dijkstra_naive(times=1)
 
     # Assure the fake save is called with correct args
     assert call_args[0]["name"] == "random.json"
