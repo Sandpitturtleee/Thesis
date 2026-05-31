@@ -31,12 +31,20 @@ from graphs_creation.src.helpers import create_frequency, save_graph_to_json
 GraphList = List[List[Tuple[int, int]]]
 
 
-def generate_graphs() -> None:
+def generate_graphs(times: int = 1) -> None:
     """
-    Generate and save random and dense worst-case graphs for several sizes.
+    Generate and save random, dense worst-case, and sparse graphs for several sizes.
 
-    For each value returned by create_frequency(), generates one random and one densely connected
-    (worst-case) graph and saves them using save_graph_to_json_list().
+    For each value returned by create_frequency(), generates 'times' number of:
+        - random
+        - densely connected (worst-case)
+        - sparse
+    graphs, and saves them using save_graph_to_json(), adding the run number to the filenames.
+
+    Parameters
+    ----------
+    times : int
+        Number of times to generate and save each graph type per frequency.
 
     Returns
     -------
@@ -44,12 +52,14 @@ def generate_graphs() -> None:
     """
     frequency = create_frequency()
     for i in frequency:
-        random_graph = generate_graph_random(num_vertices=i)
-        worst_case_graph = generate_graph_worstcase(num_vertices=i)
-        sparse_graph = generate_graph_sparse(num_vertices=i)
-        save_graph_to_json(graph=random_graph, name=f"{i}{RANDOM}")
-        save_graph_to_json(graph=worst_case_graph, name=f"{i}{WORSTCASE}")
-        save_graph_to_json(graph=sparse_graph, name=f"{i}{SPARSE}")
+        for run in range(times):
+            random_graph = generate_graph_random(num_vertices=i)
+            worst_case_graph = generate_graph_worstcase(num_vertices=i)
+            sparse_graph = generate_graph_sparse(num_vertices=i)
+
+            save_graph_to_json(graph=random_graph, name=f"{i}{RANDOM}_{run + 1}")
+            save_graph_to_json(graph=worst_case_graph, name=f"{i}{WORSTCASE}_{run + 1}")
+            save_graph_to_json(graph=sparse_graph, name=f"{i}{SPARSE}_{run + 1}")
 
 
 def generate_graph_random(num_vertices: int, min_weight: int = 1) -> GraphList:

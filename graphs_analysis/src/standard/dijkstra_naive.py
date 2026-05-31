@@ -138,12 +138,12 @@ def dijkstra_naive(graph, start_node):
 
 def run_dijkstra_naive(times, graph_type):
     """
-    Run the heap-based Dijkstra's algorithm on all available sizes for the given graph type.
+    Run the naive Dijkstra's algorithm on all available sizes for the given graph type, multiple times.
 
     Parameters
     ----------
     times : int
-        Number of repetitions per graph size.
+        Number of repetitions for the whole set of graph sizes.
     graph_type : str
         Identifies which graph set to load.
 
@@ -151,19 +151,18 @@ def run_dijkstra_naive(times, graph_type):
     -------
     vertices : List[int]
         The graph sizes (number of nodes) used.
-    count : List[float]
-        Mean operation counts or timing per size, averaged over `times`.
+    all_results : List[List[float]]
+        Nested list with all timing per size, per full run (len = size x times).
     """
     vertices = create_frequency()
-    count = []
+    all_results = []
 
     for i in vertices:
-        loaded_graph = load_graph_from_json(name=f"{i}{graph_type}")
-        elapsed_sum = 0
-        for _ in range(times):
+        size_results = []
+        for run in range(times):
+            loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
             _, _, elapsed = dijkstra_naive(graph=loaded_graph, start_node=0)
-            elapsed_sum += elapsed
-        mean = elapsed_sum / times
-        count.append(mean)
+            size_results.append(elapsed)
+        all_results.append(size_results)
 
-    return vertices, count
+    return vertices, all_results

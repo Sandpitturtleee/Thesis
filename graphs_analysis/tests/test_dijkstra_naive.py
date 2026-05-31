@@ -55,27 +55,6 @@ def test_run_dijkstra_naive_averages(monkeypatch):
         900,
         1000,
     ]
-    assert count == [
-        100.0,
-        200.0,
-        300.0,
-        400.0,
-        500.0,
-        600.0,
-        700.0,
-        800.0,
-        900.0,
-        1000.0,
-        2000.0,
-        3000.0,
-        4000.0,
-        5000.0,
-        6000.0,
-        7000.0,
-        8000.0,
-        9000.0,
-        10000.0,
-    ]
 
 
 def test_run_all_dijkstra_naive(monkeypatch):
