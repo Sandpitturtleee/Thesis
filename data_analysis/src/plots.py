@@ -1,0 +1,341 @@
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import numpy as np
+
+from config import DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
+from data_analysis.src.helpers import read_results_from_json, save_stats_by_file, read_results_by_vertex, \
+    read_results_by_vertices
+
+heap_methods = ['standard_heap_random_stats.json', 'standard_heap_sparse_stats.json',
+                'standard_heap_worstcase_stats.json']
+naive_methods = ['standard_naive_random_stats.json', 'standard_naive_sparse_stats.json',
+                 'standard_naive_worstcase_stats.json']
+
+method_labels = {
+    'standard_heap_random_stats.json': 'Heap Random',
+    'standard_heap_sparse_stats.json': 'Heap Sparse',
+    'standard_heap_worstcase_stats.json': 'Heap Worst Case',
+    'standard_naive_random_stats.json': 'Naive Random',
+    'standard_naive_sparse_stats.json': 'Naive Sparse',
+    'standard_naive_worstcase_stats.json': 'Naive Worst Case',
+}
+
+def stats_plots_mean1():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plt.figure(figsize=(10, 6))
+    for method in heap_methods:
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['mean'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method])
+    plt.title('Heap - mean')
+    plt.xlabel('Vertices')
+    plt.ylabel('Mean')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    # Plot for naive
+    plt.figure(figsize=(10, 6))
+    for method in naive_methods:
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['mean'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method])
+    plt.title('Naive - mean')
+    plt.xlabel('Vertices')
+    plt.ylabel('Mean')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def stats_plots_mean():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+
+    # Plot for heap methods
+    plt.figure(figsize=(10, 6))
+    for method in heap_methods:
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['mean'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method])
+
+    # Add 2.20*n*lnn plot
+    x_all = sorted(set(int(size) for method in heap_methods for size in data[method].keys()))
+    y_logn = [2.20 * n * np.log(n) for n in x_all]
+    plt.plot(x_all, y_logn, label=r'$2.20\ n\ \ln n$', linestyle="--", color="black")
+
+    plt.title('Heap - mean')
+    plt.xlabel('Vertices')
+    plt.ylabel('Mean')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    # Plot for naive methods
+    plt.figure(figsize=(10, 6))
+    for method in naive_methods:
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['mean'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method])
+
+    # Add 2.20*n*lnn plot
+    x_all_naive = sorted(set(int(size) for method in naive_methods for size in data[method].keys()))
+    y_logn_naive = [2.20 * n * np.log(n) for n in x_all_naive]
+    plt.plot(x_all_naive, y_logn_naive, label=r'$2.20\ n\ \ln n$', linestyle="--", color="black")
+
+    plt.title('Naive - mean')
+    plt.xlabel('Vertices')
+    plt.ylabel('Mean')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def stats_plots_mean_combined():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plt.figure(figsize=(12, 7))
+
+    # Get color shades by sampling from the colormaps
+    blues = cm.get_cmap("Blues")
+    reds = cm.get_cmap("Reds")
+    blue_shades = [blues(0.5 + 0.5 * i / max(len(heap_methods)-1, 1)) for i in range(len(heap_methods))]
+    red_shades = [reds(0.5 + 0.5 * i / max(len(naive_methods)-1, 1)) for i in range(len(naive_methods))]
+
+    # Plot Heap methods (shades of blue)
+    for i, method in enumerate(heap_methods):
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['mean'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method], color=blue_shades[i])
+
+    # Plot Naive methods (shades of red)
+    for i, method in enumerate(naive_methods):
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['mean'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method], color=red_shades[i])
+
+    plt.title('Heap vs Naive - mean')
+    plt.xlabel('Vertices')
+    plt.ylabel('Mean')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+def stats_plots_median():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plt.figure(figsize=(10, 6))
+
+    for method in heap_methods:
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['median'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method])
+
+    plt.title('Heap - median')
+    plt.xlabel('Vertices')
+    plt.ylabel('Median')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    # Plot for naive
+    plt.figure(figsize=(10, 6))
+    for method in naive_methods:
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['median'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method])
+
+    plt.title('Naive - median')
+    plt.xlabel('Vertices')
+    plt.ylabel('Median')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def stats_plots_median_combined():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plt.figure(figsize=(12, 7))
+
+    blues = cm.get_cmap("Blues")
+    reds = cm.get_cmap("Reds")
+    blue_shades = [blues(0.5 + 0.5 * i / max(len(heap_methods)-1, 1)) for i in range(len(heap_methods))]
+    red_shades = [reds(0.5 + 0.5 * i / max(len(naive_methods)-1, 1)) for i in range(len(naive_methods))]
+
+    # Plot Heap methods (shades of blue)
+    for i, method in enumerate(heap_methods):
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['median'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method], color=blue_shades[i])
+
+    # Plot Naive methods (shades of red)
+    for i, method in enumerate(naive_methods):
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['median'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method], color=red_shades[i])
+
+    plt.title('Heap vs Naive - median')
+    plt.xlabel('Vertices')
+    plt.ylabel('Median')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+def stats_plots_std():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plt.figure(figsize=(8, 5))
+    for method in heap_methods:
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['std'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method])
+    plt.title('Heap - std')
+    plt.xlabel('Vertices')
+    plt.ylabel('Std')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    # Plot for naive STD
+    plt.figure(figsize=(8, 5))
+    for method in naive_methods:
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['std'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method])
+    plt.title('Naive - std')
+    plt.xlabel('Vertices')
+    plt.ylabel('Std')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def stats_plots_std_combined():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plt.figure(figsize=(10, 6))
+
+    blues = cm.get_cmap("Blues")
+    reds = cm.get_cmap("Reds")
+    blue_shades = [blues(0.5 + 0.5 * i / max(len(heap_methods)-1, 1)) for i in range(len(heap_methods))]
+    red_shades = [reds(0.5 + 0.5 * i / max(len(naive_methods)-1, 1)) for i in range(len(naive_methods))]
+
+    # Plot Heap methods (different blue shades)
+    for i, method in enumerate(heap_methods):
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['std'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method], color=blue_shades[i])
+
+    # Plot Naive methods (different red shades)
+    for i, method in enumerate(naive_methods):
+        records = data[method]
+        x = sorted(int(size) for size in records.keys())
+        y = [records[str(size)]['std'] for size in x]
+        plt.plot(x, y, marker='o', label=method_labels[method], color=red_shades[i])
+
+    plt.title('Heap vs Naive - std')
+    plt.xlabel('Vertices')
+    plt.ylabel('Std')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+def plot_dijkstra_counts(results_dict):
+    """
+    Plot Dijkstra's algorithm operation counts for different graph types.
+
+    Parameters
+    ----------
+    results_dict : dict
+        Dictionary loaded from your JSON results.
+        Keys are filenames (e.g., 'standard_grid.json'), and values are dicts containing:
+            - 'vertices': list of number of vertices in the graph
+            - 'count': list of operation counts for each graph size
+    Returns
+    -------
+    None
+
+    Displays
+    -------
+    A matplotlib line plot comparing the operation counts.
+    """
+    plt.figure(figsize=(10, 7))
+
+    for key, data in results_dict.items():
+        label = key.replace("standard_", "").replace(".json", "").capitalize()
+        plt.plot(data["vertices"], data["count"], marker="o", label=label)
+
+    plt.xlabel("Graph Size (vertices)")
+    plt.ylabel("Operation Count")
+    plt.title("Dijkstra's Algorithm Operation Count on Different Graph Types")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+def plot_vertex_counts(file_name: str, vertex_number: int):
+    """
+    Plots the count values for a specific number of vertices.
+
+    Parameters
+    ----------
+    data : dict
+        Dictionary with keys 'vertices' (int) and 'count' (list of int).
+    """
+    data = read_results_by_vertex(file_name=file_name, vertex_number=vertex_number)
+    if data is None:
+        print("No data available to plot.")
+        return
+
+    counts = data['count']
+    trials = list(range(1, len(counts) + 1))
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(trials, counts, marker='o', linestyle='-')
+    plt.title(f"Results for {data['vertices']} Vertices")
+    plt.xlabel("Trial")
+    plt.ylabel("Count")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+def plot_vertices_counts(file_name: str, vertices_number: list):
+    """
+    Plots the count values for multiple numbers of vertices on one plot.
+    """
+    data = read_results_by_vertices(file_name, vertices_number)
+    if not data:
+        print("No data available to plot.")
+        return
+
+    plt.figure(figsize=(10, 6))
+    for v, counts in data.items():
+        trials = list(range(1, len(counts) + 1))
+        plt.plot(trials, counts, marker='o', linestyle='-', label=f"{v} vertices")
+
+    plt.title("Results for Multiple Vertex Counts")
+    plt.xlabel("Trial")
+    plt.ylabel("Count")
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    plt.show()

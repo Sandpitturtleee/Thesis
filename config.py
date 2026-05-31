@@ -8,6 +8,7 @@ WORSTCASE = "_worstcase"
 DATA_DIRECTORY = "data"
 GENERATED_GRAPHS_DIRECTORY = "generated_graphs"
 DIJKSTRA_RESULTS_DIRECTORY = "dijkstra_results"
+DIJKSTRA_STATS_DIRECTORY = "dijkstra_stats"
 
 RESULTS_DIRECTORY = "dijkstra_results"
 STANDARD_HEAP_SPARSE_FILENAME = "standard_heap_sparse"

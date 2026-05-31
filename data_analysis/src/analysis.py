@@ -10,38 +10,41 @@ Functions
 - plot_dijkstra_counts: Plot Dijkstra's operation counts for different graph types loaded from result files
 """
 
-import matplotlib.pyplot as plt
+import pandas as pd
 
+from config import DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
+from data_analysis.src.helpers import read_results_from_json, save_stats_by_file
 
-def plot_dijkstra_counts(results_dict):
+def stats_analysis():
+    dijkstra_results = read_results_from_json(directory=DIJKSTRA_RESULTS_DIRECTORY)
+    stats_by_file = statistics_by_file(dijkstra_results)
+    save_stats_by_file(stats_by_file)
+
+def per_count_row_statistics(counts, vertices=None):
     """
-    Plot Dijkstra's algorithm operation counts for different graph types.
-
-    Parameters
-    ----------
-    results_dict : dict
-        Dictionary loaded from your JSON results.
-        Keys are filenames (e.g., 'standard_grid.json'), and values are dicts containing:
-            - 'vertices': list of number of vertices in the graph
-            - 'count': list of operation counts for each graph size
-    Returns
-    -------
-    None
-
-    Displays
-    -------
-    A matplotlib line plot comparing the operation counts.
+    Compute statistics per row for a 2D list of counts.
+    If vertices are provided, use them as the DataFrame index.
     """
-    plt.figure(figsize=(10, 7))
+    df = pd.DataFrame(counts)
+    if vertices is not None:
+        df.index = vertices    # Set index for better labeling
+    df_stats = pd.DataFrame({
+        "mean": df.mean(axis=1),
+        "std": df.std(axis=1),
+        "median": df.median(axis=1),
+        "min": df.min(axis=1),
+        "max": df.max(axis=1),
+    }, index=df.index)
+    return df_stats
 
-    for key, data in results_dict.items():
-        label = key.replace("standard_", "").replace(".json", "").capitalize()
-        plt.plot(data["vertices"], data["count"], marker="o", label=label)
 
-    plt.xlabel("Graph Size (vertices)")
-    plt.ylabel("Operation Count")
-    plt.title("Dijkstra's Algorithm Operation Count on Different Graph Types")
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
+def statistics_by_file(results_dict):
+    """
+    For each result file, calculate statistics per input size (row) for 'count'.
+    Returns: {fname: stats_df}
+    """
+    all_stats = {}
+    for file_name, data in results_dict.items():
+        stats_df = per_count_row_statistics(data["count"], vertices=data["vertices"])
+        all_stats[file_name] = stats_df
+    return all_stats
