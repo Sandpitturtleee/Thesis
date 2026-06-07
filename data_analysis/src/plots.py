@@ -347,6 +347,7 @@ def plot_vertices_counts(file_name: str, vertices_number: list):
 
 def draw_graph_big(graph):
     g = nx.DiGraph()
+    g.add_nodes_from(range(len(graph)))
     for node, edges in enumerate(graph):
         for dest, weight in edges:
             g.add_edge(node, dest, weight=weight)
@@ -357,9 +358,9 @@ def draw_graph_big(graph):
     plt.axis('off')
     plt.show()
 
-
 def draw_graph_small(graph):
     g = nx.DiGraph()
+    g.add_nodes_from(range(len(graph)))
     for node, edges in enumerate(graph):
         for dest, weight in edges:
             g.add_edge(node, dest, weight=weight)
