@@ -65,7 +65,9 @@ def stats_plots_mean():
 
     # Add 2.20*n*lnn plot
     x_all = sorted(set(int(size) for method in heap_methods for size in data[method].keys()))
-    y_logn = [2.20 * n * np.log(n) for n in x_all]
+    #y_logn = [2.20 * n * np.log(n) for n in x_all]
+    #y_logn = [n * n * np.log(n) for n in x_all]
+    y_logn = [n * n for n in x_all]
     plt.plot(x_all, y_logn, label=r'$2.20\ n\ \ln n$', linestyle="--", color="black")
 
     plt.title('Heap - mean')
@@ -86,7 +88,8 @@ def stats_plots_mean():
 
     # Add 2.20*n*lnn plot
     x_all_naive = sorted(set(int(size) for method in naive_methods for size in data[method].keys()))
-    y_logn_naive = [2.20 * n * np.log(n) for n in x_all_naive]
+    #y_logn_naive = [2.20 * n * np.log(n) for n in x_all_naive]
+    y_logn_naive = [n * n for n in x_all]
     plt.plot(x_all_naive, y_logn_naive, label=r'$2.20\ n\ \ln n$', linestyle="--", color="black")
 
     plt.title('Naive - mean')

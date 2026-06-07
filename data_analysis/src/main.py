@@ -8,16 +8,16 @@ from data_analysis.src.plots import stats_plots_mean, stats_plots_std, stats_plo
 
 if __name__ == "__main__":
     print()
-    #stats_analysis()
+    stats_analysis()
 
     stats_plots_mean()
-    # stats_plots_mean_combined()
+    stats_plots_mean_combined()
 
     # stats_plots_median()
     # stats_plots_median_combined()
-
-    stats_plots_std()
-    stats_plots_std_combined()
+    #
+    # stats_plots_std()
+    # stats_plots_std_combined()
 
     #plot_vertex_counts(file_name='standard_naive_sparse.json',vertex_number=400)
-    plot_vertices_counts(file_name='standard_naive_sparse.json',vertices_number=[300,400,500])
+    # plot_vertices_counts(file_name='standard_naive_sparse.json',vertices_number=[300,400,500])
