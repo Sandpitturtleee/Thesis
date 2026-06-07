@@ -46,6 +46,7 @@ from config import (
     STANDARD_HEAP_WORSTCASE_FILENAME,
     WORSTCASE,
 )
+from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
 from graphs_analysis.src.helpers import (
     create_frequency,
     load_graph_from_json,
@@ -53,6 +54,9 @@ from graphs_analysis.src.helpers import (
 )
 from graphs_analysis.src.standard.heap import MinHeap
 
+import networkx as nx
+from collections import defaultdict
+from typing import List, Dict, Any, Optional, Tuple
 
 def run_all_dijkstra_heap(times):
     """
@@ -150,12 +154,18 @@ def run_dijkstra_heap(times, graph_type):
     vertices = create_frequency()
     all_results = []
 
+    start_node = 0
     for i in vertices:
         size_results = []
         for run in range(times):
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
-            _, _, elapsed = dijkstra_heap(graph=loaded_graph, start_node=0)
+            lengths_heap, previous_heap, elapsed = dijkstra_heap(graph=loaded_graph, start_node=start_node)
+            is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_heap, previous_result=previous_heap)
             size_results.append(elapsed)
         all_results.append(size_results)
 
     return vertices, all_results
+
+
+
+

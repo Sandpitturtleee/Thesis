@@ -48,6 +48,7 @@ from config import (
     STANDARD_NAIVE_WORSTCASE_FILENAME,
     WORSTCASE,
 )
+from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
 from graphs_analysis.src.helpers import (
     create_frequency,
     load_graph_from_json,
@@ -157,11 +158,14 @@ def run_dijkstra_naive(times, graph_type):
     vertices = create_frequency()
     all_results = []
 
+    start_node = 0
     for i in vertices:
         size_results = []
         for run in range(times):
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
-            _, _, elapsed = dijkstra_naive(graph=loaded_graph, start_node=0)
+            lengths_naive, previous_naive, elapsed = dijkstra_naive(graph=loaded_graph, start_node=start_node)
+            is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_naive,
+                              previous_result=previous_naive)
             size_results.append(elapsed)
         all_results.append(size_results)
 
