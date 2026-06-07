@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 
 from config import DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
 from data_analysis.src.helpers import read_results_from_json, save_stats_by_file, read_results_by_vertex, \
@@ -341,4 +343,30 @@ def plot_vertices_counts(file_name: str, vertices_number: list):
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
+    plt.show()
+
+def draw_graph_big(graph):
+    g = nx.DiGraph()
+    for node, edges in enumerate(graph):
+        for dest, weight in edges:
+            g.add_edge(node, dest, weight=weight)
+    plt.figure(figsize=(12, 8))
+    pos = nx.kamada_kawai_layout(g)
+    nx.draw(g, pos, node_size=100, edge_color='gray', alpha=0.6, arrows=False)
+    plt.title('Graph', fontsize=20)
+    plt.axis('off')
+    plt.show()
+
+
+def draw_graph_small(graph):
+    g = nx.DiGraph()
+    for node, edges in enumerate(graph):
+        for dest, weight in edges:
+            g.add_edge(node, dest, weight=weight)
+    pos = nx.spring_layout(g, seed=42)
+    plt.figure(figsize=(12, 8))
+    nx.draw(g, pos, with_labels=True, node_color='lightblue', node_size=100, arrowsize=20)
+    edge_labels = nx.get_edge_attributes(g, 'weight')
+    nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels, font_color='red')
+    plt.title('Graph')
     plt.show()
