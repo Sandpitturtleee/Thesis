@@ -105,3 +105,23 @@ def read_results_by_vertices(file_name: str, vertices_number: list):
         else:
             print(f"Vertex {v} not found in file.")
     return results
+
+
+def extract_methods_and_labels(data):
+    method_labels = {}
+    heap_methods = []
+    naive_methods = []
+    for method in data.keys():
+        # Create a readable label automatically
+        label = (
+            method.replace('standard_', '')
+                  .replace('_stats.json', '')
+                  .replace('_', ' ')
+                  .title()
+        )
+        method_labels[method] = label
+        if 'heap' in method:
+            heap_methods.append(method)
+        elif 'naive' in method:
+            naive_methods.append(method)
+    return heap_methods, naive_methods, method_labels

@@ -6,76 +6,24 @@ import matplotlib.pyplot as plt
 
 from config import DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
 from data_analysis.src.helpers import read_results_from_json, save_stats_by_file, read_results_by_vertex, \
-    read_results_by_vertices
+    read_results_by_vertices, extract_methods_and_labels
 
-heap_methods = ['standard_heap_random_stats.json', 'standard_heap_sparse_stats.json',
-                'standard_heap_worstcase_stats.json']
-naive_methods = ['standard_naive_random_stats.json', 'standard_naive_sparse_stats.json',
-                 'standard_naive_worstcase_stats.json']
 
-method_labels = {
-    'standard_heap_random_stats.json': 'Heap Random',
-    'standard_heap_sparse_stats.json': 'Heap Sparse',
-    'standard_heap_worstcase_stats.json': 'Heap Worst Case',
-    'standard_naive_random_stats.json': 'Naive Random',
-    'standard_naive_sparse_stats.json': 'Naive Sparse',
-    'standard_naive_worstcase_stats.json': 'Naive Worst Case',
-}
-
-def stats_plots_mean1():
+def stats_plots_mean_heap():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
+
     plt.figure(figsize=(10, 6))
     for method in heap_methods:
         records = data[method]
         x = sorted(int(size) for size in records.keys())
         y = [records[str(size)]['mean'] for size in x]
         plt.plot(x, y, marker='o', label=method_labels[method])
-    plt.title('Heap - mean')
-    plt.xlabel('Vertices')
-    plt.ylabel('Mean')
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
 
-    # Plot for naive
-    plt.figure(figsize=(10, 6))
-    for method in naive_methods:
-        records = data[method]
-        x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['mean'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method])
-    plt.title('Naive - mean')
-    plt.xlabel('Vertices')
-    plt.ylabel('Mean')
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
-
-
-def stats_plots_mean():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
-
-    # Plot for heap methods
-    plt.figure(figsize=(10, 6))
-    for method in heap_methods:
-        records = data[method]
-        x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['mean'] for size in x]
-        print(y)
-        plt.plot(x, y, marker='o', label=method_labels[method])
-
-    # Add 2.20*n*lnn plot
+    # Add n*n*lnn curve
     x_all = sorted(set(int(size) for method in heap_methods for size in data[method].keys()))
-    #y_logn = [2.20 * n * np.log(n) for n in x_all]
     y_lognn = [2.55 * n * n * np.log2(n) for n in x_all]
-    y_logn = [2.20 * n * np.log(n) for n in x_all]
-    #y_logn = [n * n for n in x_all]
-    #plt.plot(x_all, y_logn, label=r'$2.20\ n\ \ln n$', linestyle="--", color="black")
-    plt.plot(x_all, y_lognn, label=r'n\ n\ \ln n$', linestyle="--", color="black")
-    print(x_all)
-    print(y_lognn)
+    plt.plot(x_all, y_lognn, label=r'$n^2 \log n$', linestyle="--", color="black")
 
     plt.title('Heap - mean')
     plt.xlabel('Vertices')
@@ -85,7 +33,11 @@ def stats_plots_mean():
     plt.tight_layout()
     plt.show()
 
-    # Plot for naive methods
+
+def stats_plots_mean_naive():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
+
     plt.figure(figsize=(10, 6))
     for method in naive_methods:
         records = data[method]
@@ -93,11 +45,10 @@ def stats_plots_mean():
         y = [records[str(size)]['mean'] for size in x]
         plt.plot(x, y, marker='o', label=method_labels[method])
 
-    # Add 2.20*n*lnn plot
+    # Add n^2 curve
     x_all_naive = sorted(set(int(size) for method in naive_methods for size in data[method].keys()))
-    #y_logn_naive = [2.20 * n * np.log(n) for n in x_all_naive]
-    y_logn_naive = [n * n for n in x_all]
-    plt.plot(x_all_naive, y_logn_naive, label=r'n*n', linestyle="--", color="black")
+    y_n2 = [n * n for n in x_all_naive]
+    plt.plot(x_all_naive, y_n2, label=r'$n^2$', linestyle="--", color="black")
 
     plt.title('Naive - mean')
     plt.xlabel('Vertices')
@@ -110,6 +61,7 @@ def stats_plots_mean():
 
 def stats_plots_mean_combined():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
     plt.figure(figsize=(12, 7))
 
     # Get color shades by sampling from the colormaps
@@ -140,8 +92,9 @@ def stats_plots_mean_combined():
     plt.tight_layout()
     plt.show()
 
-def stats_plots_median():
+def stats_plots_median_heap():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
     plt.figure(figsize=(10, 6))
 
     for method in heap_methods:
@@ -158,7 +111,11 @@ def stats_plots_median():
     plt.tight_layout()
     plt.show()
 
-    # Plot for naive
+
+def stats_plots_median_naive():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
+
     plt.figure(figsize=(10, 6))
     for method in naive_methods:
         records = data[method]
@@ -177,6 +134,7 @@ def stats_plots_median():
 
 def stats_plots_median_combined():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
     plt.figure(figsize=(12, 7))
 
     blues = cm.get_cmap("Blues")
@@ -206,8 +164,9 @@ def stats_plots_median_combined():
     plt.tight_layout()
     plt.show()
 
-def stats_plots_std():
+def stats_plots_std_heap():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
     plt.figure(figsize=(8, 5))
     for method in heap_methods:
         records = data[method]
@@ -222,7 +181,10 @@ def stats_plots_std():
     plt.tight_layout()
     plt.show()
 
-    # Plot for naive STD
+def stats_plots_std_naive():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
+
     plt.figure(figsize=(8, 5))
     for method in naive_methods:
         records = data[method]
@@ -240,6 +202,7 @@ def stats_plots_std():
 
 def stats_plots_std_combined():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    heap_methods, naive_methods, method_labels = extract_methods_and_labels(data)
     plt.figure(figsize=(10, 6))
 
     blues = cm.get_cmap("Blues")

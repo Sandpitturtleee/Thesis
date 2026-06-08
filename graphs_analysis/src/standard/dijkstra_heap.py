@@ -38,13 +38,11 @@ Types
 """
 
 from config import (
-    RANDOM,
     RESULTS_DIRECTORY,
     SPARSE,
-    STANDARD_HEAP_RANDOM_FILENAME,
     STANDARD_HEAP_SPARSE_FILENAME,
     STANDARD_HEAP_WORSTCASE_FILENAME,
-    WORSTCASE,
+    WORSTCASE, DENSE, STANDARD_HEAP_DENSE_FILENAME, HALF_EDGES, STANDARD_HEAP_HALF_EDGES_FILENAME,
 )
 from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
 from graphs_analysis.src.helpers import (
@@ -70,10 +68,24 @@ def run_all_dijkstra_heap(times):
     times : int
         Number of times to repeat each benchmark for averaging.
     """
-    vertices, count = run_dijkstra_heap(times=times, graph_type=RANDOM)
+    vertices, count = run_dijkstra_heap(times=times, graph_type=SPARSE)
     save_results_to_json(
         directory=RESULTS_DIRECTORY,
-        name=STANDARD_HEAP_RANDOM_FILENAME,
+        name=STANDARD_HEAP_SPARSE_FILENAME,
+        vertices=vertices,
+        count=count,
+    )
+    vertices, count = run_dijkstra_heap(times=times, graph_type=HALF_EDGES)
+    save_results_to_json(
+        directory=RESULTS_DIRECTORY,
+        name=STANDARD_HEAP_HALF_EDGES_FILENAME,
+        vertices=vertices,
+        count=count,
+    )
+    vertices, count = run_dijkstra_heap(times=times, graph_type=DENSE)
+    save_results_to_json(
+        directory=RESULTS_DIRECTORY,
+        name=STANDARD_HEAP_DENSE_FILENAME,
         vertices=vertices,
         count=count,
     )
@@ -84,13 +96,7 @@ def run_all_dijkstra_heap(times):
         vertices=vertices,
         count=count,
     )
-    vertices, count = run_dijkstra_heap(times=times, graph_type=SPARSE)
-    save_results_to_json(
-        directory=RESULTS_DIRECTORY,
-        name=STANDARD_HEAP_SPARSE_FILENAME,
-        vertices=vertices,
-        count=count,
-    )
+
 
 
 def dijkstra_log(graph, start_node):
