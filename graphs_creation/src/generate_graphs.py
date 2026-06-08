@@ -25,6 +25,9 @@ Types:
 import random
 from typing import List, Set, Tuple
 
+from numpy.ma.core import sqrt
+import math
+
 from config import RANDOM, SPARSE, WORSTCASE
 from graphs_creation.src.helpers import create_frequency, save_graph_to_json
 
@@ -124,6 +127,11 @@ def generate_graph_worstcase(num_vertices: int, min_weight: int = 1) -> GraphLis
         A list of adjacency lists, each containing (neighbor_index, weight) tuples.
     """
     max_weight = num_vertices
+    #max_weight = int(math.sqrt(num_vertices))
+    #max_weight = num_vertices * num_vertices * num_vertices
+    #max_weight = int(math.sqrt(math.sqrt(num_vertices)))
+    max_weight = num_vertices
+    max_weight = num_vertices * num_vertices
     graph = [[] for _ in range(num_vertices)]
     for i in range(num_vertices):
         neighbors = set(j for j in range(num_vertices) if j != i)
@@ -133,6 +141,31 @@ def generate_graph_worstcase(num_vertices: int, min_weight: int = 1) -> GraphLis
                 graph[i].append((neighbor, weight))
             if i not in [v for v, w in graph[neighbor]]:
                 graph[neighbor].append((i, weight))
+    return graph
+
+def generate_graph_worstcase_relaxation(num_vertices: int) -> list:
+    """
+    Generate a worst-case complete graph for Dijkstra's algorithm.
+
+    For every vertex i and j > i:
+       - Edge (i, j) has weight 1 if j == i + 1.
+       - Edge (i, j) has weight 2*(num_vertices - i) if j > i + 1.
+
+    Returns
+    -------
+    graph : list
+        Adjacency list where each list contains (neighbor_index, weight) tuples.
+    """
+    graph = [[] for _ in range(num_vertices)]
+    for i in range(num_vertices):
+        for j in range(i + 1, num_vertices):
+            if j == i + 1:
+                weight = 1
+            else:
+                weight = 2 * (num_vertices - i)
+            # Since the graph is undirected, add edge both ways
+            graph[i].append((j, weight))
+            graph[j].append((i, weight))
     return graph
 
 

@@ -11,7 +11,7 @@ if __name__ == "__main__":
     stats_analysis()
 
     stats_plots_mean()
-    stats_plots_mean_combined()
+    #stats_plots_mean_combined()
 
     # stats_plots_median()
     # stats_plots_median_combined()

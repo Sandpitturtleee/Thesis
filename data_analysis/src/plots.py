@@ -63,14 +63,19 @@ def stats_plots_mean():
         records = data[method]
         x = sorted(int(size) for size in records.keys())
         y = [records[str(size)]['mean'] for size in x]
+        print(y)
         plt.plot(x, y, marker='o', label=method_labels[method])
 
     # Add 2.20*n*lnn plot
     x_all = sorted(set(int(size) for method in heap_methods for size in data[method].keys()))
     #y_logn = [2.20 * n * np.log(n) for n in x_all]
-    #y_logn = [n * n * np.log(n) for n in x_all]
-    y_logn = [n * n for n in x_all]
-    plt.plot(x_all, y_logn, label=r'$2.20\ n\ \ln n$', linestyle="--", color="black")
+    y_lognn = [2.55 * n * n * np.log2(n) for n in x_all]
+    y_logn = [2.20 * n * np.log(n) for n in x_all]
+    #y_logn = [n * n for n in x_all]
+    #plt.plot(x_all, y_logn, label=r'$2.20\ n\ \ln n$', linestyle="--", color="black")
+    plt.plot(x_all, y_lognn, label=r'n\ n\ \ln n$', linestyle="--", color="black")
+    print(x_all)
+    print(y_lognn)
 
     plt.title('Heap - mean')
     plt.xlabel('Vertices')
@@ -92,7 +97,7 @@ def stats_plots_mean():
     x_all_naive = sorted(set(int(size) for method in naive_methods for size in data[method].keys()))
     #y_logn_naive = [2.20 * n * np.log(n) for n in x_all_naive]
     y_logn_naive = [n * n for n in x_all]
-    plt.plot(x_all_naive, y_logn_naive, label=r'$2.20\ n\ \ln n$', linestyle="--", color="black")
+    plt.plot(x_all_naive, y_logn_naive, label=r'n*n', linestyle="--", color="black")
 
     plt.title('Naive - mean')
     plt.xlabel('Vertices')

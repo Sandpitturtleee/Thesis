@@ -1,6 +1,6 @@
 # config.py
 
-MAX_GRAPH_SIZE = 1000
+MAX_GRAPH_SIZE = 100
 GRAPH_RUNS = 10
 SPARSE = "_sparse"
 RANDOM = "_random"

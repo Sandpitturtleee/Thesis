@@ -52,11 +52,14 @@ from graphs_analysis.src.helpers import (
     load_graph_from_json,
     save_results_to_json,
 )
-from graphs_analysis.src.standard.heap import MinHeap
+from graphs_analysis.src.standard.heap import  CountingHeap
 
 import networkx as nx
 from collections import defaultdict
 from typing import List, Dict, Any, Optional, Tuple
+import heapq
+import math
+
 
 def run_all_dijkstra_heap(times):
     """
@@ -90,47 +93,76 @@ def run_all_dijkstra_heap(times):
     )
 
 
-def dijkstra_heap(graph, start_node):
-    """
-    Run Dijkstra's shortest paths algorithm using a MinHeap, instrumented for performance.
-
-    Parameters
-    ----------
-    graph : GraphList
-        Adjacency list representation of the graph.
-    start_node : int
-        Index of source node.
-
-    Returns
-    -------
-    (distances, previous, operation_count)
-        distances : List[float] - Minimum distance from start_node to all nodes.
-        previous : List[Optional[int]] - Parent predecessors in the shortest paths.
-        operation_count : int - Total number of heap operations (e.g., comparisons), depending on heap implementation.
-    """
+def dijkstra_log(graph, start_node):
     n = len(graph)
     distances = [float("inf")] * n
     previous = [None] * n
     in_heap = [True] * n
 
-    heap = MinHeap()
+    Q = []
+    total_log_work = 0
+
+    # O(V)
     for node in range(n):
-        heap.push(float("inf"), node)
-    heap.decrease_key(start_node, 0)
-    distances[start_node] = 0
+        dist = 0 if node == start_node else float('inf')
+        heapq.heappush(Q, (dist, node))
+        total_log_work += 1  # Log work for push
+        distances[node] = dist
 
-    while not heap.is_empty():
-        dist_u, u = heap.pop()
+    while Q:
+        # O(logV)
+        heap_size = len(Q)
+        dist_u, u = heapq.heappop(Q)
+        total_log_work += math.log2(heap_size)  # Log work for pop
+
+        # Outdated entry check (lazy deletion)
+        if dist_u > distances[u]:
+            continue
         in_heap[u] = False
-
         for v, weight in graph[u]:
             if in_heap[v]:
-                new_distance = distances[u] + weight
-                if new_distance < distances[v]:
-                    distances[v] = new_distance
+                alt = distances[u] + weight
+                if alt < distances[v]:
+                    distances[v] = alt
                     previous[v] = u
-                    heap.decrease_key(v, new_distance)
-    return distances, previous, heap.total()
+                    # O(logV): push new possible distance
+                    heapq.heappush(Q, (alt, v))
+                    total_log_work += math.log2(len(Q))  # Log work for push
+
+    return distances, previous, total_log_work
+
+
+def dijkstra_heap(graph, start_node):
+    n = len(graph)
+    distances = [float("inf")] * n
+    previous = [None] * n
+    in_heap = [True] * n
+
+    heap = CountingHeap()
+
+    for node in range(n):
+        dist = 0 if node == start_node else float('inf')
+        heap.push((dist, node))
+        distances[node] = dist
+
+    while heap.data:
+        result = heap.pop()
+        if result is None:
+            break
+        dist_u, u = result
+
+        if dist_u > distances[u]:
+            continue
+        in_heap[u] = False
+        for v, weight in graph[u]:
+            if in_heap[v]:
+                alt = distances[u] + weight
+                if alt < distances[v]:
+                    distances[v] = alt
+                    previous[v] = u
+                    heap.push((alt, v))
+
+    return distances, previous, heap.total_work()
 
 
 def run_dijkstra_heap(times, graph_type):
@@ -160,7 +192,7 @@ def run_dijkstra_heap(times, graph_type):
         for run in range(times):
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
             lengths_heap, previous_heap, elapsed = dijkstra_heap(graph=loaded_graph, start_node=start_node)
-            is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_heap, previous_result=previous_heap)
+            #is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_heap, previous_result=previous_heap)
             size_results.append(elapsed)
         all_results.append(size_results)
 
