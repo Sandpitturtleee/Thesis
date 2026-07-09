@@ -1,7 +1,7 @@
 # config.py
 
 MAX_GRAPH_SIZE = 100
-GRAPH_RUNS = 100
+GRAPH_RUNS = 1
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"
@@ -23,3 +23,8 @@ STANDARD_NAIVE_SPARSE_FILENAME = "standard_naive_sparse"
 STANDARD_NAIVE_HALF_EDGES_FILENAME = "standard_naive_half_edges"
 STANDARD_NAIVE_DENSE_FILENAME = "standard_naive_dense"
 STANDARD_NAIVE_WORSTCASE_FILENAME = "standard_naive_worstcase"
+
+QUANTUM_SPARSE_FILENAME = "quantum_naive_sparse"
+QUANTUM_HALF_EDGES_FILENAME = "quantum_naive_half_edges"
+QUANTUM_DENSE_FILENAME = "quantum_naive_dense"
+QUANTUM_WORSTCASE_FILENAME = "quantum_naive_worstcase"
