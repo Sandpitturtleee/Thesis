@@ -148,7 +148,8 @@ def compare_dijkstra_results(
         True if for every shared key, the sets of path tuples have non-empty intersection and all path lengths match.
     """
     if length1 != length2:
-        print(f"Invalid path length: {length1} vs {length2}")
+        print(f"Invalid path length: {length1}")
+        print(f"Invalid path length: {length2}")
         return False
     common_keys = set(paths1.keys()) & set(paths2.keys())
     for key in common_keys:
@@ -203,10 +204,16 @@ def is_dijkstra_valid(
     # print("paths_lib:", paths_lib)
     # print("paths_result", paths_result)
 
-    # if not valid:
-    #     print("Mismatch found!")
-    #     print("lengths_lib:", lengths_lib)
-    #     print("lengths_result:", lengths_result)
-    #     print("paths_lib:", paths_lib)
-    #     print("paths_result", paths_result)
+    if not valid:
+        print(
+            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        )
+        print("Mismatch found!")
+        print("lengths_lib:", lengths_lib)
+        print("lengths_result:", lengths_result)
+        print("paths_lib:", paths_lib)
+        print("paths_result", paths_result)
+        print(
+            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        )
     return valid

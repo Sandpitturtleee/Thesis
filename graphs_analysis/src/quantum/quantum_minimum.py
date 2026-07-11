@@ -1,10 +1,59 @@
 import math
 import random
 
-import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.primitives import StatevectorSampler
 from qiskit_algorithms import AmplificationProblem, Grover
+
+
+def pad_to_power_of_two_non_inf_with_indices1(indices, distances):
+    import math
+
+    # Select only finite entries
+    finite_entries = [
+        (idx, dist) for idx, dist in zip(indices, distances) if dist != float("inf")
+    ]
+    if not finite_entries:
+        return [], []
+    finite_indices, finite_distances = zip(*finite_entries)
+    count = len(finite_indices)
+    next_pow2 = 2 ** math.ceil(math.log2(count))
+    # Cut to next power of two (no new inf, just crop)
+    finite_indices = list(finite_indices)[:next_pow2]
+    finite_distances = list(finite_distances)[:next_pow2]
+    return finite_indices, finite_distances
+
+
+def pad_to_power_of_two_non_inf_with_indices(indices, distances):
+    import math
+
+    # print(f"Original indices: {indices}")
+    # print(f"Original distances: {distances}")
+    # Select only finite values
+    finite = [
+        (idx, dist) for idx, dist in zip(indices, distances) if dist != float("inf")
+    ]
+    finite_indices, finite_distances = zip(*finite) if finite else ([], [])
+    # print(f"Finite indices: {finite_indices}")
+    # print(f"Finite distances: {finite_distances}")
+
+    count = len(finite_indices)
+    if count == 0:
+        print("No finite entries.")
+        return [], []
+
+    next_pow2 = 2 ** math.ceil(math.log2(count))
+    # print(f"Next power of two: {next_pow2}")
+
+    # Pad with inf as needed to reach the next_pow2 length
+    padded_indices = list(finite_indices) + [float("inf")] * (next_pow2 - count)
+    padded_distances = list(finite_distances) + [float("inf")] * (next_pow2 - count)
+
+    # print(f"Padded indices: {padded_indices}")
+    # print(f"Padded distances: {padded_distances}")
+    # print("----------------------------------------------------------------------------------")
+
+    return padded_indices, padded_distances
 
 
 def grover_oracle(n, targets):
@@ -29,7 +78,7 @@ def grover_oracle(n, targets):
         circ.h(n - 1)
 
         # Undo the X gates
-        for qubit, bit in enumerate(bitstring):
+        for qubit, bit in enumerate(reversed(bitstring)):
             if bit == "0":
                 circ.x(qubit)
 
@@ -46,10 +95,7 @@ def grover_search(size, marked_states, iterations):
 
     oracle = grover_oracle(n, marked_states)
 
-    target_bitstrings = {
-        format(i, f"0{n}b")
-        for i in marked_states
-    }
+    target_bitstrings = {format(i, f"0{n}b") for i in marked_states}
 
     problem = AmplificationProblem(
         oracle=oracle,
@@ -68,81 +114,46 @@ def grover_search(size, marked_states, iterations):
     return int(result.assignment, 2)
 
 
-def find_min(nums):
-    """
-    Dürr-Høyer minimum finding simulation.
+def find_min(active_distances):
+    N = len(active_distances)
 
-    This follows the paper:
-      1. Pick a random threshold index y.
-      2. Repeat until the running-time budget is exhausted.
-      3. Return y.
-    """
-
-    N = len(nums)
-
-    # Threshold index
     y = random.randrange(N)
 
-    # Paper's running-time budget
     time_limit = 22.5 * math.sqrt(N) + 1.4 * math.log2(N)
-
     total_time = 0.0
 
     while True:
-
-        # Mark every j with T[j] < T[y]
+        # Mark all indices with value less than current y's value
         marked_states = [
-            i for i in range(N)
-            if nums[i] < nums[y]
+            i for i in range(N) if active_distances[i] < active_distances[y]
         ]
-
-        # Current threshold is already minimum
         if not marked_states:
             break
 
         n = math.ceil(math.log2(N))
-
-        # Optimal Grover iterations (known M because this is a simulation)
         optimal_num_iterations = max(
             1,
             math.floor(
-                math.pi
-                / (
-                    4
-                    * math.asin(
-                        math.sqrt(
-                            len(marked_states)
-                            / (2 ** n)
-                        )
-                    )
-                )
+                math.pi / (4 * math.asin(math.sqrt(len(marked_states) / (2**n))))
             ),
         )
 
-        # Stage 2a costs log2(N)
         search_cost = math.log2(N) + optimal_num_iterations
-
-        # Interrupt if the running-time budget would be exceeded
         if total_time + search_cost > time_limit:
             break
 
         total_time += search_cost
 
-        y_prime = grover_search(
-            N,
-            marked_states,
-            optimal_num_iterations,
-        )
-
+        y_prime = grover_search(N, marked_states, optimal_num_iterations)
         if y_prime is None or y_prime < 0 or y_prime >= N:
             break
 
-        # print(nums)
-        # print(y_prime)
-        if nums[y_prime] < nums[y]:
+        if active_distances[y_prime] < active_distances[y]:
             y = y_prime
 
-    return y, nums[y], total_time, time_limit
+    min_idx = y
+    min_dist = active_distances[min_idx]
+    return min_idx, min_dist, total_time, time_limit
 
 
 if __name__ == "__main__":
@@ -154,6 +165,8 @@ if __name__ == "__main__":
     nums = list(range(N))
     random.shuffle(nums)
 
+    nums = [23, 10, 14]
+    N = len(nums)
     print("Array:")
     print(nums)
 

@@ -7,6 +7,8 @@ from qiskit.circuit.library import MCMTGate, ZGate, grover_operator
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 from qiskit.visualization import plot_distribution
 
+from graphs_analysis.src.quantum.dijkstra_quantum import dijkstra_quantum
+
 # Imports from Qiskit Runtime
 
 
@@ -49,30 +51,16 @@ def grover_oracle(marked_states):
 
 if __name__ == "__main__":
     # -------------------------Step 1-------------------------
-    marked_states = ["011", "100"]
-
-    oracle = grover_oracle(marked_states)
-    oracle.draw(output="mpl", style="iqp")
-    grover_op = grover_operator(oracle)
-    grover_op.decompose().draw(output="mpl", style="iqp")
-
-    optimal_num_iterations = math.floor(
-        math.pi
-        / (4 * math.asin(math.sqrt(len(marked_states) / 2**grover_op.num_qubits)))
-    )
-
-    qc = QuantumCircuit(grover_op.num_qubits)
-    qc.h(range(grover_op.num_qubits))
-    qc.compose(grover_op.power(optimal_num_iterations), inplace=True)
-    qc.measure_all()
-    qc.draw(output="mpl", style="iqp")
-    pm = generate_preset_pass_manager(optimization_level=3)
-    circuit_isa = pm.run(qc)
-    circuit_isa.draw(output="mpl", idle_wires=False, style="iqp")
-    from qiskit.primitives import StatevectorSampler
-
-    sampler = StatevectorSampler()
-    result = sampler.run([circuit_isa], shots=10_000).result()
-    dist = result[0].data.meas.get_counts()
-    print(dist)
-    plot_distribution(dist)
+    graph = [
+        [[3, 4], [5, 3]],
+        [[3, 3], [8, 5]],
+        [],
+        [[5, 9], [0, 4], [4, 3], [1, 3], [9, 4]],
+        [[3, 3], [5, 2]],
+        [[3, 9], [7, 8], [0, 3], [4, 2]],
+        [],
+        [[5, 8], [9, 8]],
+        [[1, 5]],
+        [[7, 8], [3, 4]],
+    ]
+    dijkstra_quantum(graph, start_node=0)
