@@ -199,11 +199,6 @@ def is_dijkstra_valid(
         length2=lengths_result,
     )
 
-    # print("lengths_lib:", lengths_lib)
-    # print("lengths_result:", lengths_result)
-    # print("paths_lib:", paths_lib)
-    # print("paths_result", paths_result)
-
     if not valid:
         print(
             "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

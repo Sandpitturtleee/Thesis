@@ -6,36 +6,12 @@ from qiskit.primitives import StatevectorSampler
 from qiskit_algorithms import AmplificationProblem, Grover
 
 
-def pad_to_power_of_two_non_inf_with_indices1(indices, distances):
-    import math
+def pad_to_power_of_two_with_indices(indices, distances):
 
-    # Select only finite entries
-    finite_entries = [
-        (idx, dist) for idx, dist in zip(indices, distances) if dist != float("inf")
-    ]
-    if not finite_entries:
-        return [], []
-    finite_indices, finite_distances = zip(*finite_entries)
-    count = len(finite_indices)
-    next_pow2 = 2 ** math.ceil(math.log2(count))
-    # Cut to next power of two (no new inf, just crop)
-    finite_indices = list(finite_indices)[:next_pow2]
-    finite_distances = list(finite_distances)[:next_pow2]
-    return finite_indices, finite_distances
-
-
-def pad_to_power_of_two_non_inf_with_indices(indices, distances):
-    import math
-
-    # print(f"Original indices: {indices}")
-    # print(f"Original distances: {distances}")
-    # Select only finite values
     finite = [
         (idx, dist) for idx, dist in zip(indices, distances) if dist != float("inf")
     ]
     finite_indices, finite_distances = zip(*finite) if finite else ([], [])
-    # print(f"Finite indices: {finite_indices}")
-    # print(f"Finite distances: {finite_distances}")
 
     count = len(finite_indices)
     if count == 0:
@@ -43,16 +19,9 @@ def pad_to_power_of_two_non_inf_with_indices(indices, distances):
         return [], []
 
     next_pow2 = 2 ** math.ceil(math.log2(count))
-    # print(f"Next power of two: {next_pow2}")
 
-    # Pad with inf as needed to reach the next_pow2 length
     padded_indices = list(finite_indices) + [float("inf")] * (next_pow2 - count)
     padded_distances = list(finite_distances) + [float("inf")] * (next_pow2 - count)
-
-    # print(f"Padded indices: {padded_indices}")
-    # print(f"Padded distances: {padded_distances}")
-    # print("----------------------------------------------------------------------------------")
-
     return padded_indices, padded_distances
 
 
@@ -86,8 +55,6 @@ def grover_oracle(n, targets):
 
 
 def grover_search(size, marked_states, iterations):
-    """Run Grover search using a fixed number of iterations."""
-
     if not marked_states:
         return None
 
@@ -111,8 +78,46 @@ def grover_search(size, marked_states, iterations):
 
     result = grover.amplify(problem)
 
-    return int(result.assignment, 2)
+    if result.assignment is None:
+        return None
 
+    candidate = int(result.assignment, 2)
+
+    if candidate in marked_states:
+        return candidate
+
+    return None
+
+
+def bbht_search(size, marked_states):
+    """
+    Boyer-Brassard-Høyer-Tapp exponential search.
+    Returns (candidate, cost).
+    """
+
+    if not marked_states:
+        return None, 0
+
+    lam = 6 / 5
+    m = 1
+    cost = 0
+
+    while True:
+
+        upper = max(1, int(m))
+        j = random.randrange(upper)
+
+        candidate = grover_search(size, marked_states, j)
+
+        cost += j
+
+        if candidate is not None:
+            return candidate, cost
+
+        if m >= math.sqrt(size):
+            m = math.sqrt(size)
+        else:
+            m *= lam
 
 def find_min(active_distances):
     N = len(active_distances)
@@ -123,37 +128,37 @@ def find_min(active_distances):
     total_time = 0.0
 
     while True:
-        # Mark all indices with value less than current y's value
+
         marked_states = [
-            i for i in range(N) if active_distances[i] < active_distances[y]
+            i for i in range(N)
+            if active_distances[i] < active_distances[y]
         ]
+
         if not marked_states:
             break
 
-        n = math.ceil(math.log2(N))
-        optimal_num_iterations = max(
-            1,
-            math.floor(
-                math.pi / (4 * math.asin(math.sqrt(len(marked_states) / (2**n))))
-            ),
-        )
+        mark_cost = math.log2(N)
 
-        search_cost = math.log2(N) + optimal_num_iterations
-        if total_time + search_cost > time_limit:
+        y_prime, search_cost = bbht_search(N, marked_states)
+
+        total_time = total_time + search_cost + mark_cost
+        if total_time > time_limit:
             break
 
         total_time += search_cost
 
-        y_prime = grover_search(N, marked_states, optimal_num_iterations)
-        if y_prime is None or y_prime < 0 or y_prime >= N:
+        if y_prime is None:
             break
 
         if active_distances[y_prime] < active_distances[y]:
             y = y_prime
 
-    min_idx = y
-    min_dist = active_distances[min_idx]
-    return min_idx, min_dist, total_time, time_limit
+    return (
+        y,
+        active_distances[y],
+        total_time,
+        time_limit,
+    )
 
 
 if __name__ == "__main__":

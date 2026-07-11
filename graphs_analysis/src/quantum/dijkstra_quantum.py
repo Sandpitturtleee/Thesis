@@ -39,12 +39,12 @@ Types
     For each problem size, an averaged operation count (or timing).
 """
 
-from config import SPARSE
+from config import SPARSE, RESULTS_DIRECTORY, HALF_EDGES, DENSE, WORSTCASE, QUANTUM_HALF_EDGES_FILENAME, \
+    QUANTUM_DENSE_FILENAME, QUANTUM_SPARSE_FILENAME, QUANTUM_WORSTCASE_FILENAME
 from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
-from graphs_analysis.src.helpers import create_frequency, load_graph_from_json
+from graphs_analysis.src.helpers import create_frequency, load_graph_from_json, save_results_to_json
 from graphs_analysis.src.quantum.quantum_minimum import (
-    find_min,
-    pad_to_power_of_two_non_inf_with_indices,
+    find_min, pad_to_power_of_two_with_indices,
 )
 
 
@@ -57,20 +57,20 @@ def run_all_dijkstra_quantum(times):
     times : int
         Number of times to repeat each benchmark for averaging.
     """
-    vertices, count = run_dijkstra_quantum(times=times, graph_type=SPARSE)
+    # vertices, count = run_dijkstra_quantum(times=times, graph_type=SPARSE)
     # save_results_to_json(
     #     directory=RESULTS_DIRECTORY,
     #     name=QUANTUM_SPARSE_FILENAME,
     #     vertices=vertices,
     #     count=count,
     # )
-    # vertices, count = run_dijkstra_quantum(times=times, graph_type=HALF_EDGES)
-    # save_results_to_json(
-    #     directory=RESULTS_DIRECTORY,
-    #     name=QUANTUM_HALF_EDGES_FILENAME,
-    #     vertices=vertices,
-    #     count=count,
-    # )
+    vertices, count = run_dijkstra_quantum(times=times, graph_type=HALF_EDGES)
+    save_results_to_json(
+        directory=RESULTS_DIRECTORY,
+        name=QUANTUM_HALF_EDGES_FILENAME,
+        vertices=vertices,
+        count=count,
+    )
     # vertices, count = run_dijkstra_quantum(times=times, graph_type=DENSE)
     # save_results_to_json(
     #     directory=RESULTS_DIRECTORY,
@@ -87,74 +87,6 @@ def run_all_dijkstra_quantum(times):
     # )
 
 
-def dijkstra_quantum1(graph, start_node):
-    """
-    Run Dijkstra's shortest paths algorithm using a quantum minimum finder for selection.
-
-    Parameters
-    ----------
-    graph : List[List[Tuple[int, float]]]
-        Adjacency list representation of the graph.
-    start_node : int
-        Index of source node.
-
-    Returns
-    -------
-    (distances, previous, operation_count)
-        distances : List[float] - Minimum distance from start_node to all nodes.
-        previous : List[Optional[int]] - Parent predecessors in the shortest paths.
-        operation_count : float - "Quantum" operation cost (approximate, from algorithm).
-    """
-    n = len(graph)
-    distances = [float("inf")] * n
-    previous = [None] * n
-    in_heap = [True] * n
-    operation_count = 0.0  # Now quantum cost
-
-    distances[start_node] = 0
-
-    for _ in range(n):
-        # Build active nodes/distances arrays
-        active_indices = [i for i in range(n) if in_heap[i]]
-        if not active_indices:
-            break
-
-        active_distances = [distances[i] for i in active_indices]
-
-        # --------- NEW LOGIC HERE -----------
-        # Skip if all are inf (nothing reachable)
-        if all(x == float("inf") for x in active_distances):
-            break
-        # -------------------------------------
-
-        # Quantum min finding among unvisited distances
-        # active_distances = pad_to_power_of_two_non_inf(active_distances)
-        min_idx_active, min_dist, cost, limit = find_min(active_distances)
-        N = len(active_distances)
-        true_idx = min(range(N), key=lambda i: active_distances[i])
-        if min_idx_active != true_idx:
-            print("Mismatch", active_distances)
-            print("Quantum: ", active_distances[min_idx_active])
-            print("Correct: ", active_distances[true_idx])
-            print()
-        operation_count += cost  # Approximate runtime cost
-
-        u = active_indices[min_idx_active]
-        if distances[u] == float("inf"):
-            break  # Remaining nodes are unreachable
-
-        in_heap[u] = False
-
-        for v, weight in graph[u]:
-            if in_heap[v]:
-                new_distance = distances[u] + weight
-                if new_distance < distances[v]:
-                    distances[v] = new_distance
-                    previous[v] = u
-
-    return distances, previous, operation_count
-
-
 def dijkstra_quantum(graph, start_node):
     """
     Run Dijkstra's shortest paths algorithm using a quantum minimum finder for selection.
@@ -168,17 +100,18 @@ def dijkstra_quantum(graph, start_node):
 
     Returns
     -------
-    (distances, previous, operation_count)
+    (distances, previous, operation_count, mismatch_count)
         distances : List[float] - Minimum distance from start_node to all nodes.
         previous : List[Optional[int]] - Parent predecessors in the shortest paths.
         operation_count : float - "Quantum" operation cost (approximate, from algorithm).
+        mismatch_count : float - "Quantum" search failures.
     """
-    print(graph)
     n = len(graph)
     distances = [float("inf")] * n
     previous = [None] * n
     in_heap = [True] * n
-    operation_count = 0.0  # Now quantum cost
+    operation_count = 0.0
+    mismatch_count = 0
 
     distances[start_node] = 0
 
@@ -194,24 +127,16 @@ def dijkstra_quantum(graph, start_node):
         if all(x == float("inf") for x in active_distances):
             break
 
-        # Quantum min finding among unvisited distances -- NEW LOGIC
-        padded_indices, padded_distances = pad_to_power_of_two_non_inf_with_indices(
+        padded_indices, padded_distances = pad_to_power_of_two_with_indices(
             active_indices, active_distances
         )
         if not padded_indices:
             break
 
         min_idx_active, min_dist, cost, limit = find_min(padded_distances)
-        N = len(padded_distances)
-        true_idx = min(range(N), key=lambda i: padded_distances[i])
+        true_idx = min(range(len(padded_distances)), key=lambda i: padded_distances[i])
         if padded_distances[min_idx_active] != padded_distances[true_idx]:
-            print("Mismatch", padded_distances)
-            print("Quantum value: ", padded_distances[min_idx_active])
-            print("Correct value : ", padded_distances[true_idx])
-            print("Quantum index: ", min_idx_active)
-            print("Correct value: ", true_idx)
-            print("Cost", cost)
-            print("Limit", limit)
+            mismatch_count += 1
         operation_count += cost  # Approximate runtime cost
 
         u = padded_indices[min_idx_active]
@@ -227,7 +152,7 @@ def dijkstra_quantum(graph, start_node):
                     distances[v] = new_distance
                     previous[v] = u
 
-    return distances, previous, operation_count
+    return distances, previous, operation_count, mismatch_count
 
 
 def run_dijkstra_quantum(times, graph_type):
@@ -257,7 +182,7 @@ def run_dijkstra_quantum(times, graph_type):
         print("Graph size: ", i)
         for run in range(times):
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
-            lengths_naive, previous_naive, elapsed = dijkstra_quantum(
+            lengths_naive, previous_naive, elapsed, mismatch_count = dijkstra_quantum(
                 graph=loaded_graph, start_node=start_node
             )
             is_dijkstra_valid(
@@ -267,7 +192,9 @@ def run_dijkstra_quantum(times, graph_type):
                 previous_result=previous_naive,
             )
             size_results.append(elapsed)
+            print(size_results)
         all_results.append(size_results)
+        print(all_results)
         print("--------------------------------------------------------------------")
 
     return vertices, all_results
