@@ -21,12 +21,15 @@ Typings:
 - The "graph" argument is an adjacency list: List[List[Tuple[int, int]]] (edges as [to_idx, weight]).
 """
 
-import networkx as nx
 from collections import defaultdict
-from typing import List, Dict, Any, Optional, Tuple
+from typing import Any, Dict, List, Tuple
+
+import networkx as nx
 
 
-def reconstruct_paths_dict(previous: List[Any], start_node: int) -> Dict[int, List[List[int]]]:
+def reconstruct_paths_dict(
+    previous: List[Any], start_node: int
+) -> Dict[int, List[List[int]]]:
     """
     Reconstruct all shortest paths from 'start_node' to every other node using a 'previous' predecessor array.
 
@@ -73,7 +76,9 @@ def reconstruct_paths_dict(previous: List[Any], start_node: int) -> Dict[int, Li
     return dict(all_paths)
 
 
-def dijkstra_lib(graph: List[List[List[int]]], start_node: int) -> Tuple[List[float], Dict[int, List[List[int]]]]:
+def dijkstra_lib(
+    graph: List[List[List[int]]], start_node: int
+) -> Tuple[List[float], Dict[int, List[List[int]]]]:
     """
     Compute the shortest path lengths and enumerate all shortest paths from 'start_node' using networkx's Dijkstra.
 
@@ -99,9 +104,9 @@ def dijkstra_lib(graph: List[List[List[int]]], start_node: int) -> Tuple[List[fl
         for v, weight in neighbors:
             g.add_edge(u, v, weight=weight)
 
-    lengths = [float('inf')] * n
+    lengths = [float("inf")] * n
     lengths[start_node] = 0
-    sp_length = nx.single_source_dijkstra_path_length(g, start_node, weight='weight')
+    sp_length = nx.single_source_dijkstra_path_length(g, start_node, weight="weight")
     for node, length in sp_length.items():
         lengths[node] = length
 
@@ -110,7 +115,9 @@ def dijkstra_lib(graph: List[List[List[int]]], start_node: int) -> Tuple[List[fl
         if target == start_node:
             continue
         try:
-            all_paths = list(nx.all_shortest_paths(g, start_node, target, weight="weight"))
+            all_paths = list(
+                nx.all_shortest_paths(g, start_node, target, weight="weight")
+            )
             if all_paths:
                 paths[target] = all_paths
         except nx.NetworkXNoPath:
@@ -118,7 +125,12 @@ def dijkstra_lib(graph: List[List[List[int]]], start_node: int) -> Tuple[List[fl
     return lengths, paths
 
 
-def compare_dijkstra_results(paths1: Dict[int, List[List[int]]], paths2: Dict[int, List[List[int]]], length1, length2) -> bool:
+def compare_dijkstra_results(
+    paths1: Dict[int, List[List[int]]],
+    paths2: Dict[int, List[List[int]]],
+    length1,
+    length2,
+) -> bool:
     """
     Compare two dictionaries of paths: validates that for each (common) key,
     there is at least one matching path, and that path lengths match.
@@ -150,11 +162,12 @@ def compare_dijkstra_results(paths1: Dict[int, List[List[int]]], paths2: Dict[in
     return True
 
 
-def is_dijkstra_valid(graph: List[List[List[int]]],
-        start_node: int,
-        lengths_result: List[float],
-        previous_result: List[Any],
-    ) -> bool:
+def is_dijkstra_valid(
+    graph: List[List[List[int]]],
+    start_node: int,
+    lengths_result: List[float],
+    previous_result: List[Any],
+) -> bool:
     """
     Compare your Dijkstra result to networkx for both path lengths and all shortest paths.
 
@@ -175,8 +188,15 @@ def is_dijkstra_valid(graph: List[List[List[int]]],
         True if both path lengths and all shortest paths match those from networkx.
     """
     lengths_lib, paths_lib = dijkstra_lib(graph=graph, start_node=start_node)
-    paths_result = reconstruct_paths_dict(previous=previous_result, start_node=start_node)
-    valid = compare_dijkstra_results(paths1=paths_lib, paths2=paths_result,length1=lengths_lib, length2=lengths_result)
+    paths_result = reconstruct_paths_dict(
+        previous=previous_result, start_node=start_node
+    )
+    valid = compare_dijkstra_results(
+        paths1=paths_lib,
+        paths2=paths_result,
+        length1=lengths_lib,
+        length2=lengths_result,
+    )
 
     # print("lengths_lib:", lengths_lib)
     # print("lengths_result:", lengths_result)

@@ -40,13 +40,16 @@ Types
 """
 
 from config import (
+    DENSE,
+    HALF_EDGES,
     RESULTS_DIRECTORY,
     SPARSE,
+    STANDARD_NAIVE_DENSE_FILENAME,
+    STANDARD_NAIVE_HALF_EDGES_FILENAME,
     STANDARD_NAIVE_SPARSE_FILENAME,
     STANDARD_NAIVE_WORSTCASE_FILENAME,
-    WORSTCASE, HALF_EDGES, STANDARD_NAIVE_HALF_EDGES_FILENAME, DENSE, STANDARD_NAIVE_DENSE_FILENAME,
+    WORSTCASE,
 )
-from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
 from graphs_analysis.src.helpers import (
     create_frequency,
     load_graph_from_json,
@@ -91,7 +94,6 @@ def run_all_dijkstra_naive(times):
         vertices=vertices,
         count=count,
     )
-
 
 
 def dijkstra_naive(graph, start_node):
@@ -169,8 +171,10 @@ def run_dijkstra_naive(times, graph_type):
         size_results = []
         for run in range(times):
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
-            lengths_naive, previous_naive, elapsed = dijkstra_naive(graph=loaded_graph, start_node=start_node)
-            #is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_naive, previous_result=previous_naive)
+            lengths_naive, previous_naive, elapsed = dijkstra_naive(
+                graph=loaded_graph, start_node=start_node
+            )
+            # is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_naive, previous_result=previous_naive)
             size_results.append(elapsed)
         all_results.append(size_results)
 

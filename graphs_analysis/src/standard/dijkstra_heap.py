@@ -37,26 +37,26 @@ Types
     Per-graph size list of averaged operation counts or timings.
 """
 
+import heapq
+import math
+
 from config import (
+    DENSE,
+    HALF_EDGES,
     RESULTS_DIRECTORY,
     SPARSE,
+    STANDARD_HEAP_DENSE_FILENAME,
+    STANDARD_HEAP_HALF_EDGES_FILENAME,
     STANDARD_HEAP_SPARSE_FILENAME,
     STANDARD_HEAP_WORSTCASE_FILENAME,
-    WORSTCASE, DENSE, STANDARD_HEAP_DENSE_FILENAME, HALF_EDGES, STANDARD_HEAP_HALF_EDGES_FILENAME,
+    WORSTCASE,
 )
-from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
 from graphs_analysis.src.helpers import (
     create_frequency,
     load_graph_from_json,
     save_results_to_json,
 )
-from graphs_analysis.src.standard.heap import  CountingHeap
-
-import networkx as nx
-from collections import defaultdict
-from typing import List, Dict, Any, Optional, Tuple
-import heapq
-import math
+from graphs_analysis.src.standard.heap import CountingHeap
 
 
 def run_all_dijkstra_heap(times):
@@ -98,7 +98,6 @@ def run_all_dijkstra_heap(times):
     )
 
 
-
 def dijkstra_log(graph, start_node):
     n = len(graph)
     distances = [float("inf")] * n
@@ -110,7 +109,7 @@ def dijkstra_log(graph, start_node):
 
     # O(V)
     for node in range(n):
-        dist = 0 if node == start_node else float('inf')
+        dist = 0 if node == start_node else float("inf")
         heapq.heappush(Q, (dist, node))
         total_log_work += 1  # Log work for push
         distances[node] = dist
@@ -147,7 +146,7 @@ def dijkstra_heap(graph, start_node):
     heap = CountingHeap()
 
     for node in range(n):
-        dist = 0 if node == start_node else float('inf')
+        dist = 0 if node == start_node else float("inf")
         heap.push((dist, node))
         distances[node] = dist
 
@@ -197,13 +196,11 @@ def run_dijkstra_heap(times, graph_type):
         size_results = []
         for run in range(times):
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
-            lengths_heap, previous_heap, elapsed = dijkstra_heap(graph=loaded_graph, start_node=start_node)
-            #is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_heap, previous_result=previous_heap)
+            lengths_heap, previous_heap, elapsed = dijkstra_heap(
+                graph=loaded_graph, start_node=start_node
+            )
+            # is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_heap, previous_result=previous_heap)
             size_results.append(elapsed)
         all_results.append(size_results)
 
     return vertices, all_results
-
-
-
-

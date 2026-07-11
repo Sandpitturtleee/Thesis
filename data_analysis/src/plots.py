@@ -1,12 +1,15 @@
-import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np
-import networkx as nx
 import matplotlib.pyplot as plt
+import networkx as nx
+import numpy as np
 
-from config import DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
-from data_analysis.src.helpers import read_results_from_json, save_stats_by_file, read_results_by_vertex, \
-    read_results_by_vertices, extract_methods_and_labels
+from config import DIJKSTRA_STATS_DIRECTORY
+from data_analysis.src.helpers import (
+    extract_methods_and_labels,
+    read_results_by_vertex,
+    read_results_by_vertices,
+    read_results_from_json,
+)
 
 
 def stats_plots_mean_heap():
@@ -17,17 +20,19 @@ def stats_plots_mean_heap():
     for method in heap_methods:
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['mean'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method])
+        y = [records[str(size)]["mean"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method])
 
     # Add n*n*lnn curve
-    x_all = sorted(set(int(size) for method in heap_methods for size in data[method].keys()))
+    x_all = sorted(
+        set(int(size) for method in heap_methods for size in data[method].keys())
+    )
     y_lognn = [2.55 * n * n * np.log2(n) for n in x_all]
-    plt.plot(x_all, y_lognn, label=r'$n^2 \log n$', linestyle="--", color="black")
+    plt.plot(x_all, y_lognn, label=r"$n^2 \log n$", linestyle="--", color="black")
 
-    plt.title('Heap - mean')
-    plt.xlabel('Vertices')
-    plt.ylabel('Mean')
+    plt.title("Heap - mean")
+    plt.xlabel("Vertices")
+    plt.ylabel("Mean")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
@@ -42,17 +47,19 @@ def stats_plots_mean_naive():
     for method in naive_methods:
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['mean'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method])
+        y = [records[str(size)]["mean"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method])
 
     # Add n^2 curve
-    x_all_naive = sorted(set(int(size) for method in naive_methods for size in data[method].keys()))
+    x_all_naive = sorted(
+        set(int(size) for method in naive_methods for size in data[method].keys())
+    )
     y_n2 = [n * n for n in x_all_naive]
-    plt.plot(x_all_naive, y_n2, label=r'$n^2$', linestyle="--", color="black")
+    plt.plot(x_all_naive, y_n2, label=r"$n^2$", linestyle="--", color="black")
 
-    plt.title('Naive - mean')
-    plt.xlabel('Vertices')
-    plt.ylabel('Mean')
+    plt.title("Naive - mean")
+    plt.xlabel("Vertices")
+    plt.ylabel("Mean")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
@@ -67,30 +74,37 @@ def stats_plots_mean_combined():
     # Get color shades by sampling from the colormaps
     blues = cm.get_cmap("Blues")
     reds = cm.get_cmap("Reds")
-    blue_shades = [blues(0.5 + 0.5 * i / max(len(heap_methods)-1, 1)) for i in range(len(heap_methods))]
-    red_shades = [reds(0.5 + 0.5 * i / max(len(naive_methods)-1, 1)) for i in range(len(naive_methods))]
+    blue_shades = [
+        blues(0.5 + 0.5 * i / max(len(heap_methods) - 1, 1))
+        for i in range(len(heap_methods))
+    ]
+    red_shades = [
+        reds(0.5 + 0.5 * i / max(len(naive_methods) - 1, 1))
+        for i in range(len(naive_methods))
+    ]
 
     # Plot Heap methods (shades of blue)
     for i, method in enumerate(heap_methods):
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['mean'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method], color=blue_shades[i])
+        y = [records[str(size)]["mean"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method], color=blue_shades[i])
 
     # Plot Naive methods (shades of red)
     for i, method in enumerate(naive_methods):
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['mean'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method], color=red_shades[i])
+        y = [records[str(size)]["mean"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method], color=red_shades[i])
 
-    plt.title('Heap vs Naive - mean')
-    plt.xlabel('Vertices')
-    plt.ylabel('Mean')
+    plt.title("Heap vs Naive - mean")
+    plt.xlabel("Vertices")
+    plt.ylabel("Mean")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 
 def stats_plots_median_heap():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
@@ -100,12 +114,12 @@ def stats_plots_median_heap():
     for method in heap_methods:
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['median'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method])
+        y = [records[str(size)]["median"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method])
 
-    plt.title('Heap - median')
-    plt.xlabel('Vertices')
-    plt.ylabel('Median')
+    plt.title("Heap - median")
+    plt.xlabel("Vertices")
+    plt.ylabel("Median")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
@@ -120,12 +134,12 @@ def stats_plots_median_naive():
     for method in naive_methods:
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['median'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method])
+        y = [records[str(size)]["median"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method])
 
-    plt.title('Naive - median')
-    plt.xlabel('Vertices')
-    plt.ylabel('Median')
+    plt.title("Naive - median")
+    plt.xlabel("Vertices")
+    plt.ylabel("Median")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
@@ -139,30 +153,37 @@ def stats_plots_median_combined():
 
     blues = cm.get_cmap("Blues")
     reds = cm.get_cmap("Reds")
-    blue_shades = [blues(0.5 + 0.5 * i / max(len(heap_methods)-1, 1)) for i in range(len(heap_methods))]
-    red_shades = [reds(0.5 + 0.5 * i / max(len(naive_methods)-1, 1)) for i in range(len(naive_methods))]
+    blue_shades = [
+        blues(0.5 + 0.5 * i / max(len(heap_methods) - 1, 1))
+        for i in range(len(heap_methods))
+    ]
+    red_shades = [
+        reds(0.5 + 0.5 * i / max(len(naive_methods) - 1, 1))
+        for i in range(len(naive_methods))
+    ]
 
     # Plot Heap methods (shades of blue)
     for i, method in enumerate(heap_methods):
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['median'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method], color=blue_shades[i])
+        y = [records[str(size)]["median"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method], color=blue_shades[i])
 
     # Plot Naive methods (shades of red)
     for i, method in enumerate(naive_methods):
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['median'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method], color=red_shades[i])
+        y = [records[str(size)]["median"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method], color=red_shades[i])
 
-    plt.title('Heap vs Naive - median')
-    plt.xlabel('Vertices')
-    plt.ylabel('Median')
+    plt.title("Heap vs Naive - median")
+    plt.xlabel("Vertices")
+    plt.ylabel("Median")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 
 def stats_plots_std_heap():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
@@ -171,15 +192,16 @@ def stats_plots_std_heap():
     for method in heap_methods:
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['std'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method])
-    plt.title('Heap - std')
-    plt.xlabel('Vertices')
-    plt.ylabel('Std')
+        y = [records[str(size)]["std"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method])
+    plt.title("Heap - std")
+    plt.xlabel("Vertices")
+    plt.ylabel("Std")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 
 def stats_plots_std_naive():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
@@ -189,11 +211,11 @@ def stats_plots_std_naive():
     for method in naive_methods:
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['std'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method])
-    plt.title('Naive - std')
-    plt.xlabel('Vertices')
-    plt.ylabel('Std')
+        y = [records[str(size)]["std"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method])
+    plt.title("Naive - std")
+    plt.xlabel("Vertices")
+    plt.ylabel("Std")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
@@ -207,30 +229,37 @@ def stats_plots_std_combined():
 
     blues = cm.get_cmap("Blues")
     reds = cm.get_cmap("Reds")
-    blue_shades = [blues(0.5 + 0.5 * i / max(len(heap_methods)-1, 1)) for i in range(len(heap_methods))]
-    red_shades = [reds(0.5 + 0.5 * i / max(len(naive_methods)-1, 1)) for i in range(len(naive_methods))]
+    blue_shades = [
+        blues(0.5 + 0.5 * i / max(len(heap_methods) - 1, 1))
+        for i in range(len(heap_methods))
+    ]
+    red_shades = [
+        reds(0.5 + 0.5 * i / max(len(naive_methods) - 1, 1))
+        for i in range(len(naive_methods))
+    ]
 
     # Plot Heap methods (different blue shades)
     for i, method in enumerate(heap_methods):
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['std'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method], color=blue_shades[i])
+        y = [records[str(size)]["std"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method], color=blue_shades[i])
 
     # Plot Naive methods (different red shades)
     for i, method in enumerate(naive_methods):
         records = data[method]
         x = sorted(int(size) for size in records.keys())
-        y = [records[str(size)]['std'] for size in x]
-        plt.plot(x, y, marker='o', label=method_labels[method], color=red_shades[i])
+        y = [records[str(size)]["std"] for size in x]
+        plt.plot(x, y, marker="o", label=method_labels[method], color=red_shades[i])
 
-    plt.title('Heap vs Naive - std')
-    plt.xlabel('Vertices')
-    plt.ylabel('Std')
+    plt.title("Heap vs Naive - std")
+    plt.xlabel("Vertices")
+    plt.ylabel("Std")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 
 def plot_dijkstra_counts(results_dict):
     """
@@ -265,6 +294,7 @@ def plot_dijkstra_counts(results_dict):
     plt.tight_layout()
     plt.show()
 
+
 def plot_vertex_counts(file_name: str, vertex_number: int):
     """
     Plots the count values for a specific number of vertices.
@@ -279,17 +309,18 @@ def plot_vertex_counts(file_name: str, vertex_number: int):
         print("No data available to plot.")
         return
 
-    counts = data['count']
+    counts = data["count"]
     trials = list(range(1, len(counts) + 1))
 
     plt.figure(figsize=(8, 5))
-    plt.plot(trials, counts, marker='o', linestyle='-')
+    plt.plot(trials, counts, marker="o", linestyle="-")
     plt.title(f"Results for {data['vertices']} Vertices")
     plt.xlabel("Trial")
     plt.ylabel("Count")
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 
 def plot_vertices_counts(file_name: str, vertices_number: list):
     """
@@ -303,7 +334,7 @@ def plot_vertices_counts(file_name: str, vertices_number: list):
     plt.figure(figsize=(10, 6))
     for v, counts in data.items():
         trials = list(range(1, len(counts) + 1))
-        plt.plot(trials, counts, marker='o', linestyle='-', label=f"{v} vertices")
+        plt.plot(trials, counts, marker="o", linestyle="-", label=f"{v} vertices")
 
     plt.title("Results for Multiple Vertex Counts")
     plt.xlabel("Trial")
@@ -313,6 +344,7 @@ def plot_vertices_counts(file_name: str, vertices_number: list):
     plt.tight_layout()
     plt.show()
 
+
 def draw_graph_big(graph):
     g = nx.DiGraph()
     g.add_nodes_from(range(len(graph)))
@@ -321,10 +353,11 @@ def draw_graph_big(graph):
             g.add_edge(node, dest, weight=weight)
     plt.figure(figsize=(12, 8))
     pos = nx.kamada_kawai_layout(g)
-    nx.draw(g, pos, node_size=100, edge_color='gray', alpha=0.6, arrows=False)
-    plt.title('Graph', fontsize=20)
-    plt.axis('off')
+    nx.draw(g, pos, node_size=100, edge_color="gray", alpha=0.6, arrows=False)
+    plt.title("Graph", fontsize=20)
+    plt.axis("off")
     plt.show()
+
 
 def draw_graph_small(graph):
     g = nx.DiGraph()
@@ -334,8 +367,10 @@ def draw_graph_small(graph):
             g.add_edge(node, dest, weight=weight)
     pos = nx.spring_layout(g, seed=42)
     plt.figure(figsize=(12, 8))
-    nx.draw(g, pos, with_labels=True, node_color='lightblue', node_size=100, arrowsize=20)
-    edge_labels = nx.get_edge_attributes(g, 'weight')
-    nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels, font_color='red')
-    plt.title('Graph')
+    nx.draw(
+        g, pos, with_labels=True, node_color="lightblue", node_size=100, arrowsize=20
+    )
+    edge_labels = nx.get_edge_attributes(g, "weight")
+    nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels, font_color="red")
+    plt.title("Graph")
     plt.show()

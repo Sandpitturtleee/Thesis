@@ -12,13 +12,15 @@ Functions
 
 import pandas as pd
 
-from config import DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
+from config import DIJKSTRA_RESULTS_DIRECTORY
 from data_analysis.src.helpers import read_results_from_json, save_stats_by_file
+
 
 def stats_analysis():
     dijkstra_results = read_results_from_json(directory=DIJKSTRA_RESULTS_DIRECTORY)
     stats_by_file = statistics_by_file(dijkstra_results)
     save_stats_by_file(stats_by_file)
+
 
 def per_count_row_statistics(counts, vertices=None):
     """
@@ -27,14 +29,17 @@ def per_count_row_statistics(counts, vertices=None):
     """
     df = pd.DataFrame(counts)
     if vertices is not None:
-        df.index = vertices    # Set index for better labeling
-    df_stats = pd.DataFrame({
-        "mean": df.mean(axis=1),
-        "std": df.std(axis=1),
-        "median": df.median(axis=1),
-        "min": df.min(axis=1),
-        "max": df.max(axis=1),
-    }, index=df.index)
+        df.index = vertices  # Set index for better labeling
+    df_stats = pd.DataFrame(
+        {
+            "mean": df.mean(axis=1),
+            "std": df.std(axis=1),
+            "median": df.median(axis=1),
+            "min": df.min(axis=1),
+            "max": df.max(axis=1),
+        },
+        index=df.index,
+    )
     return df_stats
 
 

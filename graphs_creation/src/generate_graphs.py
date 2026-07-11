@@ -28,7 +28,8 @@ Types:
 
 import random
 from typing import List, Set, Tuple
-from config import SPARSE, WORSTCASE, HALF_EDGES, DENSE
+
+from config import DENSE, HALF_EDGES, SPARSE, WORSTCASE
 from graphs_creation.src.helpers import create_frequency, save_graph_to_json
 
 GraphList = List[List[Tuple[int, int]]]
@@ -60,7 +61,9 @@ def generate_graphs(times: int = 1) -> None:
             max_weight = n * n  # You may adjust this as needed per experiment
 
             sparse_graph = generate_graph_sparse(num_vertices=n, max_weight=max_weight)
-            half_edges_graph = generate_graph_half_edges(num_vertices=n, max_weight=max_weight)
+            half_edges_graph = generate_graph_half_edges(
+                num_vertices=n, max_weight=max_weight
+            )
             dense_graph = generate_graph_dense(num_vertices=n, max_weight=max_weight)
             worst_case_graph = generate_graph_worstcase(num_vertices=n)
 
@@ -70,7 +73,9 @@ def generate_graphs(times: int = 1) -> None:
             save_graph_to_json(worst_case_graph, name=f"{n}{WORSTCASE}_{run + 1}")
 
 
-def generate_graph_sparse(num_vertices: int, max_weight: int, min_weight: int = 1) -> GraphList:
+def generate_graph_sparse(
+    num_vertices: int, max_weight: int, min_weight: int = 1
+) -> GraphList:
     """
     Generate an undirected sparse random weighted graph as an adjacency list.
 
@@ -114,7 +119,9 @@ def generate_graph_sparse(num_vertices: int, max_weight: int, min_weight: int = 
     return graph
 
 
-def generate_graph_half_edges(num_vertices: int, max_weight: int, min_weight: int = 1) -> GraphList:
+def generate_graph_half_edges(
+    num_vertices: int, max_weight: int, min_weight: int = 1
+) -> GraphList:
     """
     Generate an undirected random weighted graph with half of the possible edges.
 
@@ -156,7 +163,9 @@ def generate_graph_half_edges(num_vertices: int, max_weight: int, min_weight: in
     return graph
 
 
-def generate_graph_dense(num_vertices: int, max_weight: int, min_weight: int = 1) -> GraphList:
+def generate_graph_dense(
+    num_vertices: int, max_weight: int, min_weight: int = 1
+) -> GraphList:
     """
     Generate a complete (dense) undirected random weighted graph as an adjacency list.
 

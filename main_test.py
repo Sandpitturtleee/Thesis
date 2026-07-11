@@ -3,13 +3,11 @@ import math
 
 # Imports from Qiskit
 from qiskit import QuantumCircuit
-from qiskit.circuit.library import grover_operator, MCMTGate, ZGate
-from qiskit.visualization import plot_distribution
+from qiskit.circuit.library import MCMTGate, ZGate, grover_operator
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+from qiskit.visualization import plot_distribution
 
 # Imports from Qiskit Runtime
-from qiskit_ibm_runtime import QiskitRuntimeService
-from qiskit_ibm_runtime import SamplerV2 as Sampler
 
 
 def grover_oracle(marked_states):
@@ -35,9 +33,7 @@ def grover_oracle(marked_states):
         rev_target = target[::-1]
         # Find the indices of all the '0' elements in bit-string
         zero_inds = [
-            ind
-            for ind in range(num_qubits)
-            if rev_target.startswith("0", ind)
+            ind for ind in range(num_qubits) if rev_target.startswith("0", ind)
         ]
         # Add a multi-controlled Z-gate with pre- and post-applied X-gates (open-controls)
         # where the target bit-string has a '0' entry
@@ -62,7 +58,7 @@ if __name__ == "__main__":
 
     optimal_num_iterations = math.floor(
         math.pi
-        / (4 * math.asin(math.sqrt(len(marked_states) / 2 ** grover_op.num_qubits)))
+        / (4 * math.asin(math.sqrt(len(marked_states) / 2**grover_op.num_qubits)))
     )
 
     qc = QuantumCircuit(grover_op.num_qubits)

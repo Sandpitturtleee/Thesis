@@ -14,9 +14,8 @@ Functions:
 import json
 import os
 from pathlib import Path
-from typing import Any
 
-from config import DATA_DIRECTORY, DIJKSTRA_STATS_DIRECTORY, DIJKSTRA_RESULTS_DIRECTORY
+from config import DATA_DIRECTORY, DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
 
 
 def read_results_from_json(directory) -> dict:
@@ -43,6 +42,7 @@ def read_results_from_json(directory) -> dict:
                 data[filename] = file_data
     return data
 
+
 def save_stats_by_file(stats_by_file):
     project_root = Path(__file__).parent.parent.parent
     output_dir = project_root / DATA_DIRECTORY / DIJKSTRA_STATS_DIRECTORY
@@ -50,7 +50,7 @@ def save_stats_by_file(stats_by_file):
     print(f"Saving stats to {output_dir}")
 
     for file_name, stats in stats_by_file.items():
-        file_name_out = Path(file_name).stem + '_stats.json'
+        file_name_out = Path(file_name).stem + "_stats.json"
         out_path = output_dir / file_name_out
         stats.to_json(out_path, orient="index", indent=4)
     print(f"Stats saved to {output_dir}")
@@ -76,15 +76,13 @@ def read_results_by_vertex(file_name: str, vertex_number: int):
     file_path = project_root / DATA_DIRECTORY / DIJKSTRA_RESULTS_DIRECTORY / file_name
 
     # Read and load the JSON file
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         data = json.load(file)
 
     # Find the index for the given vertex_number
-    idx = data['vertices'].index(vertex_number)
-    return {
-        'vertices': data['vertices'][idx],
-        'count': data['count'][idx]
-    }
+    idx = data["vertices"].index(vertex_number)
+    return {"vertices": data["vertices"][idx], "count": data["count"][idx]}
+
 
 def read_results_by_vertices(file_name: str, vertices_number: list):
     """
@@ -94,14 +92,14 @@ def read_results_by_vertices(file_name: str, vertices_number: list):
     project_root = Path(__file__).parent.parent.parent
     file_path = project_root / DATA_DIRECTORY / DIJKSTRA_RESULTS_DIRECTORY / file_name
 
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         data = json.load(file)
 
     results = {}
     for v in vertices_number:
-        if v in data['vertices']:
-            idx = data['vertices'].index(v)
-            results[v] = data['count'][idx]
+        if v in data["vertices"]:
+            idx = data["vertices"].index(v)
+            results[v] = data["count"][idx]
         else:
             print(f"Vertex {v} not found in file.")
     return results
@@ -114,14 +112,14 @@ def extract_methods_and_labels(data):
     for method in data.keys():
         # Create a readable label automatically
         label = (
-            method.replace('standard_', '')
-                  .replace('_stats.json', '')
-                  .replace('_', ' ')
-                  .title()
+            method.replace("standard_", "")
+            .replace("_stats.json", "")
+            .replace("_", " ")
+            .title()
         )
         method_labels[method] = label
-        if 'heap' in method:
+        if "heap" in method:
             heap_methods.append(method)
-        elif 'naive' in method:
+        elif "naive" in method:
             naive_methods.append(method)
     return heap_methods, naive_methods, method_labels
