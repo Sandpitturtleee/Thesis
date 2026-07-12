@@ -44,6 +44,10 @@ def read_results_from_json(directory) -> dict:
 
 
 def save_stats_by_file(stats_by_file):
+    """
+    Save stats for classic/standard files.
+    Each is wrapped in a top-level 'cost' key.
+    """
     project_root = Path(__file__).parent.parent.parent
     output_dir = project_root / DATA_DIRECTORY / DIJKSTRA_STATS_DIRECTORY
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -52,8 +56,39 @@ def save_stats_by_file(stats_by_file):
     for file_name, stats in stats_by_file.items():
         file_name_out = Path(file_name).stem + "_stats.json"
         out_path = output_dir / file_name_out
-        stats.to_json(out_path, orient="index", indent=4)
+
+        # Convert DataFrame to dict and wrap in 'cost'
+        wrapped = {"cost": stats.to_dict(orient="index")}
+
+        with open(out_path, 'w') as f:
+            json.dump(wrapped, f, indent=4)
     print(f"Stats saved to {output_dir}")
+
+
+def save_stats_by_file_quantum(stats_by_file):
+    """
+    Save quantum stats for each file.
+    stats_by_file = {file_name: {key: DataFrame, ...}, ...}
+    """
+    project_root = Path(__file__).parent.parent.parent
+    output_dir = project_root / DATA_DIRECTORY / DIJKSTRA_STATS_DIRECTORY
+    output_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Saving stats to {output_dir}")
+
+    for file_name, field_stats in stats_by_file.items():
+        file_name_out = Path(file_name).stem + "_stats.json"
+        out_path = output_dir / file_name_out
+
+        # Build a dictionary: {field_name: stats_df_as_dict}
+        output_dict = {}
+        for key, df in field_stats.items():
+            output_dict[key] = df.to_dict(orient="index")
+
+        # Save as JSON
+        import json
+        with open(out_path, 'w') as f:
+            json.dump(output_dict, f, indent=4)
+    print(f"Quantum stats saved to {output_dir}")
 
 
 def read_results_by_vertex(file_name: str, vertex_number: int):

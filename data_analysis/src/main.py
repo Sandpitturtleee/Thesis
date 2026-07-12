@@ -1,6 +1,8 @@
+from data_analysis.src.analysis import stats_analysis
+
 if __name__ == "__main__":
     print()
-    # stats_analysis()
+    stats_analysis()
 
     # stats_plots_mean_heap()
     # stats_plots_mean_naive()
