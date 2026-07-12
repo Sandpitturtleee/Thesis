@@ -39,13 +39,27 @@ Types
     For each problem size, an averaged operation count (or timing).
 """
 
-from config import SPARSE, RESULTS_DIRECTORY, HALF_EDGES, DENSE, WORSTCASE, QUANTUM_HALF_EDGES_FILENAME, \
-    QUANTUM_DENSE_FILENAME, QUANTUM_SPARSE_FILENAME, QUANTUM_WORSTCASE_FILENAME
+from config import (
+    DENSE,
+    HALF_EDGES,
+    QUANTUM_DENSE_FILENAME,
+    QUANTUM_HALF_EDGES_FILENAME,
+    QUANTUM_SPARSE_FILENAME,
+    QUANTUM_WORSTCASE_FILENAME,
+    RESULTS_DIRECTORY,
+    SPARSE,
+    WORSTCASE,
+)
 from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
-from graphs_analysis.src.helpers import create_frequency, load_graph_from_json, save_results_to_json, \
-    save_results_to_json_quantum
+from graphs_analysis.src.helpers import (
+    create_frequency,
+    load_graph_from_json,
+    save_results_to_json,
+    save_results_to_json_quantum,
+)
 from graphs_analysis.src.quantum.quantum_minimum import (
-    find_min, pad_to_power_of_two_with_indices,
+    find_min,
+    pad_to_power_of_two_with_indices,
 )
 
 
@@ -61,30 +75,22 @@ def run_all_dijkstra_quantum(times):
     print("Running Dijkstra's algorithm SPARSE")
     results = run_dijkstra_quantum(times=times, graph_type=SPARSE)
     save_results_to_json_quantum(
-        directory=RESULTS_DIRECTORY,
-        name=QUANTUM_SPARSE_FILENAME,
-        results=results
+        directory=RESULTS_DIRECTORY, name=QUANTUM_SPARSE_FILENAME, results=results
     )
     print("Running Dijkstra's algorithm HALF_EDGES")
     results = run_dijkstra_quantum(times=times, graph_type=HALF_EDGES)
     save_results_to_json_quantum(
-        directory=RESULTS_DIRECTORY,
-        name=QUANTUM_HALF_EDGES_FILENAME,
-        results=results
+        directory=RESULTS_DIRECTORY, name=QUANTUM_HALF_EDGES_FILENAME, results=results
     )
     print("Running Dijkstra's algorithm DENSE")
     results = run_dijkstra_quantum(times=times, graph_type=DENSE)
     save_results_to_json_quantum(
-        directory=RESULTS_DIRECTORY,
-        name=QUANTUM_DENSE_FILENAME,
-        results=results
+        directory=RESULTS_DIRECTORY, name=QUANTUM_DENSE_FILENAME, results=results
     )
     print("Running Dijkstra's algorithm WORSTCASE")
     results = run_dijkstra_quantum(times=times, graph_type=WORSTCASE)
     save_results_to_json_quantum(
-        directory=RESULTS_DIRECTORY,
-        name=QUANTUM_WORSTCASE_FILENAME,
-        results=results
+        directory=RESULTS_DIRECTORY, name=QUANTUM_WORSTCASE_FILENAME, results=results
     )
 
 
@@ -212,6 +218,6 @@ def run_dijkstra_quantum(times, graph_type):
         "vertices": vertices,
         "cost": cost,
         "mismatch_counts": mismatch_counts,
-        "invalid_counts": invalid_counts
+        "invalid_counts": invalid_counts,
     }
     return results

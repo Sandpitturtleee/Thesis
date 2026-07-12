@@ -121,6 +121,7 @@ def bbht_search(size, marked_states):
         else:
             m *= lam
 
+
 def find_min(active_distances):
     N = len(active_distances)
 
@@ -132,8 +133,7 @@ def find_min(active_distances):
     while True:
 
         marked_states = [
-            i for i in range(N)
-            if active_distances[i] < active_distances[y]
+            i for i in range(N) if active_distances[i] < active_distances[y]
         ]
 
         if not marked_states:

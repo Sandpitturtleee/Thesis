@@ -136,6 +136,7 @@ def save_results_to_json(directory, name, vertices, count):
     with open(file_path, "w") as f:
         json.dump(results, f, indent=4)
 
+
 def save_results_to_json_quantum(directory, name, results):
     file_path = create_file_path(directory=directory, name=name)
     with open(file_path, "w") as f:
