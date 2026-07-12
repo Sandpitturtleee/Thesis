@@ -60,8 +60,7 @@ def grover_search(size, marked_states, iterations):
 
     n = math.ceil(math.log2(size))
 
-    oracle = grover_oracle(n, marked_states)
-
+    oracle = grover_oracle(n=n, targets=marked_states)
     target_bitstrings = {format(i, f"0{n}b") for i in marked_states}
 
     problem = AmplificationProblem(
@@ -94,7 +93,6 @@ def bbht_search(size, marked_states):
     Boyer-Brassard-Høyer-Tapp exponential search.
     Returns (candidate, cost).
     """
-
     if not marked_states:
         return None, 0
 
@@ -103,11 +101,10 @@ def bbht_search(size, marked_states):
     cost = 0
 
     while True:
-
         upper = max(1, int(m))
         j = random.randrange(upper)
 
-        candidate = grover_search(size, marked_states, j)
+        candidate = grover_search(size=size, marked_states=marked_states, iterations=j)
 
         cost += j
 
@@ -120,28 +117,24 @@ def bbht_search(size, marked_states):
             m *= lam
 
 def find_min(active_distances):
-    N = len(active_distances)
-
-    y = random.randrange(N)
-
-    time_limit = 22.5 * math.sqrt(N) + 1.4 * math.log2(N)
+    size = len(active_distances)
+    threshold = random.randrange(size)
+    time_limit = 22.5 * math.sqrt(size) + 1.4 * math.log2(size)
     total_time = 0.0
 
     while True:
-
         marked_states = [
-            i for i in range(N)
-            if active_distances[i] < active_distances[y]
+            i for i in range(size)
+            if active_distances[i] < active_distances[threshold]
         ]
 
         if not marked_states:
             break
 
-        mark_cost = math.log2(N)
+        y_prime, search_cost = bbht_search(size=size, marked_states=marked_states)
 
-        y_prime, search_cost = bbht_search(N, marked_states)
-
-        total_time = total_time + search_cost + mark_cost
+        oracle_cost = math.log2(size) * search_cost
+        total_time = total_time + search_cost + oracle_cost
         if total_time > time_limit:
             break
 
@@ -150,12 +143,12 @@ def find_min(active_distances):
         if y_prime is None:
             break
 
-        if active_distances[y_prime] < active_distances[y]:
-            y = y_prime
+        if active_distances[y_prime] < active_distances[threshold]:
+            threshold = y_prime
 
     return (
-        y,
-        active_distances[y],
+        threshold,
+        active_distances[threshold],
         total_time,
         time_limit,
     )
