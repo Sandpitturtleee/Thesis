@@ -42,7 +42,8 @@ Types
 from config import SPARSE, RESULTS_DIRECTORY, HALF_EDGES, DENSE, WORSTCASE, QUANTUM_HALF_EDGES_FILENAME, \
     QUANTUM_DENSE_FILENAME, QUANTUM_SPARSE_FILENAME, QUANTUM_WORSTCASE_FILENAME
 from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
-from graphs_analysis.src.helpers import create_frequency, load_graph_from_json, save_results_to_json
+from graphs_analysis.src.helpers import create_frequency, load_graph_from_json, save_results_to_json, \
+    save_results_to_json_quantum
 from graphs_analysis.src.quantum.quantum_minimum import (
     find_min, pad_to_power_of_two_with_indices,
 )
@@ -57,34 +58,34 @@ def run_all_dijkstra_quantum(times):
     times : int
         Number of times to repeat each benchmark for averaging.
     """
-    # vertices, count = run_dijkstra_quantum(times=times, graph_type=SPARSE)
-    # save_results_to_json(
-    #     directory=RESULTS_DIRECTORY,
-    #     name=QUANTUM_SPARSE_FILENAME,
-    #     vertices=vertices,
-    #     count=count,
-    # )
-    vertices, count = run_dijkstra_quantum(times=times, graph_type=HALF_EDGES)
-    save_results_to_json(
+    print("Running Dijkstra's algorithm SPARSE")
+    results = run_dijkstra_quantum(times=times, graph_type=SPARSE)
+    save_results_to_json_quantum(
+        directory=RESULTS_DIRECTORY,
+        name=QUANTUM_SPARSE_FILENAME,
+        results=results
+    )
+    print("Running Dijkstra's algorithm HALF_EDGES")
+    results = run_dijkstra_quantum(times=times, graph_type=HALF_EDGES)
+    save_results_to_json_quantum(
         directory=RESULTS_DIRECTORY,
         name=QUANTUM_HALF_EDGES_FILENAME,
-        vertices=vertices,
-        count=count,
+        results=results
     )
-    # vertices, count = run_dijkstra_quantum(times=times, graph_type=DENSE)
-    # save_results_to_json(
-    #     directory=RESULTS_DIRECTORY,
-    #     name=QUANTUM_DENSE_FILENAME,
-    #     vertices=vertices,
-    #     count=count,
-    # )
-    # vertices, count = run_dijkstra_quantum(times=times, graph_type=WORSTCASE)
-    # save_results_to_json(
-    #     directory=RESULTS_DIRECTORY,
-    #     name=QUANTUM_WORSTCASE_FILENAME,
-    #     vertices=vertices,
-    #     count=count,
-    # )
+    print("Running Dijkstra's algorithm DENSE")
+    results = run_dijkstra_quantum(times=times, graph_type=DENSE)
+    save_results_to_json_quantum(
+        directory=RESULTS_DIRECTORY,
+        name=QUANTUM_DENSE_FILENAME,
+        results=results
+    )
+    print("Running Dijkstra's algorithm WORSTCASE")
+    results = run_dijkstra_quantum(times=times, graph_type=WORSTCASE)
+    save_results_to_json_quantum(
+        directory=RESULTS_DIRECTORY,
+        name=QUANTUM_WORSTCASE_FILENAME,
+        results=results
+    )
 
 
 def dijkstra_quantum(graph, start_node):
@@ -168,33 +169,49 @@ def run_dijkstra_quantum(times, graph_type):
 
     Returns
     -------
-    vertices : List[int]
-        The graph sizes (number of nodes) used.
-    all_results : List[List[float]]
-        Nested list with all timing per size, per full run (len = size x times).
+    results : dict
+        Dictionary containing:
+            'vertices': The graph sizes (number of nodes) used.
+            'timings': Nested list with all timings per size, per run.
+            'mismatch_counts': Nested list with all mismatch_count per size, per run.
+            'invalid_counts': Nested list with all invalid count per size, per run.
     """
     vertices = create_frequency()
-    all_results = []
+    cost = []
+    mismatch_counts = []
+    invalid_counts = []
 
+    # print(vertices)
+    # vertices= [x for x in vertices if 10 <= x <= 20]
     start_node = 0
     for i in vertices:
-        size_results = []
-        print("Graph size: ", i)
+        size_cost = []
+        size_mismatches = []
+        size_invalids = []
         for run in range(times):
+            print("Vertices: ", i, "Run: ", run)
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
             lengths_naive, previous_naive, elapsed, mismatch_count = dijkstra_quantum(
                 graph=loaded_graph, start_node=start_node
             )
-            is_dijkstra_valid(
+            valid = is_dijkstra_valid(
                 graph=loaded_graph,
                 start_node=start_node,
                 lengths_result=lengths_naive,
                 previous_result=previous_naive,
             )
-            size_results.append(elapsed)
-            print(size_results)
-        all_results.append(size_results)
-        print(all_results)
-        print("--------------------------------------------------------------------")
+            invalid = 0 if valid else 1
+            size_cost.append(elapsed)
+            size_mismatches.append(mismatch_count)
+            size_invalids.append(invalid)
+        cost.append(size_cost)
+        mismatch_counts.append(size_mismatches)
+        invalid_counts.append(size_invalids)
 
-    return vertices, all_results
+    results = {
+        "vertices": vertices,
+        "cost": cost,
+        "mismatch_counts": mismatch_counts,
+        "invalid_counts": invalid_counts
+    }
+    return results

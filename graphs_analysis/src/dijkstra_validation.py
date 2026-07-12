@@ -148,8 +148,8 @@ def compare_dijkstra_results(
         True if for every shared key, the sets of path tuples have non-empty intersection and all path lengths match.
     """
     if length1 != length2:
-        print(f"Invalid path length: {length1}")
-        print(f"Invalid path length: {length2}")
+        # print(f"Invalid path length: {length1}")
+        # print(f"Invalid path length: {length2}")
         return False
     common_keys = set(paths1.keys()) & set(paths2.keys())
     for key in common_keys:
@@ -158,7 +158,7 @@ def compare_dijkstra_results(
         set1 = set(tuple(lst) for lst in lists1)
         set2 = set(tuple(lst) for lst in lists2)
         if not (set1 & set2):
-            print(f"Key {key} has no intersection: {lists1} vs {lists2}")
+            # print(f"Key {key} has no intersection: {lists1} vs {lists2}")
             return False
     return True
 
@@ -199,16 +199,16 @@ def is_dijkstra_valid(
         length2=lengths_result,
     )
 
-    if not valid:
-        print(
-            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-        )
-        print("Mismatch found!")
-        print("lengths_lib:", lengths_lib)
-        print("lengths_result:", lengths_result)
-        print("paths_lib:", paths_lib)
-        print("paths_result", paths_result)
-        print(
-            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-        )
+    # if not valid:
+    #     print(
+    #         "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    #     )
+    #     print("Mismatch found!")
+    #     print("lengths_lib:", lengths_lib)
+    #     print("lengths_result:", lengths_result)
+    #     print("paths_lib:", paths_lib)
+    #     print("paths_result", paths_result)
+    #     print(
+    #         "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    #     )
     return valid
