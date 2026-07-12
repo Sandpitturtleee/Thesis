@@ -13,6 +13,7 @@ def plot_all_quantum():
     plots_std_quantum()
     plots_mismatch_quantum()
     plots_invalid_quantum()
+    plots_grover_calls_quantum()
 
 
 def plots_mean_quantum():
@@ -95,6 +96,23 @@ def plots_invalid_quantum():
     plt.title("Quantum - mean invalid count")
     plt.xlabel("Vertices")
     plt.ylabel("Mean invalid")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def plots_grover_calls_quantum():
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plt.figure(figsize=(10, 6))
+    for filename, dct in data.items():
+        if "quantum" not in filename or "search_calls" not in dct:
+            continue
+        x, y = quantum_stat_from_dict(dct["search_calls"], "mean")
+        plt.plot(x, y, marker="o", label=filename.replace(".json", ""))
+    plt.title("Quantum - mean search_calls")
+    plt.xlabel("Vertices")
+    plt.ylabel("Mean search_calls")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()

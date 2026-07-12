@@ -1,7 +1,7 @@
 # config.py
 
 MAX_GRAPH_SIZE = 100
-GRAPH_RUNS = 10
+GRAPH_RUNS = 2
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"

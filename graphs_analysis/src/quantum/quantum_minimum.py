@@ -122,6 +122,7 @@ def find_min(active_distances):
     threshold = random.randrange(size)
     time_limit = 22.5 * math.sqrt(size) + 1.4 * math.log2(size)
     total_time = 0.0
+    search_calls = 0
 
     while True:
         marked_states = [
@@ -135,6 +136,7 @@ def find_min(active_distances):
 
         oracle_cost = math.log2(size) * search_cost
         total_time = total_time + search_cost + oracle_cost
+        search_calls = search_calls + search_cost
         if total_time > time_limit:
             break
 
@@ -151,6 +153,7 @@ def find_min(active_distances):
         active_distances[threshold],
         total_time,
         time_limit,
+        search_calls,
     )
 
 

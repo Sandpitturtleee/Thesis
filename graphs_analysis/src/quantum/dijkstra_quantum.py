@@ -95,30 +95,13 @@ def run_all_dijkstra_quantum(times):
 
 
 def dijkstra_quantum(graph, start_node):
-    """
-    Run Dijkstra's shortest paths algorithm using a quantum minimum finder for selection.
-
-    Parameters
-    ----------
-    graph : List[List[Tuple[int, float]]]
-        Adjacency list representation of the graph.
-    start_node : int
-        Index of source node.
-
-    Returns
-    -------
-    (distances, previous, operation_count, mismatch_count)
-        distances : List[float] - Minimum distance from start_node to all nodes.
-        previous : List[Optional[int]] - Parent predecessors in the shortest paths.
-        operation_count : float - "Quantum" operation cost (approximate, from algorithm).
-        mismatch_count : float - "Quantum" search failures.
-    """
     n = len(graph)
     distances = [float("inf")] * n
     previous = [None] * n
     in_heap = [True] * n
     operation_count = 0.0
     mismatch_count = 0
+    search_calls = 0
 
     distances[start_node] = 0
 
@@ -140,11 +123,12 @@ def dijkstra_quantum(graph, start_node):
         if not padded_indices:
             break
 
-        min_idx_active, min_dist, cost, limit = find_min(padded_distances)
+        min_idx_active, min_dist, cost, limit, search_counts = find_min(active_distances=padded_distances)
         true_idx = min(range(len(padded_distances)), key=lambda i: padded_distances[i])
         if padded_distances[min_idx_active] != padded_distances[true_idx]:
             mismatch_count += 1
         operation_count += cost  # Approximate runtime cost
+        search_calls += search_counts
 
         u = padded_indices[min_idx_active]
         if distances[u] == float("inf"):
@@ -159,7 +143,7 @@ def dijkstra_quantum(graph, start_node):
                     distances[v] = new_distance
                     previous[v] = u
 
-    return distances, previous, operation_count, mismatch_count
+    return distances, previous, operation_count, mismatch_count, search_calls
 
 
 def run_dijkstra_quantum(times, graph_type):
@@ -186,6 +170,7 @@ def run_dijkstra_quantum(times, graph_type):
     cost = []
     mismatch_counts = []
     invalid_counts = []
+    search_calls = []
 
     # print(vertices)
     # vertices= [x for x in vertices if 10 <= x <= 20]
@@ -194,10 +179,11 @@ def run_dijkstra_quantum(times, graph_type):
         size_cost = []
         size_mismatches = []
         size_invalids = []
+        size_search_calls = []
         for run in range(times):
             print("Vertices: ", i, "Run: ", run)
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
-            lengths_naive, previous_naive, elapsed, mismatch_count = dijkstra_quantum(
+            lengths_naive, previous_naive, elapsed, mismatch_count, search_count = dijkstra_quantum(
                 graph=loaded_graph, start_node=start_node
             )
             valid = is_dijkstra_valid(
@@ -210,14 +196,17 @@ def run_dijkstra_quantum(times, graph_type):
             size_cost.append(elapsed)
             size_mismatches.append(mismatch_count)
             size_invalids.append(invalid)
+            size_search_calls.append(search_count)
         cost.append(size_cost)
         mismatch_counts.append(size_mismatches)
         invalid_counts.append(size_invalids)
+        search_calls.append(size_search_calls)
 
     results = {
         "vertices": vertices,
         "cost": cost,
         "mismatch_counts": mismatch_counts,
         "invalid_counts": invalid_counts,
+        "search_calls": search_calls,
     }
     return results
