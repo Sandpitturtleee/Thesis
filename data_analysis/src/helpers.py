@@ -60,7 +60,7 @@ def save_stats_by_file(stats_by_file):
         # Convert DataFrame to dict and wrap in 'cost'
         wrapped = {"cost": stats.to_dict(orient="index")}
 
-        with open(out_path, 'w') as f:
+        with open(out_path, "w") as f:
             json.dump(wrapped, f, indent=4)
     print(f"Stats saved to {output_dir}")
 
@@ -86,7 +86,8 @@ def save_stats_by_file_quantum(stats_by_file):
 
         # Save as JSON
         import json
-        with open(out_path, 'w') as f:
+
+        with open(out_path, "w") as f:
             json.dump(output_dict, f, indent=4)
     print(f"Quantum stats saved to {output_dir}")
 
@@ -158,3 +159,9 @@ def extract_methods_and_labels(data):
         elif "naive" in method:
             naive_methods.append(method)
     return heap_methods, naive_methods, method_labels
+
+
+def quantum_stat_from_dict(cost_dict, key="mean"):
+    vertices = sorted(map(int, cost_dict.keys()))
+    y = [cost_dict[str(v)][key] for v in vertices]
+    return vertices, y

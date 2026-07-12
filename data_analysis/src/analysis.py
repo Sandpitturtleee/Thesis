@@ -10,20 +10,22 @@ Functions
 - plot_dijkstra_counts: Plot Dijkstra's operation counts for different graph types loaded from result files
 """
 
+import numpy as np
 import pandas as pd
 
 from config import DIJKSTRA_RESULTS_DIRECTORY
-from data_analysis.src.helpers import read_results_from_json, save_stats_by_file, save_stats_by_file_quantum
+from data_analysis.src.helpers import (
+    read_results_from_json,
+    save_stats_by_file,
+    save_stats_by_file_quantum,
+)
 
 
 def stats_analysis():
     dijkstra_results = read_results_from_json(directory=DIJKSTRA_RESULTS_DIRECTORY)
-    print(dijkstra_results)
     standard_stats = statistics_by_file_standard(dijkstra_results)
     save_stats_by_file(standard_stats)
     quantum_stats = statistics_by_file_quantum(dijkstra_results)
-    #print(standard_stats)
-    print(quantum_stats)
     save_stats_by_file_quantum(quantum_stats)
 
 
@@ -55,10 +57,13 @@ def statistics_by_file_standard(results_dict):
     """
     all_stats = {}
     for file_name, data in results_dict.items():
-        if file_name.startswith('standard'):
-            stats_df = per_count_row_statistics(data["count"], vertices=data["vertices"])
+        if file_name.startswith("standard"):
+            stats_df = per_count_row_statistics(
+                data["count"], vertices=data["vertices"]
+            )
             all_stats[file_name] = stats_df
     return all_stats
+
 
 def statistics_by_file_quantum(results_dict):
     """
@@ -67,11 +72,18 @@ def statistics_by_file_quantum(results_dict):
     """
     all_stats = {}
     for file_name, data in results_dict.items():
-        if file_name.startswith('quantum'):
+        if file_name.startswith("quantum"):
             stats_by_field = {}
             vertices = data.get("vertices", None)
             for key, value in data.items():
-                if key != "vertices" and isinstance(value, list) and value and isinstance(value[0], list):
-                    stats_by_field[key] = per_count_row_statistics(value, vertices=vertices)
+                if (
+                    key != "vertices"
+                    and isinstance(value, list)
+                    and value
+                    and isinstance(value[0], list)
+                ):
+                    stats_by_field[key] = per_count_row_statistics(
+                        value, vertices=vertices
+                    )
             all_stats[file_name] = stats_by_field
     return all_stats
