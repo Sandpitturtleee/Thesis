@@ -8,7 +8,6 @@ from data_analysis.src.helpers import (
 def prob_stats_analysis():
     dijkstra_results = read_results_from_json(directory=DIJKSTRA_RESULTS_DIRECTORY)
     final_result_dict = compute_and_merge_all_probs(all_data=dijkstra_results)
-    print(final_result_dict)
     save_merged_prob_stats_by_file(merged_stats_dict=final_result_dict)
 
 

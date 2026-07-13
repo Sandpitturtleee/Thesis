@@ -108,14 +108,14 @@ def save_merged_prob_stats_by_file(
     project_root = Path(__file__).parent.parent.parent
     output_dir = project_root / DATA_DIRECTORY / DIJKSTRA_PROB_STATS_DIRECTORY
     output_dir.mkdir(parents=True, exist_ok=True)
-    print(f"Saving stats to {output_dir}")
+    print(f"Saving prob stats to {output_dir}")
 
     for file_name, vertex_stats in merged_stats_dict.items():
         file_name_out = Path(file_name).stem + "_prob_stats.json"
         out_path = output_dir / file_name_out
         with open(out_path, "w") as f:
             json.dump(vertex_stats, f, indent=4)
-    print(f"Quantum stats saved to {output_dir}")
+    print(f"Quantum prob stats saved to {output_dir}")
 
 
 def read_results_by_vertex(file_name: str, vertex_number: int):
