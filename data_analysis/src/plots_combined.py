@@ -20,17 +20,17 @@ def plot_all_combined():
     #     'standard_heap_worstcase_stats.json'
     # ]
     exclude = []
-    plots_types_by_stat("mean", exclude_files=exclude)
-    plots_types_by_stat("median", exclude_files=exclude)
-    plots_types_by_stat("std", exclude_files=exclude)
+    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plots_types_by_stat(data=data, stat_key="mean", exclude_files=exclude)
+    plots_types_by_stat(data=data, stat_key="median", exclude_files=exclude)
+    plots_types_by_stat(data=data, stat_key="std", exclude_files=exclude)
 
 
-def plots_types_by_stat(stat_key="mean", exclude_files=None):
+def plots_types_by_stat(data, stat_key="mean", exclude_files=None):
     """
     Plot the chosen stat for 4 types of graphs: sparse, half_edges, dense, worstcase.
     Each type gets its own subplot.
     """
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
     if exclude_files is None:
         exclude_files = []
 

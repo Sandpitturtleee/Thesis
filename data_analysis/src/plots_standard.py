@@ -13,16 +13,16 @@ from data_analysis.src.helpers import (
 
 
 def plot_all_standard():
-    plots_mean_heap()
-    plots_mean_naive()
-    plots_median_heap()
-    plots_median_naive()
-    plots_std_heap()
-    plots_std_naive()
-
-
-def plots_mean_heap():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plots_mean_heap(data=data)
+    plots_mean_naive(data=data)
+    plots_median_heap(data=data)
+    plots_median_naive(data=data)
+    plots_std_heap(data=data)
+    plots_std_naive(data=data)
+
+
+def plots_mean_heap(data):
     plt.figure(figsize=(10, 6))
     for filename, methods in data.items():
         if "heap" not in filename or "cost" not in methods:
@@ -49,8 +49,7 @@ def plots_mean_heap():
     plt.show()
 
 
-def plots_mean_naive():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_mean_naive(data):
     plt.figure(figsize=(10, 6))
     for filename, methods in data.items():
         if "naive" not in filename or "cost" not in methods:
@@ -77,8 +76,7 @@ def plots_mean_naive():
     plt.show()
 
 
-def plots_median_heap():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_median_heap(data):
     plt.figure(figsize=(10, 6))
     for filename, methods in data.items():
         if "heap" not in filename or "cost" not in methods:
@@ -96,8 +94,7 @@ def plots_median_heap():
     plt.show()
 
 
-def plots_median_naive():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_median_naive(data):
     plt.figure(figsize=(10, 6))
     for filename, methods in data.items():
         if "naive" not in filename or "cost" not in methods:
@@ -115,8 +112,7 @@ def plots_median_naive():
     plt.show()
 
 
-def plots_std_heap():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_std_heap(data):
     plt.figure(figsize=(8, 5))
     for filename, methods in data.items():
         if "heap" not in filename or "cost" not in methods:
@@ -134,8 +130,7 @@ def plots_std_heap():
     plt.show()
 
 
-def plots_std_naive():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_std_naive(data):
     plt.figure(figsize=(8, 5))
     for filename, methods in data.items():
         if "naive" not in filename or "cost" not in methods:

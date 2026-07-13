@@ -9,10 +9,10 @@ from data_analysis.src.helpers import read_results_from_json
 def plot_all_quantum_prob():
     data = read_results_from_json(directory=DIJKSTRA_PROB_STATS_DIRECTORY)
     plot_grouped_dijkstra_and_find_min_success_prob(all_stats=data)
-    # plot_dijkstra_success_prob(all_stats=data)
-    # plot_find_min_success_prob(all_stats=data)
-    # plot_mismatch_without_invalid_prob(all_stats=data)
-    # plot_invalid_when_mismatch_prob(all_stats=data)
+    plot_dijkstra_success_prob(all_stats=data)
+    plot_find_min_success_prob(all_stats=data)
+    plot_mismatch_without_invalid_prob(all_stats=data)
+    plot_invalid_when_mismatch_prob(all_stats=data)
 
 
 def plot_bars_with_percent(ax, xs, ys, ylabel, title, xlabel):

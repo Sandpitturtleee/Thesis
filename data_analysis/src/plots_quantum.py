@@ -8,16 +8,16 @@ from data_analysis.src.helpers import quantum_stat_from_dict, read_results_from_
 
 
 def plot_all_quantum():
-    plots_mean_quantum()
-    plots_median_quantum()
-    plots_std_quantum()
-    plots_mismatch_quantum()
-    plots_invalid_quantum()
-    plots_grover_calls_quantum()
-
-
-def plots_mean_quantum():
     data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+    plots_mean_quantum(data=data)
+    plots_median_quantum(data=data)
+    plots_std_quantum(data=data)
+    plots_mismatch_quantum(data=data)
+    plots_invalid_quantum(data=data)
+    plots_grover_calls_quantum(data=data)
+
+
+def plots_mean_quantum(data):
     plt.figure(figsize=(10, 6))
     count = 0
     for filename, dct in data.items():
@@ -34,8 +34,7 @@ def plots_mean_quantum():
     plt.show()
 
 
-def plots_median_quantum():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_median_quantum(data):
     plt.figure(figsize=(10, 6))
     for filename, dct in data.items():
         if "quantum" not in filename or "cost" not in dct:
@@ -51,8 +50,7 @@ def plots_median_quantum():
     plt.show()
 
 
-def plots_std_quantum():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_std_quantum(data):
     plt.figure(figsize=(10, 6))
     for filename, dct in data.items():
         if "quantum" not in filename or "cost" not in dct:
@@ -68,8 +66,7 @@ def plots_std_quantum():
     plt.show()
 
 
-def plots_mismatch_quantum():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_mismatch_quantum(data):
     plt.figure(figsize=(10, 6))
     for filename, dct in data.items():
         if "quantum" not in filename or "mismatch_counts" not in dct:
@@ -85,8 +82,7 @@ def plots_mismatch_quantum():
     plt.show()
 
 
-def plots_invalid_quantum():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_invalid_quantum(data):
     plt.figure(figsize=(10, 6))
     for filename, dct in data.items():
         if "quantum" not in filename or "invalid_counts" not in dct:
@@ -102,8 +98,7 @@ def plots_invalid_quantum():
     plt.show()
 
 
-def plots_grover_calls_quantum():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plots_grover_calls_quantum(data):
     plt.figure(figsize=(10, 6))
     for filename, dct in data.items():
         if "quantum" not in filename or "search_calls" not in dct:
