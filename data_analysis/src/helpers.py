@@ -191,3 +191,28 @@ def quantum_stat_from_dict(cost_dict, key="mean"):
     vertices = sorted(map(int, cost_dict.keys()))
     y = [cost_dict[str(v)][key] for v in vertices]
     return vertices, y
+
+
+def order_filenames(all_stats):
+    # Map desired type to an identifying substring in the filename
+    type_to_key = {
+        "sparse": "sparse",
+        "half_edges": "half_edges",  # adapt here for your actual filenames!
+        "dense": "dense",
+        "worstcase": "worstcase",
+    }
+    desired_order = ["sparse", "half_edges", "dense", "worstcase"]
+    ordered_keys = []
+    used_keys = set()
+    for type_name in desired_order:
+        tag = type_to_key[type_name]
+        found = [k for k in all_stats if tag in k and k not in used_keys]
+        if found:
+            ordered_keys.append(found[0])
+            used_keys.add(found[0])
+    # Add leftovers
+    for k in all_stats:
+        if k not in ordered_keys:
+            ordered_keys.append(k)
+    print(ordered_keys)
+    return ordered_keys

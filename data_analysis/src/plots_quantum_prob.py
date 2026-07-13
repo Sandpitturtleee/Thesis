@@ -3,7 +3,7 @@ import matplotlib.ticker as mticker
 import numpy as np
 
 from config import DIJKSTRA_PROB_STATS_DIRECTORY
-from data_analysis.src.helpers import read_results_from_json
+from data_analysis.src.helpers import order_filenames, read_results_from_json
 
 
 def plot_all_quantum_prob():
@@ -19,7 +19,7 @@ def plot_bars_with_percent(ax, xs, ys, ylabel, title, xlabel):
     bars = ax.bar(xs, ys, width=2)
     for bar, y in zip(bars, ys):
         ax.annotate(
-            f"{y*100:.1f}%",  # Multiply by 100 for percent annotation
+            f"{y*100:.1f}%",
             xy=(bar.get_x() + bar.get_width() / 2, y),
             xytext=(0, 5),
             textcoords="offset points",
@@ -31,7 +31,6 @@ def plot_bars_with_percent(ax, xs, ys, ylabel, title, xlabel):
     ax.set_xlabel(xlabel)
     ax.set_title(title, pad=20)
     ax.set_ylim(0, 1)
-    # Use percent format for y-ticks
     ax.yaxis.set_major_formatter(mticker.PercentFormatter(1.0, decimals=0))
     ax.set_xticks(xs)
     ax.set_xticklabels([str(x) for x in xs], fontsize=10)
@@ -40,7 +39,9 @@ def plot_bars_with_percent(ax, xs, ys, ylabel, title, xlabel):
 def plot_dijkstra_success_prob(all_stats):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    for i, (filename, stat_dict) in enumerate(list(all_stats.items())[:4]):
+    ordered_filenames = order_filenames(all_stats)
+    for i, filename in enumerate(ordered_filenames[:4]):
+        stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
         ys = [stat_dict[str(x)]["dijkstra_success_prob"] for x in xs]
         plot_bars_with_percent(
@@ -58,11 +59,13 @@ def plot_dijkstra_success_prob(all_stats):
     plt.show()
 
 
-# Repeat similar logic for the other plots:
 def plot_find_min_success_prob(all_stats):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    for i, (filename, stat_dict) in enumerate(list(all_stats.items())[:4]):
+    ordered_filenames = order_filenames(all_stats)
+    print(ordered_filenames)
+    for i, filename in enumerate(ordered_filenames[:4]):
+        stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
         ys = [stat_dict[str(x)]["find_min_success_prob"] for x in xs]
         plot_bars_with_percent(
@@ -83,7 +86,9 @@ def plot_find_min_success_prob(all_stats):
 def plot_mismatch_without_invalid_prob(all_stats):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    for i, (filename, stat_dict) in enumerate(list(all_stats.items())[:4]):
+    ordered_filenames = order_filenames(all_stats)
+    for i, filename in enumerate(ordered_filenames[:4]):
+        stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
         ys = [stat_dict[str(x)]["mismatch_without_invalid_prob"] for x in xs]
         plot_bars_with_percent(
@@ -104,7 +109,9 @@ def plot_mismatch_without_invalid_prob(all_stats):
 def plot_invalid_when_mismatch_prob(all_stats):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    for i, (filename, stat_dict) in enumerate(list(all_stats.items())[:4]):
+    ordered_filenames = order_filenames(all_stats)
+    for i, filename in enumerate(ordered_filenames[:4]):
+        stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
         ys = [stat_dict[str(x)]["invalid_when_mismath_prob"] for x in xs]
         plot_bars_with_percent(
@@ -125,15 +132,14 @@ def plot_invalid_when_mismatch_prob(all_stats):
 def plot_grouped_dijkstra_and_find_min_success_prob(all_stats):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    width = 2  # Narrower bars
-    sep = 1  # Separation between bars in a group
-
-    for i, (filename, stat_dict) in enumerate(list(all_stats.items())[:4]):
+    width = 2
+    sep = 1
+    ordered_filenames = order_filenames(all_stats)
+    for i, filename in enumerate(ordered_filenames[:4]):
+        stat_dict = all_stats[filename]
         xs = np.array(sorted(int(k) for k in stat_dict))
         ys1 = [stat_dict[str(x)]["dijkstra_success_prob"] for x in xs]
         ys2 = [stat_dict[str(x)]["find_min_success_prob"] for x in xs]
-
-        # Shift positions for each group
         x1 = xs - width / 2 - sep / 2
         x2 = xs + width / 2 + sep / 2
 
@@ -143,25 +149,6 @@ def plot_grouped_dijkstra_and_find_min_success_prob(all_stats):
         bars2 = axs[i].bar(
             x2, ys2, width=width, color="blue", label="Find Min Success Prob"
         )
-
-        # Annotate with slight horizontal offsets to avoid overlap
-        # for bar, y in zip(bars1, ys1):
-        #     axs[i].annotate(
-        #         f'{y * 100:.1f}%',
-        #         xy=(bar.get_x() + bar.get_width() / 2 - sep / 3, y),
-        #         xytext=(0, 5),
-        #         textcoords="offset points",
-        #         ha='center', va='bottom', fontsize=10, color='green'
-        #     )
-        # for bar, y in zip(bars2, ys2):
-        #     axs[i].annotate(
-        #         f'{y * 100:.1f}%',
-        #         xy=(bar.get_x() + bar.get_width() / 2 + sep / 3, y),
-        #         xytext=(0, 5),
-        #         textcoords="offset points",
-        #         ha='center', va='bottom', fontsize=10, color='blue'
-        #     )
-
         axs[i].set_ylabel("Probability (%)")
         axs[i].set_xlabel("Vertices")
         axs[i].set_title(filename.replace(".json", ""), pad=20)
@@ -169,13 +156,9 @@ def plot_grouped_dijkstra_and_find_min_success_prob(all_stats):
         axs[i].yaxis.set_major_formatter(mticker.PercentFormatter(1.0, decimals=0))
         axs[i].set_xticks(xs)
         axs[i].set_xticklabels([str(x) for x in xs], fontsize=10)
-
         axs[i].legend()
-
-    # Turn off extra subplots if less than 4 files
     for j in range(i + 1, 4):
         axs[j].axis("off")
-
     fig.suptitle("Dijkstra vs Find Min Success Probability")
     plt.tight_layout(rect=[0, 0.03, 1, 0.97])
     plt.show()
