@@ -37,9 +37,9 @@ def plots_types_by_stat(data, stat_key="mean", exclude_files=None):
     # Type: (display name, filename keyword, colormap)
     graph_types = [
         ("Sparse", "sparse", cm.get_cmap("Blues")),
-        ("Half-Edges", "half_edges", cm.get_cmap("Oranges")),
+        ("Half edges", "half_edges", cm.get_cmap("Oranges")),
         ("Dense", "dense", cm.get_cmap("Greens")),
-        ("Worstcase", "worstcase", cm.get_cmap("Reds")),
+        ("Special case", "worstcase", cm.get_cmap("Reds")),
     ]
 
     fig, axs = plt.subplots(2, 2, figsize=(14, 10))

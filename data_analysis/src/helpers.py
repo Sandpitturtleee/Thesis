@@ -214,5 +214,4 @@ def order_filenames(all_stats):
     for k in all_stats:
         if k not in ordered_keys:
             ordered_keys.append(k)
-    print(ordered_keys)
     return ordered_keys

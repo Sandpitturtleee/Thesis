@@ -15,7 +15,7 @@ if __name__ == "__main__":
     #
     # plot_all_standard()
     # plot_all_quantum()
-    # plot_all_combined()
+    plot_all_combined()
     # plot_all_other()
 
     plot_all_quantum_prob()

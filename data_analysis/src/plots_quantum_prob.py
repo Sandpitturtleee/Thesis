@@ -8,11 +8,24 @@ from data_analysis.src.helpers import order_filenames, read_results_from_json
 
 def plot_all_quantum_prob():
     data = read_results_from_json(directory=DIJKSTRA_PROB_STATS_DIRECTORY)
-    plot_grouped_dijkstra_and_find_min_success_prob(all_stats=data)
-    plot_dijkstra_success_prob(all_stats=data)
-    plot_find_min_success_prob(all_stats=data)
-    plot_mismatch_without_invalid_prob(all_stats=data)
-    plot_invalid_when_mismatch_prob(all_stats=data)
+    titles = ["Sparse", "Half edges", "Dense", "Special case"]
+    ordered_filenames = order_filenames(all_stats=data)
+
+    plot_dijkstra_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_find_min_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_mismatch_without_invalid_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_invalid_when_mismatch_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_grouped_dijkstra_and_find_min_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
 
 
 def plot_bars_with_percent(ax, xs, ys, ylabel, title, xlabel):
@@ -36,10 +49,9 @@ def plot_bars_with_percent(ax, xs, ys, ylabel, title, xlabel):
     ax.set_xticklabels([str(x) for x in xs], fontsize=10)
 
 
-def plot_dijkstra_success_prob(all_stats):
+def plot_dijkstra_success_prob(all_stats, titles, ordered_filenames):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    ordered_filenames = order_filenames(all_stats)
     for i, filename in enumerate(ordered_filenames[:4]):
         stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
@@ -49,7 +61,7 @@ def plot_dijkstra_success_prob(all_stats):
             xs,
             ys,
             ylabel="Probability (%)",
-            title=filename.replace(".json", ""),
+            title=titles[i],
             xlabel="Vertices",
         )
     for j in range(i + 1, 4):
@@ -59,11 +71,9 @@ def plot_dijkstra_success_prob(all_stats):
     plt.show()
 
 
-def plot_find_min_success_prob(all_stats):
+def plot_find_min_success_prob(all_stats, titles, ordered_filenames):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    ordered_filenames = order_filenames(all_stats)
-    print(ordered_filenames)
     for i, filename in enumerate(ordered_filenames[:4]):
         stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
@@ -73,7 +83,7 @@ def plot_find_min_success_prob(all_stats):
             xs,
             ys,
             ylabel="Probability (%)",
-            title=filename.replace(".json", ""),
+            title=titles[i],
             xlabel="Vertices",
         )
     for j in range(i + 1, 4):
@@ -83,10 +93,9 @@ def plot_find_min_success_prob(all_stats):
     plt.show()
 
 
-def plot_mismatch_without_invalid_prob(all_stats):
+def plot_mismatch_without_invalid_prob(all_stats, titles, ordered_filenames):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    ordered_filenames = order_filenames(all_stats)
     for i, filename in enumerate(ordered_filenames[:4]):
         stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
@@ -96,7 +105,7 @@ def plot_mismatch_without_invalid_prob(all_stats):
             xs,
             ys,
             ylabel="Probability (%)",
-            title=filename.replace(".json", ""),
+            title=titles[i],
             xlabel="Vertices",
         )
     for j in range(i + 1, 4):
@@ -106,10 +115,9 @@ def plot_mismatch_without_invalid_prob(all_stats):
     plt.show()
 
 
-def plot_invalid_when_mismatch_prob(all_stats):
+def plot_invalid_when_mismatch_prob(all_stats, titles, ordered_filenames):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    ordered_filenames = order_filenames(all_stats)
     for i, filename in enumerate(ordered_filenames[:4]):
         stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
@@ -119,7 +127,7 @@ def plot_invalid_when_mismatch_prob(all_stats):
             xs,
             ys,
             ylabel="Probability (%)",
-            title=filename.replace(".json", ""),
+            title=titles[i],
             xlabel="Vertices",
         )
     for j in range(i + 1, 4):
@@ -129,12 +137,13 @@ def plot_invalid_when_mismatch_prob(all_stats):
     plt.show()
 
 
-def plot_grouped_dijkstra_and_find_min_success_prob(all_stats):
+def plot_grouped_dijkstra_and_find_min_success_prob(
+    all_stats, titles, ordered_filenames
+):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
     width = 2
     sep = 1
-    ordered_filenames = order_filenames(all_stats)
     for i, filename in enumerate(ordered_filenames[:4]):
         stat_dict = all_stats[filename]
         xs = np.array(sorted(int(k) for k in stat_dict))
@@ -143,15 +152,11 @@ def plot_grouped_dijkstra_and_find_min_success_prob(all_stats):
         x1 = xs - width / 2 - sep / 2
         x2 = xs + width / 2 + sep / 2
 
-        bars1 = axs[i].bar(
-            x1, ys1, width=width, color="green", label="Dijkstra Success Prob"
-        )
-        bars2 = axs[i].bar(
-            x2, ys2, width=width, color="blue", label="Find Min Success Prob"
-        )
+        axs[i].bar(x1, ys1, width=width, color="green", label="Dijkstra Success Prob")
+        axs[i].bar(x2, ys2, width=width, color="blue", label="Find Min Success Prob")
         axs[i].set_ylabel("Probability (%)")
         axs[i].set_xlabel("Vertices")
-        axs[i].set_title(filename.replace(".json", ""), pad=20)
+        axs[i].set_title(titles[i], pad=20)
         axs[i].set_ylim(0, 1)
         axs[i].yaxis.set_major_formatter(mticker.PercentFormatter(1.0, decimals=0))
         axs[i].set_xticks(xs)
