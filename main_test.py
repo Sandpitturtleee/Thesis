@@ -1,11 +1,15 @@
 # Built-in modules
 import math
 
+from networkx import display
+
 # Imports from Qiskit
-from qiskit import QuantumCircuit
-from qiskit.circuit.library import MCMTGate, ZGate, grover_operator
+from qiskit import MissingOptionalLibraryError, QuantumCircuit
+from qiskit.circuit.library import MCMTGate, PhaseOracleGate, ZGate, grover_operator
+from qiskit.primitives import StatevectorSampler
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 from qiskit.visualization import plot_distribution
+from qiskit_algorithms import AmplificationProblem, Grover
 
 from graphs_analysis.src.dijkstra_validation import dijkstra_lib, is_dijkstra_valid
 from graphs_analysis.src.quantum.dijkstra_quantum import dijkstra_quantum
@@ -79,12 +83,24 @@ if __name__ == "__main__":
     lengths_naive, previous_naive, elapsed, mismatch_count, search_count = (
         dijkstra_quantum(graph=loaded_graph, start_node=start_node)
     )
-    print(mismatch_count)
-    print(search_count)
-    # is_dijkstra_valid(
-    #     graph=loaded_graph,
-    #     start_node=start_node,
-    #     lengths_result=lengths_naive,
-    #     previous_result=previous_naive,
-    # )
-    # print(mismatch_count)
+    T = [
+        30,
+        34,
+        28,
+        6,
+        61,
+        21,
+        21,
+        19,
+        39,
+        float("inf"),
+        float("inf"),
+        float("inf"),
+        float("inf"),
+        float("inf"),
+        float("inf"),
+        float("inf"),
+    ]
+    y = 2
+    marked_states = [j for j in range(len(T)) if T[j] < T[y]]
+    print()

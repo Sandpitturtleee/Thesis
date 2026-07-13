@@ -6,6 +6,18 @@ from qiskit.primitives import StatevectorSampler
 from qiskit_algorithms import AmplificationProblem, Grover
 
 
+def random_finite_index(arr):
+    """
+    Returns a random index from arr where the value is not inf.
+    Returns None if no such index exists.
+    """
+    valid_indices = [i for i, val in enumerate(arr) if val != float("inf")]
+    if valid_indices:
+        return random.choice(valid_indices)
+    else:
+        return None
+
+
 def pad_to_power_of_two_with_indices(indices, distances):
 
     finite = [
@@ -59,7 +71,6 @@ def grover_search(size, marked_states, iterations):
         return None
 
     n = math.ceil(math.log2(size))
-
     oracle = grover_oracle(n=n, targets=marked_states)
     target_bitstrings = {format(i, f"0{n}b") for i in marked_states}
 
@@ -119,7 +130,8 @@ def bbht_search(size, marked_states):
 
 def find_min(active_distances):
     size = len(active_distances)
-    threshold = random.randrange(size)
+    # threshold = random.randrange(size)
+    threshold = random_finite_index(arr=active_distances)
     time_limit = 22.5 * math.sqrt(size) + 1.4 * math.log2(size)
     total_time = 0.0
 
@@ -127,7 +139,6 @@ def find_min(active_distances):
         marked_states = [
             i for i in range(size) if active_distances[i] < active_distances[threshold]
         ]
-
         if not marked_states:
             break
 
