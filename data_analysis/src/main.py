@@ -12,10 +12,10 @@ if __name__ == "__main__":
     print()
     # stats_analysis()
     # prob_stats_analysis()
-    #
-    # plot_all_standard()
-    # plot_all_quantum()
-    plot_all_combined()
-    # plot_all_other()
 
-    plot_all_quantum_prob()
+    plot_all_standard()
+    # plot_all_quantum()
+    # plot_all_combined()
+    # plot_all_other()
+    #
+    # plot_all_quantum_prob()

@@ -123,14 +123,14 @@ def dijkstra_quantum(graph, start_node):
         if not padded_indices:
             break
 
-        min_idx_active, min_dist, cost, limit, search_counts = find_min(
+        min_idx_active, min_dist, cost, limit = find_min(
             active_distances=padded_distances
         )
         true_idx = min(range(len(padded_distances)), key=lambda i: padded_distances[i])
         if padded_distances[min_idx_active] != padded_distances[true_idx]:
             mismatch_count += 1
         operation_count += cost  # Approximate runtime cost
-        search_calls += search_counts
+        search_calls += 1
 
         u = padded_indices[min_idx_active]
         if distances[u] == float("inf"):
