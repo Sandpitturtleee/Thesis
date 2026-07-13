@@ -123,7 +123,9 @@ def dijkstra_quantum(graph, start_node):
         if not padded_indices:
             break
 
-        min_idx_active, min_dist, cost, limit, search_counts = find_min(active_distances=padded_distances)
+        min_idx_active, min_dist, cost, limit, search_counts = find_min(
+            active_distances=padded_distances
+        )
         true_idx = min(range(len(padded_distances)), key=lambda i: padded_distances[i])
         if padded_distances[min_idx_active] != padded_distances[true_idx]:
             mismatch_count += 1
@@ -183,8 +185,8 @@ def run_dijkstra_quantum(times, graph_type):
         for run in range(times):
             print("Vertices: ", i, "Run: ", run)
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
-            lengths_naive, previous_naive, elapsed, mismatch_count, search_count = dijkstra_quantum(
-                graph=loaded_graph, start_node=start_node
+            lengths_naive, previous_naive, elapsed, mismatch_count, search_count = (
+                dijkstra_quantum(graph=loaded_graph, start_node=start_node)
             )
             valid = is_dijkstra_valid(
                 graph=loaded_graph,
