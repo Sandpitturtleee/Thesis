@@ -1,7 +1,7 @@
 # config.py
 
 MAX_GRAPH_SIZE = 100
-GRAPH_RUNS = 2
+GRAPH_RUNS = 100
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"
@@ -11,6 +11,7 @@ DATA_DIRECTORY = "data"
 GENERATED_GRAPHS_DIRECTORY = "generated_graphs"
 DIJKSTRA_RESULTS_DIRECTORY = "dijkstra_results"
 DIJKSTRA_STATS_DIRECTORY = "dijkstra_stats"
+DIJKSTRA_PROB_STATS_DIRECTORY = "dijkstra_prob_stats"
 
 RESULTS_DIRECTORY = "dijkstra_results"
 

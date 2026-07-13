@@ -15,7 +15,12 @@ import json
 import os
 from pathlib import Path
 
-from config import DATA_DIRECTORY, DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
+from config import (
+    DATA_DIRECTORY,
+    DIJKSTRA_PROB_STATS_DIRECTORY,
+    DIJKSTRA_RESULTS_DIRECTORY,
+    DIJKSTRA_STATS_DIRECTORY,
+)
 
 
 def read_results_from_json(directory) -> dict:
@@ -89,6 +94,27 @@ def save_stats_by_file_quantum(stats_by_file):
 
         with open(out_path, "w") as f:
             json.dump(output_dict, f, indent=4)
+    print(f"Quantum stats saved to {output_dir}")
+
+
+def save_merged_prob_stats_by_file(
+    merged_stats_dict, data_directory="data", dijkstra_stats_directory="dijkstra_stats"
+):
+    """
+    Save merged per-file/vertex stats dict to separate JSON files.
+    merged_stats_dict: {file_name: {vertex: {...stats...}, ...}, ...}
+    """
+    # Use current directory as root for demo; adjust as appropriate for your project.
+    project_root = Path(__file__).parent.parent.parent
+    output_dir = project_root / DATA_DIRECTORY / DIJKSTRA_PROB_STATS_DIRECTORY
+    output_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Saving stats to {output_dir}")
+
+    for file_name, vertex_stats in merged_stats_dict.items():
+        file_name_out = Path(file_name).stem + "_prob_stats.json"
+        out_path = output_dir / file_name_out
+        with open(out_path, "w") as f:
+            json.dump(vertex_stats, f, indent=4)
     print(f"Quantum stats saved to {output_dir}")
 
 
