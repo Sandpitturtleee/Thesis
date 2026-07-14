@@ -6,8 +6,8 @@ from config import DIJKSTRA_PROB_STATS_DIRECTORY
 from data_analysis.src.helpers import order_filenames, read_results_from_json
 
 
-def plot_all_quantum_prob():
-    data = read_results_from_json(directory=DIJKSTRA_PROB_STATS_DIRECTORY)
+def plot_all_quantum_prob(directory):
+    data = read_results_from_json(directory=directory)
     titles = ["Sparse", "Half edges", "Dense", "Special case"]
     ordered_filenames = order_filenames(all_stats=data)
 

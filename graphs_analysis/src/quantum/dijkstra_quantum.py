@@ -63,7 +63,7 @@ from graphs_analysis.src.quantum.quantum_minimum import (
 )
 
 
-def run_all_dijkstra_quantum(times):
+def run_all_dijkstra_quantum(times, directory, time_limit):
     """
     Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
 
@@ -71,30 +71,40 @@ def run_all_dijkstra_quantum(times):
     ----------
     times : int
         Number of times to repeat each benchmark for averaging.
+    directory : string
+        Folder directory for saving results.
+    time_limit : int
+        Time limit for dijkstra quantum algorithm for 0 - no time limit for 1 - time limit.
     """
     print("Running Dijkstra's algorithm SPARSE")
-    results = run_dijkstra_quantum(times=times, graph_type=SPARSE)
+    results = run_dijkstra_quantum(
+        times=times, graph_type=SPARSE, time_limit=time_limit
+    )
     save_results_to_json_quantum(
-        directory=RESULTS_DIRECTORY, name=QUANTUM_SPARSE_FILENAME, results=results
+        directory=directory, name=QUANTUM_SPARSE_FILENAME, results=results
     )
     print("Running Dijkstra's algorithm HALF_EDGES")
-    results = run_dijkstra_quantum(times=times, graph_type=HALF_EDGES)
+    results = run_dijkstra_quantum(
+        times=times, graph_type=HALF_EDGES, time_limit=time_limit
+    )
     save_results_to_json_quantum(
-        directory=RESULTS_DIRECTORY, name=QUANTUM_HALF_EDGES_FILENAME, results=results
+        directory=directory, name=QUANTUM_HALF_EDGES_FILENAME, results=results
     )
     print("Running Dijkstra's algorithm DENSE")
-    results = run_dijkstra_quantum(times=times, graph_type=DENSE)
+    results = run_dijkstra_quantum(times=times, graph_type=DENSE, time_limit=time_limit)
     save_results_to_json_quantum(
-        directory=RESULTS_DIRECTORY, name=QUANTUM_DENSE_FILENAME, results=results
+        directory=directory, name=QUANTUM_DENSE_FILENAME, results=results
     )
     print("Running Dijkstra's algorithm WORSTCASE")
-    results = run_dijkstra_quantum(times=times, graph_type=WORSTCASE)
+    results = run_dijkstra_quantum(
+        times=times, graph_type=WORSTCASE, time_limit=time_limit
+    )
     save_results_to_json_quantum(
-        directory=RESULTS_DIRECTORY, name=QUANTUM_WORSTCASE_FILENAME, results=results
+        directory=directory, name=QUANTUM_WORSTCASE_FILENAME, results=results
     )
 
 
-def dijkstra_quantum(graph, start_node):
+def dijkstra_quantum(graph, start_node, time_limit):
     n = len(graph)
     distances = [float("inf")] * n
     previous = [None] * n
@@ -124,7 +134,7 @@ def dijkstra_quantum(graph, start_node):
             break
 
         min_idx_active, min_dist, cost, limit = find_min(
-            active_distances=padded_distances
+            active_distances=padded_distances, time_limit=time_limit
         )
         true_idx = min(range(len(padded_distances)), key=lambda i: padded_distances[i])
         if padded_distances[min_idx_active] != padded_distances[true_idx]:
@@ -148,7 +158,7 @@ def dijkstra_quantum(graph, start_node):
     return distances, previous, operation_count, mismatch_count, search_calls
 
 
-def run_dijkstra_quantum(times, graph_type):
+def run_dijkstra_quantum(times, graph_type, time_limit):
     """
     Run the naive Dijkstra's algorithm on all available sizes for the given graph type, multiple times.
 
@@ -158,7 +168,8 @@ def run_dijkstra_quantum(times, graph_type):
         Number of repetitions for the whole set of graph sizes.
     graph_type : str
         Identifies which graph set to load.
-
+    time_limit : int
+        Time limit for dijkstra quantum algorithm for 0 - no time limit for 1 - time limit.
     Returns
     -------
     results : dict
@@ -186,7 +197,9 @@ def run_dijkstra_quantum(times, graph_type):
             print("Vertices: ", i, "Run: ", run)
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
             lengths_naive, previous_naive, elapsed, mismatch_count, search_count = (
-                dijkstra_quantum(graph=loaded_graph, start_node=start_node)
+                dijkstra_quantum(
+                    graph=loaded_graph, start_node=start_node, time_limit=time_limit
+                )
             )
             valid = is_dijkstra_valid(
                 graph=loaded_graph,

@@ -13,7 +13,7 @@ Functions
 import numpy as np
 import pandas as pd
 
-from config import DIJKSTRA_RESULTS_DIRECTORY
+from config import DIJKSTRA_RESULTS_DIRECTORY, DIJKSTRA_STATS_DIRECTORY
 from data_analysis.src.helpers import (
     read_results_from_json,
     save_stats_by_file,
@@ -26,7 +26,9 @@ def stats_analysis():
     standard_stats = statistics_by_file_standard(dijkstra_results)
     save_stats_by_file(standard_stats)
     quantum_stats = statistics_by_file_quantum(dijkstra_results)
-    save_stats_by_file_quantum(quantum_stats)
+    save_stats_by_file_quantum(
+        stats_by_file=quantum_stats, directory=DIJKSTRA_STATS_DIRECTORY
+    )
 
 
 def per_count_row_statistics(counts, vertices=None):

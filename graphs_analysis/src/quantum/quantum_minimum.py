@@ -128,11 +128,11 @@ def bbht_search(size, marked_states):
             m *= lam
 
 
-def find_min(active_distances):
+def find_min(active_distances, time_limit):
     size = len(active_distances)
     # threshold = random.randrange(size)
     threshold = random_finite_index(arr=active_distances)
-    time_limit = 22.5 * math.sqrt(size) + 1.4 * math.log2(size)
+    run_limit = 22.5 * math.sqrt(size) + 1.4 * math.log2(size)
     total_time = 0.0
 
     while True:
@@ -145,7 +145,8 @@ def find_min(active_distances):
         y_prime, search_cost = bbht_search(size=size, marked_states=marked_states)
         oracle_cost = math.log2(size) * search_cost
         total_time = total_time + search_cost + oracle_cost
-        if total_time > time_limit:
+
+        if total_time > run_limit and time_limit == 1:
             break
 
         total_time += search_cost
@@ -160,7 +161,7 @@ def find_min(active_distances):
         threshold,
         active_distances[threshold],
         total_time,
-        time_limit,
+        run_limit,
     )
 
 

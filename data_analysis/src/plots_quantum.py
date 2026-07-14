@@ -7,8 +7,8 @@ from config import DIJKSTRA_STATS_DIRECTORY
 from data_analysis.src.helpers import quantum_stat_from_dict, read_results_from_json
 
 
-def plot_all_quantum():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
+def plot_all_quantum(directory):
+    data = read_results_from_json(directory=directory)
     plots_mean_quantum(data=data)
     plots_median_quantum(data=data)
     plots_std_quantum(data=data)

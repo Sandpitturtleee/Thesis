@@ -70,13 +70,13 @@ def save_stats_by_file(stats_by_file):
     print(f"Stats saved to {output_dir}")
 
 
-def save_stats_by_file_quantum(stats_by_file):
+def save_stats_by_file_quantum(stats_by_file, directory):
     """
     Save quantum stats for each file.
     stats_by_file = {file_name: {key: DataFrame, ...}, ...}
     """
     project_root = Path(__file__).parent.parent.parent
-    output_dir = project_root / DATA_DIRECTORY / DIJKSTRA_STATS_DIRECTORY
+    output_dir = project_root / DATA_DIRECTORY / directory
     output_dir.mkdir(parents=True, exist_ok=True)
     print(f"Saving stats to {output_dir}")
 
@@ -97,16 +97,14 @@ def save_stats_by_file_quantum(stats_by_file):
     print(f"Quantum stats saved to {output_dir}")
 
 
-def save_merged_prob_stats_by_file(
-    merged_stats_dict, data_directory="data", dijkstra_stats_directory="dijkstra_stats"
-):
+def save_merged_prob_stats_by_file(merged_stats_dict, directory):
     """
     Save merged per-file/vertex stats dict to separate JSON files.
     merged_stats_dict: {file_name: {vertex: {...stats...}, ...}, ...}
     """
     # Use current directory as root for demo; adjust as appropriate for your project.
     project_root = Path(__file__).parent.parent.parent
-    output_dir = project_root / DATA_DIRECTORY / DIJKSTRA_PROB_STATS_DIRECTORY
+    output_dir = project_root / DATA_DIRECTORY / directory
     output_dir.mkdir(parents=True, exist_ok=True)
     print(f"Saving prob stats to {output_dir}")
 

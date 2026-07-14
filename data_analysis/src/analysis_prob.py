@@ -5,10 +5,12 @@ from data_analysis.src.helpers import (
 )
 
 
-def prob_stats_analysis():
-    dijkstra_results = read_results_from_json(directory=DIJKSTRA_RESULTS_DIRECTORY)
+def prob_stats_analysis(input_directory, output_directory):
+    dijkstra_results = read_results_from_json(directory=input_directory)
     final_result_dict = compute_and_merge_all_probs(all_data=dijkstra_results)
-    save_merged_prob_stats_by_file(merged_stats_dict=final_result_dict)
+    save_merged_prob_stats_by_file(
+        merged_stats_dict=final_result_dict, directory=output_directory
+    )
 
 
 def compute_dijkstra_success_prob(all_data):
@@ -129,6 +131,7 @@ def compute_invalid_when_mismatch_prob(all_data):
 
 
 def compute_and_merge_all_probs(all_data):
+    print(all_data)
     dijkstra_dict = compute_dijkstra_success_prob(all_data)
     find_min_dict = compute_find_min_success_prob(all_data)
     mismatch_wo_invalid_dict = compute_mismatch_without_invalid_prob(all_data)
