@@ -104,6 +104,7 @@ def bbht_search(size, marked_states):
     Boyer-Brassard-Høyer-Tapp exponential search.
     Returns (candidate, cost).
     """
+    initialization_cost = math.log2(size)
     if not marked_states:
         return None, 0
 
@@ -117,7 +118,8 @@ def bbht_search(size, marked_states):
 
         candidate = grover_search(size=size, marked_states=marked_states, iterations=j)
 
-        cost += j
+        cost += initialization_cost  # initialization
+        cost += j  # Grover iterations
 
         if candidate is not None:
             return candidate, cost
@@ -130,7 +132,6 @@ def bbht_search(size, marked_states):
 
 def find_min(active_distances, time_limit):
     size = len(active_distances)
-    # threshold = random.randrange(size)
     threshold = random_finite_index(arr=active_distances)
     run_limit = 22.5 * math.sqrt(size) + 1.4 * math.log2(size)
     total_time = 0.0
@@ -143,8 +144,8 @@ def find_min(active_distances, time_limit):
             break
 
         y_prime, search_cost = bbht_search(size=size, marked_states=marked_states)
-        oracle_cost = math.log2(size) * search_cost
-        total_time = total_time + search_cost + oracle_cost
+
+        total_time = total_time + search_cost
 
         if total_time > run_limit and time_limit == 1:
             break
