@@ -15,10 +15,11 @@ import json
 import os
 from pathlib import Path
 
+import pandas as pd
+
 from config import (
     DATA_DIRECTORY,
     DIJKSTRA_PROB_STATS_DIRECTORY,
-    DIJKSTRA_RESULTS_DIRECTORY,
     DIJKSTRA_STATS_DIRECTORY,
 )
 
@@ -48,121 +49,53 @@ def read_results_from_json(directory) -> dict:
     return data
 
 
-def save_stats_by_file(stats_by_file):
-    """
-    Save stats for classic/standard files.
-    Each is wrapped in a top-level 'cost' key.
-    """
-    project_root = Path(__file__).parent.parent.parent
-    output_dir = project_root / DATA_DIRECTORY / DIJKSTRA_STATS_DIRECTORY
-    output_dir.mkdir(parents=True, exist_ok=True)
-    print(f"Saving stats to {output_dir}")
-
-    for file_name, stats in stats_by_file.items():
-        file_name_out = Path(file_name).stem + "_stats.json"
-        out_path = output_dir / file_name_out
-
-        # Convert DataFrame to dict and wrap in 'cost'
-        wrapped = {"cost": stats.to_dict(orient="index")}
-
-        with open(out_path, "w") as f:
-            json.dump(wrapped, f, indent=4)
-    print(f"Stats saved to {output_dir}")
-
-
-def save_stats_by_file_quantum(stats_by_file, directory):
-    """
-    Save quantum stats for each file.
-    stats_by_file = {file_name: {key: DataFrame, ...}, ...}
-    """
-    project_root = Path(__file__).parent.parent.parent
-    output_dir = project_root / DATA_DIRECTORY / directory
-    output_dir.mkdir(parents=True, exist_ok=True)
-    print(f"Saving stats to {output_dir}")
-
-    for file_name, field_stats in stats_by_file.items():
-        file_name_out = Path(file_name).stem + "_stats.json"
-        out_path = output_dir / file_name_out
-
-        # Build a dictionary: {field_name: stats_df_as_dict}
-        output_dict = {}
-        for key, df in field_stats.items():
-            output_dict[key] = df.to_dict(orient="index")
-
-        # Save as JSON
-        import json
-
-        with open(out_path, "w") as f:
-            json.dump(output_dict, f, indent=4)
-    print(f"Quantum stats saved to {output_dir}")
-
-
-def save_merged_prob_stats_by_file(merged_stats_dict, directory):
-    """
-    Save merged per-file/vertex stats dict to separate JSON files.
-    merged_stats_dict: {file_name: {vertex: {...stats...}, ...}, ...}
-    """
-    # Use current directory as root for demo; adjust as appropriate for your project.
-    project_root = Path(__file__).parent.parent.parent
-    output_dir = project_root / DATA_DIRECTORY / directory
-    output_dir.mkdir(parents=True, exist_ok=True)
-    print(f"Saving prob stats to {output_dir}")
-
-    for file_name, vertex_stats in merged_stats_dict.items():
-        file_name_out = Path(file_name).stem + "_prob_stats.json"
-        out_path = output_dir / file_name_out
-        with open(out_path, "w") as f:
-            json.dump(vertex_stats, f, indent=4)
-    print(f"Quantum prob stats saved to {output_dir}")
-
-
-def read_results_by_vertex(file_name: str, vertex_number: int):
-    """
-    Reads a specific JSON result file for Dijkstra algorithm runs and returns data for a selected vertex number.
-
-    Parameters
-    ----------
-    file_name : str
-        Name of the .json result file to read (e.g., "some_results.json")
-    vertex_number : int
-        Number of vertices to look for in the file.
-
-    Returns
-    -------
-    dict
-        A dictionary with the matching 'vertices' value and corresponding 'count' list, or None if not found.
-    """
-    project_root = Path(__file__).parent.parent.parent
-    file_path = project_root / DATA_DIRECTORY / DIJKSTRA_RESULTS_DIRECTORY / file_name
-
-    # Read and load the JSON file
-    with open(file_path, "r") as file:
-        data = json.load(file)
-
-    # Find the index for the given vertex_number
-    idx = data["vertices"].index(vertex_number)
-    return {"vertices": data["vertices"][idx], "count": data["count"][idx]}
-
-
-def read_results_by_vertices(file_name: str, vertices_number: list):
-    """
-    Reads counts for multiple vertex numbers from the given JSON results file.
-    Returns a dict with vertex_number as key and counts as value.
-    """
-    project_root = Path(__file__).parent.parent.parent
-    file_path = project_root / DATA_DIRECTORY / DIJKSTRA_RESULTS_DIRECTORY / file_name
-
-    with open(file_path, "r") as file:
-        data = json.load(file)
-
-    results = {}
-    for v in vertices_number:
-        if v in data["vertices"]:
-            idx = data["vertices"].index(v)
-            results[v] = data["count"][idx]
-        else:
-            print(f"Vertex {v} not found in file.")
-    return results
+# def read_results_by_vertex(file_name: str, vertex_number: int):
+#     """
+#     Reads a specific JSON result file for Dijkstra algorithm runs and returns data for a selected vertex number.
+#
+#     Parameters
+#     ----------
+#     file_name : str
+#         Name of the .json result file to read (e.g., "some_results.json")
+#     vertex_number : int
+#         Number of vertices to look for in the file.
+#
+#     Returns
+#     -------
+#     dict
+#         A dictionary with the matching 'vertices' value and corresponding 'count' list, or None if not found.
+#     """
+#     project_root = Path(__file__).parent.parent.parent
+#     file_path = project_root / DATA_DIRECTORY / DIJKSTRA_RESULTS_DIRECTORY / file_name
+#
+#     # Read and load the JSON file
+#     with open(file_path, "r") as file:
+#         data = json.load(file)
+#
+#     # Find the index for the given vertex_number
+#     idx = data["vertices"].index(vertex_number)
+#     return {"vertices": data["vertices"][idx], "count": data["count"][idx]}
+#
+#
+# def read_results_by_vertices(file_name: str, vertices_number: list):
+#     """
+#     Reads counts for multiple vertex numbers from the given JSON results file.
+#     Returns a dict with vertex_number as key and counts as value.
+#     """
+#     project_root = Path(__file__).parent.parent.parent
+#     file_path = project_root / DATA_DIRECTORY / DIJKSTRA_RESULTS_DIRECTORY / file_name
+#
+#     with open(file_path, "r") as file:
+#         data = json.load(file)
+#
+#     results = {}
+#     for v in vertices_number:
+#         if v in data["vertices"]:
+#             idx = data["vertices"].index(v)
+#             results[v] = data["count"][idx]
+#         else:
+#             print(f"Vertex {v} not found in file.")
+#     return results
 
 
 def extract_methods_and_labels(data):
@@ -213,3 +146,40 @@ def order_filenames(all_stats):
         if k not in ordered_keys:
             ordered_keys.append(k)
     return ordered_keys
+
+
+def merge_dicts(dicts):
+    merged = {}
+    for d in dicts:
+        for file, data in d.items():
+            if file not in merged:
+                # Deep copy to avoid reference issues
+                merged[file] = {
+                    "vertices": data["vertices"].copy(),
+                    "count": [c.copy() for c in data["count"]],
+                }
+            else:
+                for i, c in enumerate(data["count"]):
+                    merged[file]["count"][i].extend(c)
+    return merged
+
+
+def per_count_row_statistics(counts, vertices=None):
+    """
+    Compute statistics per row for a 2D list of counts.
+    If vertices are provided, use them as the DataFrame index.
+    """
+    df = pd.DataFrame(counts)
+    if vertices is not None:
+        df.index = vertices  # Set index for better labeling
+    df_stats = pd.DataFrame(
+        {
+            "mean": df.mean(axis=1),
+            "std": df.std(axis=1),
+            "median": df.median(axis=1),
+            "min": df.min(axis=1),
+            "max": df.max(axis=1),
+        },
+        index=df.index,
+    )
+    return df_stats

@@ -43,7 +43,6 @@ import math
 from config import (
     DENSE,
     HALF_EDGES,
-    RESULTS_DIRECTORY,
     SPARSE,
     STANDARD_HEAP_DENSE_FILENAME,
     STANDARD_HEAP_HALF_EDGES_FILENAME,
@@ -59,7 +58,7 @@ from graphs_analysis.src.helpers import (
 from graphs_analysis.src.standard.heap import CountingHeap
 
 
-def run_all_dijkstra_heap(times):
+def run_all_dijkstra_heap(times, directory):
     """
     Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
 
@@ -70,28 +69,28 @@ def run_all_dijkstra_heap(times):
     """
     vertices, count = run_dijkstra_heap(times=times, graph_type=SPARSE)
     save_results_to_json(
-        directory=RESULTS_DIRECTORY,
+        directory=directory,
         name=STANDARD_HEAP_SPARSE_FILENAME,
         vertices=vertices,
         count=count,
     )
     vertices, count = run_dijkstra_heap(times=times, graph_type=HALF_EDGES)
     save_results_to_json(
-        directory=RESULTS_DIRECTORY,
+        directory=directory,
         name=STANDARD_HEAP_HALF_EDGES_FILENAME,
         vertices=vertices,
         count=count,
     )
     vertices, count = run_dijkstra_heap(times=times, graph_type=DENSE)
     save_results_to_json(
-        directory=RESULTS_DIRECTORY,
+        directory=directory,
         name=STANDARD_HEAP_DENSE_FILENAME,
         vertices=vertices,
         count=count,
     )
     vertices, count = run_dijkstra_heap(times=times, graph_type=WORSTCASE)
     save_results_to_json(
-        directory=RESULTS_DIRECTORY,
+        directory=directory,
         name=STANDARD_HEAP_WORSTCASE_FILENAME,
         vertices=vertices,
         count=count,

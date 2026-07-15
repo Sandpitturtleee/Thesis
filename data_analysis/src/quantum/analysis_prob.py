@@ -1,16 +1,71 @@
-from config import DIJKSTRA_RESULTS_DIRECTORY
-from data_analysis.src.helpers import (
-    read_results_from_json,
-    save_merged_prob_stats_by_file,
+import json
+import os
+from pathlib import Path
+
+import pandas as pd
+
+from config import (
+    DATA_DIRECTORY,
+    RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+    RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
+    STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
+    STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
 )
+from data_analysis.src.helpers import read_results_from_json
 
 
-def prob_stats_analysis(input_directory, output_directory):
-    dijkstra_results = read_results_from_json(directory=input_directory)
-    final_result_dict = compute_and_merge_all_probs(all_data=dijkstra_results)
-    save_merged_prob_stats_by_file(
-        merged_stats_dict=final_result_dict, directory=output_directory
+def prob_stats_quantum_analysis():
+    time_limit_results = read_results_from_json(
+        directory=RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT
     )
+    time_limit_merged = compute_and_merge_all_probs(results=time_limit_results)
+    save_merged_prob_stats_by_file(
+        merged=time_limit_merged, directory=STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT
+    )
+
+    no_time_limit_results = read_results_from_json(
+        directory=RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT
+    )
+    no_time_limit_merged = compute_and_merge_all_probs(results=no_time_limit_results)
+    save_merged_prob_stats_by_file(
+        merged=no_time_limit_merged,
+        directory=STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
+    )
+
+
+def compute_and_merge_all_probs(results):
+    dijkstra_dict = compute_dijkstra_success_prob(results)
+    find_min_dict = compute_find_min_success_prob(results)
+    mismatch_wo_invalid_dict = compute_mismatch_without_invalid_prob(results)
+    invalid_when_mismatch_dict = compute_invalid_when_mismatch_prob(results)
+
+    merged_results = {}
+
+    for filename in results:
+        if not filename.startswith("quantum"):
+            continue
+        # Keep this order!
+        vertices = results[filename]["vertices"]
+        merged_results[filename] = {}
+        for v in vertices:
+            merged_entry = {}
+            if filename in dijkstra_dict and v in dijkstra_dict[filename]:
+                merged_entry.update(dijkstra_dict[filename][v])
+            if filename in find_min_dict and v in find_min_dict[filename]:
+                merged_entry.update(find_min_dict[filename][v])
+            if (
+                filename in mismatch_wo_invalid_dict
+                and v in mismatch_wo_invalid_dict[filename]
+            ):
+                merged_entry.update(mismatch_wo_invalid_dict[filename][v])
+            if (
+                filename in invalid_when_mismatch_dict
+                and v in invalid_when_mismatch_dict[filename]
+            ):
+                merged_entry.update(invalid_when_mismatch_dict[filename][v])
+            merged_results[filename][v] = merged_entry
+
+    return merged_results
 
 
 def compute_dijkstra_success_prob(all_data):
@@ -130,37 +185,20 @@ def compute_invalid_when_mismatch_prob(all_data):
     return results
 
 
-def compute_and_merge_all_probs(all_data):
-    print(all_data)
-    dijkstra_dict = compute_dijkstra_success_prob(all_data)
-    find_min_dict = compute_find_min_success_prob(all_data)
-    mismatch_wo_invalid_dict = compute_mismatch_without_invalid_prob(all_data)
-    invalid_when_mismatch_dict = compute_invalid_when_mismatch_prob(all_data)
+def save_merged_prob_stats_by_file(merged, directory):
+    """
+    Save merged per-file/vertex stats dict to separate JSON files.
+    merged_stats_dict: {file_name: {vertex: {...stats...}, ...}, ...}
+    """
+    # Use current directory as root for demo; adjust as appropriate for your project.
+    project_root = Path(__file__).parent.parent.parent
+    output_dir = project_root / DATA_DIRECTORY / directory
+    output_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Saving prob stats to {output_dir}")
 
-    merged_results = {}
-
-    for filename in all_data:
-        if not filename.startswith("quantum"):
-            continue
-        # Keep this order!
-        vertices = all_data[filename]["vertices"]
-        merged_results[filename] = {}
-        for v in vertices:
-            merged_entry = {}
-            if filename in dijkstra_dict and v in dijkstra_dict[filename]:
-                merged_entry.update(dijkstra_dict[filename][v])
-            if filename in find_min_dict and v in find_min_dict[filename]:
-                merged_entry.update(find_min_dict[filename][v])
-            if (
-                filename in mismatch_wo_invalid_dict
-                and v in mismatch_wo_invalid_dict[filename]
-            ):
-                merged_entry.update(mismatch_wo_invalid_dict[filename][v])
-            if (
-                filename in invalid_when_mismatch_dict
-                and v in invalid_when_mismatch_dict[filename]
-            ):
-                merged_entry.update(invalid_when_mismatch_dict[filename][v])
-            merged_results[filename][v] = merged_entry
-
-    return merged_results
+    for file_name, vertex_stats in merged.items():
+        file_name_out = Path(file_name).stem + ".json"
+        out_path = output_dir / file_name_out
+        with open(out_path, "w") as f:
+            json.dump(vertex_stats, f, indent=4)
+    print(f"Quantum prob stats saved to {output_dir}")

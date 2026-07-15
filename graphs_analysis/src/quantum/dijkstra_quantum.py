@@ -46,7 +46,6 @@ from config import (
     QUANTUM_HALF_EDGES_FILENAME,
     QUANTUM_SPARSE_FILENAME,
     QUANTUM_WORSTCASE_FILENAME,
-    RESULTS_DIRECTORY,
     SPARSE,
     WORSTCASE,
 )
@@ -185,8 +184,6 @@ def run_dijkstra_quantum(times, graph_type, time_limit):
     invalid_counts = []
     search_calls = []
 
-    # print(vertices)
-    # vertices= [x for x in vertices if 10 <= x <= 20]
     start_node = 0
     for i in vertices:
         size_cost = []

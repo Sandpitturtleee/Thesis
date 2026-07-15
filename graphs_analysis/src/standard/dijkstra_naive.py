@@ -42,7 +42,6 @@ Types
 from config import (
     DENSE,
     HALF_EDGES,
-    RESULTS_DIRECTORY,
     SPARSE,
     STANDARD_NAIVE_DENSE_FILENAME,
     STANDARD_NAIVE_HALF_EDGES_FILENAME,
@@ -57,7 +56,7 @@ from graphs_analysis.src.helpers import (
 )
 
 
-def run_all_dijkstra_naive(times):
+def run_all_dijkstra_naive(times, directory):
     """
     Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
 
@@ -68,28 +67,28 @@ def run_all_dijkstra_naive(times):
     """
     vertices, count = run_dijkstra_naive(times=times, graph_type=SPARSE)
     save_results_to_json(
-        directory=RESULTS_DIRECTORY,
+        directory=directory,
         name=STANDARD_NAIVE_SPARSE_FILENAME,
         vertices=vertices,
         count=count,
     )
     vertices, count = run_dijkstra_naive(times=times, graph_type=HALF_EDGES)
     save_results_to_json(
-        directory=RESULTS_DIRECTORY,
+        directory=directory,
         name=STANDARD_NAIVE_HALF_EDGES_FILENAME,
         vertices=vertices,
         count=count,
     )
     vertices, count = run_dijkstra_naive(times=times, graph_type=DENSE)
     save_results_to_json(
-        directory=RESULTS_DIRECTORY,
+        directory=directory,
         name=STANDARD_NAIVE_DENSE_FILENAME,
         vertices=vertices,
         count=count,
     )
     vertices, count = run_dijkstra_naive(times=times, graph_type=WORSTCASE)
     save_results_to_json(
-        directory=RESULTS_DIRECTORY,
+        directory=directory,
         name=STANDARD_NAIVE_WORSTCASE_FILENAME,
         vertices=vertices,
         count=count,
