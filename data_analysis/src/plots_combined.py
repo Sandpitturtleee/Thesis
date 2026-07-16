@@ -4,7 +4,6 @@ import networkx as nx
 import numpy as np
 
 from config import (
-    DIJKSTRA_STATS_DIRECTORY,
     STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
     STATS_DIRECTORY_STANDARD_HEAP,
@@ -53,7 +52,7 @@ def plots_types_by_stat(data, stat_key, exclude_files=None):
         ("Sparse", "sparse", cm.get_cmap("Blues")),
         ("Half edges", "half_edges", cm.get_cmap("Oranges")),
         ("Dense", "dense", cm.get_cmap("Greens")),
-        ("Special case", "worstcase", cm.get_cmap("Reds")),
+        ("Special case", "special_case", cm.get_cmap("Purples")),
     ]
 
     fig, axs = plt.subplots(2, 2, figsize=(14, 10))

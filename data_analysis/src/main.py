@@ -21,13 +21,13 @@ if __name__ == "__main__":
 
     # plot_all_naive()
     # plot_all_heap()
-
-    plot_all_quantum_time_limit()
-    plot_all_quantum_no_time_limit()
-
-    plot_standard_quantum_combined()
-
-    plot_all_other()
-
-    plot_all_quantum_prob_time_limit()
-    plot_all_quantum_prob_no_time_limit()
+    #
+    # plot_all_quantum_time_limit()
+    # plot_all_quantum_no_time_limit()
+    #
+    # plot_standard_quantum_combined()
+    #
+    # plot_all_other()
+    #
+    # plot_all_quantum_prob_time_limit()
+    # plot_all_quantum_prob_no_time_limit()

@@ -17,11 +17,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from config import (
-    DATA_DIRECTORY,
-    DIJKSTRA_PROB_STATS_DIRECTORY,
-    DIJKSTRA_STATS_DIRECTORY,
-)
+from config import DATA_DIRECTORY
 
 
 def read_results_from_json(directory) -> dict:

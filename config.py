@@ -1,7 +1,7 @@
 # config.py
 
 MAX_GRAPH_SIZE = 100
-GRAPH_RUNS = 100
+GRAPH_RUNS = 2
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"
@@ -26,14 +26,17 @@ STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT = "dijkstra_stats/quantum_prob/no_tim
 STANDARD_HEAP_SPARSE_FILENAME = "standard_heap_sparse"
 STANDARD_HEAP_HALF_EDGES_FILENAME = "standard_heap_half_edges"
 STANDARD_HEAP_DENSE_FILENAME = "standard_heap_dense"
-STANDARD_HEAP_WORSTCASE_FILENAME = "standard_heap_worstcase"
-
+STANDARD_HEAP_SPECIAL_CASE_FILENAME = "standard_heap_special_case"
 STANDARD_NAIVE_SPARSE_FILENAME = "standard_naive_sparse"
 STANDARD_NAIVE_HALF_EDGES_FILENAME = "standard_naive_half_edges"
 STANDARD_NAIVE_DENSE_FILENAME = "standard_naive_dense"
-STANDARD_NAIVE_WORSTCASE_FILENAME = "standard_naive_worstcase"
+STANDARD_NAIVE_SPECIAL_CASE_FILENAME = "standard_naive_special_case"
 
-QUANTUM_SPARSE_FILENAME = "quantum_sparse"
-QUANTUM_HALF_EDGES_FILENAME = "quantum_half_edges"
-QUANTUM_DENSE_FILENAME = "quantum_dense"
-QUANTUM_WORSTCASE_FILENAME = "quantum_worstcase"
+QUANTUM_TIME_LIMIT_SPARSE_FILENAME = "quantum_time_limit_sparse"
+QUANTUM_TIME_LIMIT_HALF_EDGES_FILENAME = "quantum_time_limit_half_edges"
+QUANTUM_TIME_LIMIT_DENSE_FILENAME = "quantum_time_limit_dense"
+QUANTUM_TIME_LIMIT_SPECIAL_CASE_FILENAME = "quantum_time_limit_special_case"
+QUANTUM_NO_TIME_LIMIT_SPARSE_FILENAME = "quantum_no_time_limit_sparse"
+QUANTUM_NO_TIME_LIMIT_HALF_EDGES_FILENAME = "quantum_no_time_limit_half_edges"
+QUANTUM_NO_TIME_LIMIT_DENSE_FILENAME = "quantum_time_no_limit_dense"
+QUANTUM_NO_TIME_LIMIT_SPECIAL_CASE_FILENAME = "quantum_no_time_limit_special_case"

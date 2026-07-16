@@ -3,11 +3,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 
-from config import (
-    DIJKSTRA_STATS_DIRECTORY,
-    STATS_DIRECTORY_STANDARD_HEAP,
-    STATS_DIRECTORY_STANDARD_NAIVE,
-)
+from config import STATS_DIRECTORY_STANDARD_HEAP, STATS_DIRECTORY_STANDARD_NAIVE
 from data_analysis.src.helpers import (
     extract_methods_and_labels,
     merge_dicts_standard,

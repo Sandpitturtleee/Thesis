@@ -41,11 +41,18 @@ Types
 
 from config import (
     DENSE,
+    GRAPH_RUNS,
     HALF_EDGES,
-    QUANTUM_DENSE_FILENAME,
-    QUANTUM_HALF_EDGES_FILENAME,
-    QUANTUM_SPARSE_FILENAME,
-    QUANTUM_WORSTCASE_FILENAME,
+    QUANTUM_NO_TIME_LIMIT_DENSE_FILENAME,
+    QUANTUM_NO_TIME_LIMIT_HALF_EDGES_FILENAME,
+    QUANTUM_NO_TIME_LIMIT_SPARSE_FILENAME,
+    QUANTUM_NO_TIME_LIMIT_SPECIAL_CASE_FILENAME,
+    QUANTUM_TIME_LIMIT_DENSE_FILENAME,
+    QUANTUM_TIME_LIMIT_HALF_EDGES_FILENAME,
+    QUANTUM_TIME_LIMIT_SPARSE_FILENAME,
+    QUANTUM_TIME_LIMIT_SPECIAL_CASE_FILENAME,
+    RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+    RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
     SPARSE,
     WORSTCASE,
 )
@@ -53,7 +60,6 @@ from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
 from graphs_analysis.src.helpers import (
     create_frequency,
     load_graph_from_json,
-    save_results_to_json,
     save_results_to_json_quantum,
 )
 from graphs_analysis.src.quantum.quantum_minimum import (
@@ -62,7 +68,7 @@ from graphs_analysis.src.quantum.quantum_minimum import (
 )
 
 
-def run_all_dijkstra_quantum(times, directory, time_limit):
+def run_all_dijkstra_quantum_time_limit():
     """
     Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
 
@@ -72,34 +78,85 @@ def run_all_dijkstra_quantum(times, directory, time_limit):
         Number of times to repeat each benchmark for averaging.
     directory : string
         Folder directory for saving results.
-    time_limit : int
-        Time limit for dijkstra quantum algorithm for 0 - no time limit for 1 - time limit.
     """
+    time_limit = 1
+    times = GRAPH_RUNS
+    directory = RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT
     print("Running Dijkstra's algorithm SPARSE")
     results = run_dijkstra_quantum(
         times=times, graph_type=SPARSE, time_limit=time_limit
     )
     save_results_to_json_quantum(
-        directory=directory, name=QUANTUM_SPARSE_FILENAME, results=results
+        directory=directory, name=QUANTUM_TIME_LIMIT_SPARSE_FILENAME, results=results
     )
     print("Running Dijkstra's algorithm HALF_EDGES")
     results = run_dijkstra_quantum(
         times=times, graph_type=HALF_EDGES, time_limit=time_limit
     )
     save_results_to_json_quantum(
-        directory=directory, name=QUANTUM_HALF_EDGES_FILENAME, results=results
+        directory=directory,
+        name=QUANTUM_TIME_LIMIT_HALF_EDGES_FILENAME,
+        results=results,
     )
     print("Running Dijkstra's algorithm DENSE")
     results = run_dijkstra_quantum(times=times, graph_type=DENSE, time_limit=time_limit)
     save_results_to_json_quantum(
-        directory=directory, name=QUANTUM_DENSE_FILENAME, results=results
+        directory=directory, name=QUANTUM_TIME_LIMIT_DENSE_FILENAME, results=results
     )
-    print("Running Dijkstra's algorithm WORSTCASE")
+    print("Running Dijkstra's algorithm SPECIAL_CASE")
     results = run_dijkstra_quantum(
         times=times, graph_type=WORSTCASE, time_limit=time_limit
     )
     save_results_to_json_quantum(
-        directory=directory, name=QUANTUM_WORSTCASE_FILENAME, results=results
+        directory=directory,
+        name=QUANTUM_TIME_LIMIT_SPECIAL_CASE_FILENAME,
+        results=results,
+    )
+
+
+def run_all_dijkstra_quantum_no_time_limit():
+    """
+    Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
+
+    Parameters
+    ----------
+    times : int
+        Number of times to repeat each benchmark for averaging.
+    directory : string
+        Folder directory for saving results.
+    """
+    time_limit = 0
+    times = GRAPH_RUNS
+    directory = RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT
+    print("Running Dijkstra's algorithm SPARSE")
+    results = run_dijkstra_quantum(
+        times=times, graph_type=SPARSE, time_limit=time_limit
+    )
+    save_results_to_json_quantum(
+        directory=directory, name=QUANTUM_NO_TIME_LIMIT_SPARSE_FILENAME, results=results
+    )
+    print("Running Dijkstra's algorithm HALF_EDGES")
+    results = run_dijkstra_quantum(
+        times=times, graph_type=HALF_EDGES, time_limit=time_limit
+    )
+    save_results_to_json_quantum(
+        directory=directory,
+        name=QUANTUM_NO_TIME_LIMIT_HALF_EDGES_FILENAME,
+        results=results,
+    )
+    print("Running Dijkstra's algorithm DENSE")
+    results = run_dijkstra_quantum(times=times, graph_type=DENSE, time_limit=time_limit)
+    save_results_to_json_quantum(
+        directory=directory, name=QUANTUM_NO_TIME_LIMIT_DENSE_FILENAME, results=results
+    )
+    print("Running Dijkstra's algorithm SPECIAL_CASE")
+    results = run_dijkstra_quantum(
+        times=times, graph_type=WORSTCASE, time_limit=time_limit
+    )
+    save_results_to_json_quantum(
+        directory=directory,
+        name=QUANTUM_NO_TIME_LIMIT_SPECIAL_CASE_FILENAME,
+        results=results,
     )
 
 
@@ -190,8 +247,8 @@ def run_dijkstra_quantum(times, graph_type, time_limit):
         size_mismatches = []
         size_invalids = []
         size_search_calls = []
+        print("Vertices: ", i)
         for run in range(times):
-            print("Vertices: ", i, "Run: ", run)
             loaded_graph = load_graph_from_json(name=f"{i}{graph_type}_{run + 1}")
             lengths_naive, previous_naive, elapsed, mismatch_count, search_count = (
                 dijkstra_quantum(

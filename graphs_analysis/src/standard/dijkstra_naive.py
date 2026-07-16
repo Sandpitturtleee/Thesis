@@ -41,12 +41,14 @@ Types
 
 from config import (
     DENSE,
+    GRAPH_RUNS,
     HALF_EDGES,
+    RESULTS_DIRECTORY_STANDARD_NAIVE,
     SPARSE,
     STANDARD_NAIVE_DENSE_FILENAME,
     STANDARD_NAIVE_HALF_EDGES_FILENAME,
     STANDARD_NAIVE_SPARSE_FILENAME,
-    STANDARD_NAIVE_WORSTCASE_FILENAME,
+    STANDARD_NAIVE_SPECIAL_CASE_FILENAME,
     WORSTCASE,
 )
 from graphs_analysis.src.helpers import (
@@ -56,15 +58,12 @@ from graphs_analysis.src.helpers import (
 )
 
 
-def run_all_dijkstra_naive(times, directory):
+def run_all_dijkstra_naive():
     """
     Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
-
-    Parameters
-    ----------
-    times : int
-        Number of times to repeat each benchmark for averaging.
     """
+    times = GRAPH_RUNS
+    directory = RESULTS_DIRECTORY_STANDARD_NAIVE
     vertices, count = run_dijkstra_naive(times=times, graph_type=SPARSE)
     save_results_to_json(
         directory=directory,
@@ -89,7 +88,7 @@ def run_all_dijkstra_naive(times, directory):
     vertices, count = run_dijkstra_naive(times=times, graph_type=WORSTCASE)
     save_results_to_json(
         directory=directory,
-        name=STANDARD_NAIVE_WORSTCASE_FILENAME,
+        name=STANDARD_NAIVE_SPECIAL_CASE_FILENAME,
         vertices=vertices,
         count=count,
     )

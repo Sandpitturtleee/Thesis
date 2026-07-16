@@ -3,7 +3,6 @@ import matplotlib.ticker as mticker
 import numpy as np
 
 from config import (
-    DIJKSTRA_PROB_STATS_DIRECTORY,
     STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
 )

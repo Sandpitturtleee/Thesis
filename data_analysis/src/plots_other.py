@@ -8,12 +8,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-from config import (
-    DATA_DIRECTORY,
-    DIJKSTRA_PROB_STATS_DIRECTORY,
-    DIJKSTRA_STATS_DIRECTORY,
-    RESULTS_DIRECTORY_STANDARD_NAIVE,
-)
+from config import DATA_DIRECTORY, RESULTS_DIRECTORY_STANDARD_NAIVE
 from data_analysis.src.helpers import extract_methods_and_labels, read_results_from_json
 
 
