@@ -1,3 +1,4 @@
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
@@ -170,6 +171,7 @@ def plot_grouped_dijkstra_and_find_min_success_prob(
     all_stats, titles, ordered_filenames
 ):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
+    cmap = cm.get_cmap("Blues", 8)
     axs = axs.flatten()
     width = 2
     sep = 1
@@ -181,8 +183,8 @@ def plot_grouped_dijkstra_and_find_min_success_prob(
         x1 = xs - width / 2 - sep / 2
         x2 = xs + width / 2 + sep / 2
 
-        axs[i].bar(x1, ys1, width=width, color="green", label="Dijkstra Success Prob")
-        axs[i].bar(x2, ys2, width=width, color="blue", label="Find Min Success Prob")
+        axs[i].bar(x1, ys1, width=width, color=cmap(3), label="Dijkstra Success Prob")
+        axs[i].bar(x2, ys2, width=width, color=cmap(5), label="Find Min Success Prob")
         axs[i].set_ylabel("Probability (%)")
         axs[i].set_xlabel("Vertices")
         axs[i].set_title(titles[i], pad=20)

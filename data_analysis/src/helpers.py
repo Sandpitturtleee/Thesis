@@ -17,7 +17,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from config import DATA_DIRECTORY
+from config import COLOR_MAP, DATA_DIRECTORY, LEGEND_ORDER
 
 
 def read_results_from_json(directory) -> dict:
@@ -141,3 +141,19 @@ def merge_stats_dicts(dicts):
         for k, v in d.items():
             merged[k] = copy.deepcopy(v)
     return merged
+
+
+def get_type_from_filename(filename):
+    for key in COLOR_MAP:
+        if key in filename:
+            return key
+    return None
+
+
+def add_custom_legend(ax, handles_dict, extra_curves=None, extra_labels=None):
+    handles = [handles_dict[key] for key in LEGEND_ORDER if key in handles_dict]
+    labels = [key for key in LEGEND_ORDER if key in handles_dict]
+    if extra_curves and extra_labels:
+        handles.extend(extra_curves)
+        labels.extend(extra_labels)
+    ax.legend(handles, labels)

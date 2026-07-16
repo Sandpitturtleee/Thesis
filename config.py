@@ -1,7 +1,8 @@
 # config.py
+import matplotlib.cm as cm
 
 MAX_GRAPH_SIZE = 100
-GRAPH_RUNS = 2
+GRAPH_RUNS = 100
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"
@@ -40,3 +41,24 @@ QUANTUM_NO_TIME_LIMIT_SPARSE_FILENAME = "quantum_no_time_limit_sparse"
 QUANTUM_NO_TIME_LIMIT_HALF_EDGES_FILENAME = "quantum_no_time_limit_half_edges"
 QUANTUM_NO_TIME_LIMIT_DENSE_FILENAME = "quantum_time_no_limit_dense"
 QUANTUM_NO_TIME_LIMIT_SPECIAL_CASE_FILENAME = "quantum_no_time_limit_special_case"
+
+cmap = cm.get_cmap(
+    "Blues", 8
+)  # Get 4 discrete colors (so you can also use one for fallback etc)
+COLOR_MAP = {
+    "sparse": cmap(3),
+    "half_edges": cmap(5),
+    "dense": cmap(7),
+    "special_case": "red",  # blue!
+}
+LEGEND_ORDER = ["sparse", "half_edges", "dense", "special_case"]
+
+PLOT_TITLE_TYPE_TIME_LIMIT = "time limit"
+PLOT_TITLE_TYPE_NO_TIME_LIMIT = "no time limit"
+
+GRAPH_TYPES_MAPPING = [
+    ("Sparse", "sparse", cm.get_cmap("Blues")),
+    ("Half edges", "half_edges", cm.get_cmap("Blues")),
+    ("Dense", "dense", cm.get_cmap("Blues")),
+    ("Special case", "special_case", cm.get_cmap("Reds")),
+]
