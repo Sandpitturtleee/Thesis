@@ -75,20 +75,20 @@ def run_all_dijkstra_quantum(times, directory, time_limit):
     time_limit : int
         Time limit for dijkstra quantum algorithm for 0 - no time limit for 1 - time limit.
     """
-    # print("Running Dijkstra's algorithm SPARSE")
-    # results = run_dijkstra_quantum(
-    #     times=times, graph_type=SPARSE, time_limit=time_limit
-    # )
-    # save_results_to_json_quantum(
-    #     directory=directory, name=QUANTUM_SPARSE_FILENAME, results=results
-    # )
-    # print("Running Dijkstra's algorithm HALF_EDGES")
-    # results = run_dijkstra_quantum(
-    #     times=times, graph_type=HALF_EDGES, time_limit=time_limit
-    # )
-    # save_results_to_json_quantum(
-    #     directory=directory, name=QUANTUM_HALF_EDGES_FILENAME, results=results
-    # )
+    print("Running Dijkstra's algorithm SPARSE")
+    results = run_dijkstra_quantum(
+        times=times, graph_type=SPARSE, time_limit=time_limit
+    )
+    save_results_to_json_quantum(
+        directory=directory, name=QUANTUM_SPARSE_FILENAME, results=results
+    )
+    print("Running Dijkstra's algorithm HALF_EDGES")
+    results = run_dijkstra_quantum(
+        times=times, graph_type=HALF_EDGES, time_limit=time_limit
+    )
+    save_results_to_json_quantum(
+        directory=directory, name=QUANTUM_HALF_EDGES_FILENAME, results=results
+    )
     print("Running Dijkstra's algorithm DENSE")
     results = run_dijkstra_quantum(times=times, graph_type=DENSE, time_limit=time_limit)
     save_results_to_json_quantum(

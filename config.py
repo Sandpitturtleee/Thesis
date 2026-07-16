@@ -37,12 +37,3 @@ QUANTUM_SPARSE_FILENAME = "quantum_sparse"
 QUANTUM_HALF_EDGES_FILENAME = "quantum_half_edges"
 QUANTUM_DENSE_FILENAME = "quantum_dense"
 QUANTUM_WORSTCASE_FILENAME = "quantum_worstcase"
-
-
-DIJKSTRA_STATS_DIRECTORY = "dijkstra_stats"
-DIJKSTRA_STATS_NO_LIMIT_DIRECTORY = "dijkstra_stats_no_limit"
-DIJKSTRA_PROB_STATS_DIRECTORY = "dijkstra_prob_stats"
-DIJKSTRA_PROB_STATS_NO_LIMIT_DIRECTORY = "dijkstra_prob_stats_no_limit"
-
-
-RESULTS_DIRECTORY_NO_LIMIT = "dijkstra_results_no_limit"
