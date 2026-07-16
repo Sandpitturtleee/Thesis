@@ -190,11 +190,9 @@ def save_merged_prob_stats_by_file(merged, directory):
     Save merged per-file/vertex stats dict to separate JSON files.
     merged_stats_dict: {file_name: {vertex: {...stats...}, ...}, ...}
     """
-    # Use current directory as root for demo; adjust as appropriate for your project.
-    project_root = Path(__file__).parent.parent.parent
+    project_root = Path(__file__).parent.parent.parent.parent
     output_dir = project_root / DATA_DIRECTORY / directory
     output_dir.mkdir(parents=True, exist_ok=True)
-    print(f"Saving prob stats to {output_dir}")
 
     for file_name, vertex_stats in merged.items():
         file_name_out = Path(file_name).stem + ".json"

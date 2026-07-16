@@ -1,25 +1,36 @@
+import json
+import os
+from pathlib import Path
+
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+import pandas as pd
 
-from config import DIJKSTRA_STATS_DIRECTORY
-from data_analysis.src.helpers import (
-    extract_methods_and_labels,
-    read_results_by_vertex,
-    read_results_by_vertices,
-    read_results_from_json,
+from config import (
+    DATA_DIRECTORY,
+    DIJKSTRA_PROB_STATS_DIRECTORY,
+    DIJKSTRA_STATS_DIRECTORY,
+    RESULTS_DIRECTORY_STANDARD_NAIVE,
 )
+from data_analysis.src.helpers import extract_methods_and_labels, read_results_from_json
 
 
 def plot_all_other():
-    plot_vertex_counts(file_name="standard_naive_sparse.json", vertex_number=10)
+    plot_vertex_counts(
+        directory=RESULTS_DIRECTORY_STANDARD_NAIVE,
+        file_name="standard_naive_sparse.json",
+        vertex_number=10,
+    )
     plot_vertices_counts(
-        file_name="standard_naive_sparse.json", vertices_number=[10, 50, 100]
+        directory=RESULTS_DIRECTORY_STANDARD_NAIVE,
+        file_name="standard_naive_sparse.json",
+        vertices_number=[10, 50, 100],
     )
 
 
-def plot_vertex_counts(file_name: str, vertex_number: int):
+def plot_vertex_counts(file_name: str, vertex_number: int, directory):
     """
     Plots the count values for a specific number of vertices.
 
@@ -28,7 +39,9 @@ def plot_vertex_counts(file_name: str, vertex_number: int):
     data : dict
         Dictionary with keys 'vertices' (int) and 'count' (list of int).
     """
-    data = read_results_by_vertex(file_name=file_name, vertex_number=vertex_number)
+    data = read_results_by_vertex(
+        file_name=file_name, vertex_number=vertex_number, directory=directory
+    )
     if data is None:
         print("No data available to plot.")
         return
@@ -46,11 +59,11 @@ def plot_vertex_counts(file_name: str, vertex_number: int):
     plt.show()
 
 
-def plot_vertices_counts(file_name: str, vertices_number: list):
+def plot_vertices_counts(file_name: str, vertices_number: list, directory):
     """
     Plots the count values for multiple numbers of vertices on one plot.
     """
-    data = read_results_by_vertices(file_name, vertices_number)
+    data = read_results_by_vertices(file_name, vertices_number, directory=directory)
     if not data:
         print("No data available to plot.")
         return
@@ -98,3 +111,52 @@ def draw_graph_small(graph):
     nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels, font_color="red")
     plt.title("Graph")
     plt.show()
+
+
+def read_results_by_vertex(file_name: str, vertex_number: int, directory):
+    """
+    Reads a specific JSON result file for Dijkstra algorithm runs and returns data for a selected vertex number.
+
+    Parameters
+    ----------
+    file_name : str
+        Name of the .json result file to read (e.g., "some_results.json")
+    vertex_number : int
+        Number of vertices to look for in the file.
+
+    Returns
+    -------
+    dict
+        A dictionary with the matching 'vertices' value and corresponding 'count' list, or None if not found.
+    """
+    project_root = Path(__file__).parent.parent.parent
+    file_path = project_root / DATA_DIRECTORY / directory / file_name
+
+    # Read and load the JSON file
+    with open(file_path, "r") as file:
+        data = json.load(file)
+
+    # Find the index for the given vertex_number
+    idx = data["vertices"].index(vertex_number)
+    return {"vertices": data["vertices"][idx], "count": data["count"][idx]}
+
+
+def read_results_by_vertices(file_name: str, vertices_number: list, directory):
+    """
+    Reads counts for multiple vertex numbers from the given JSON results file.
+    Returns a dict with vertex_number as key and counts as value.
+    """
+    project_root = Path(__file__).parent.parent.parent
+    file_path = project_root / DATA_DIRECTORY / directory / file_name
+
+    with open(file_path, "r") as file:
+        data = json.load(file)
+
+    results = {}
+    for v in vertices_number:
+        if v in data["vertices"]:
+            idx = data["vertices"].index(v)
+            results[v] = data["count"][idx]
+        else:
+            print(f"Vertex {v} not found in file.")
+    return results

@@ -3,16 +3,21 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 
-from config import DIJKSTRA_STATS_DIRECTORY
+from config import (
+    DIJKSTRA_STATS_DIRECTORY,
+    STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+    STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
+    STATS_DIRECTORY_STANDARD_HEAP,
+    STATS_DIRECTORY_STANDARD_NAIVE,
+)
 from data_analysis.src.helpers import (
     extract_methods_and_labels,
-    read_results_by_vertex,
-    read_results_by_vertices,
+    merge_stats_dicts,
     read_results_from_json,
 )
 
 
-def plot_all_combined():
+def plot_standard_quantum_combined():
     # exclude = [
     #     #'standard_heap_sparse_stats.json',
     #     #'standard_heap_half_edges_stats.json',
@@ -20,13 +25,22 @@ def plot_all_combined():
     #     'standard_heap_worstcase_stats.json'
     # ]
     exclude = []
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
-    plots_types_by_stat(data=data, stat_key="mean", exclude_files=exclude)
-    plots_types_by_stat(data=data, stat_key="median", exclude_files=exclude)
-    plots_types_by_stat(data=data, stat_key="std", exclude_files=exclude)
+    naive_stats = read_results_from_json(directory=STATS_DIRECTORY_STANDARD_NAIVE)
+    heap_stats = read_results_from_json(directory=STATS_DIRECTORY_STANDARD_HEAP)
+    time_limit_stats = read_results_from_json(
+        directory=STATS_DIRECTORY_QUANTUM_TIME_LIMIT
+    )
+    no_time_limit_stats = read_results_from_json(
+        directory=STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT
+    )
+    merged = [naive_stats, heap_stats, time_limit_stats, no_time_limit_stats]
+    merged_stats = merge_stats_dicts(dicts=merged)
+    plots_types_by_stat(data=merged_stats, stat_key="mean", exclude_files=exclude)
+    plots_types_by_stat(data=merged_stats, stat_key="median", exclude_files=exclude)
+    plots_types_by_stat(data=merged_stats, stat_key="std", exclude_files=exclude)
 
 
-def plots_types_by_stat(data, stat_key="mean", exclude_files=None):
+def plots_types_by_stat(data, stat_key, exclude_files=None):
     """
     Plot the chosen stat for 4 types of graphs: sparse, half_edges, dense, worstcase.
     Each type gets its own subplot.

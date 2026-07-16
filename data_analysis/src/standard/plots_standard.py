@@ -3,23 +3,31 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 
-from config import DIJKSTRA_STATS_DIRECTORY
+from config import (
+    DIJKSTRA_STATS_DIRECTORY,
+    STATS_DIRECTORY_STANDARD_HEAP,
+    STATS_DIRECTORY_STANDARD_NAIVE,
+)
 from data_analysis.src.helpers import (
     extract_methods_and_labels,
-    read_results_by_vertex,
-    read_results_by_vertices,
+    merge_dicts_standard,
+    merge_stats_dicts,
     read_results_from_json,
 )
 
 
-def plot_all_standard():
-    data = read_results_from_json(directory=DIJKSTRA_STATS_DIRECTORY)
-    plots_mean_heap(data=data)
-    plots_mean_naive(data=data)
-    plots_median_heap(data=data)
-    plots_median_naive(data=data)
-    plots_std_heap(data=data)
-    plots_std_naive(data=data)
+def plot_all_naive():
+    naive_stats = read_results_from_json(directory=STATS_DIRECTORY_STANDARD_NAIVE)
+    plots_mean_naive(data=naive_stats)
+    plots_median_naive(data=naive_stats)
+    plots_std_naive(data=naive_stats)
+
+
+def plot_all_heap():
+    heap_stats = read_results_from_json(directory=STATS_DIRECTORY_STANDARD_HEAP)
+    plots_mean_heap(data=heap_stats)
+    plots_median_heap(data=heap_stats)
+    plots_std_heap(data=heap_stats)
 
 
 def plots_mean_heap(data):

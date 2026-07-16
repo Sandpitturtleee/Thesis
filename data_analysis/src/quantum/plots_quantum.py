@@ -3,18 +3,38 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 
-from config import DIJKSTRA_STATS_DIRECTORY
+from config import (
+    DIJKSTRA_STATS_DIRECTORY,
+    STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+    STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
+    STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
+    STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
+)
 from data_analysis.src.helpers import quantum_stat_from_dict, read_results_from_json
 
 
-def plot_all_quantum(directory):
-    data = read_results_from_json(directory=directory)
-    plots_mean_quantum(data=data)
-    plots_median_quantum(data=data)
-    plots_std_quantum(data=data)
-    plots_mismatch_quantum(data=data)
-    plots_invalid_quantum(data=data)
-    plots_grover_calls_quantum(data=data)
+def plot_all_quantum_time_limit():
+    time_limit_stats = read_results_from_json(
+        directory=STATS_DIRECTORY_QUANTUM_TIME_LIMIT
+    )
+    plots_mean_quantum(data=time_limit_stats)
+    plots_median_quantum(data=time_limit_stats)
+    plots_std_quantum(data=time_limit_stats)
+    plots_mismatch_quantum(data=time_limit_stats)
+    plots_invalid_quantum(data=time_limit_stats)
+    plots_search_calls_quantum(data=time_limit_stats)
+
+
+def plot_all_quantum_no_time_limit():
+    no_time_limit_stats = read_results_from_json(
+        directory=STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT
+    )
+    plots_mean_quantum(data=no_time_limit_stats)
+    plots_median_quantum(data=no_time_limit_stats)
+    plots_std_quantum(data=no_time_limit_stats)
+    plots_mismatch_quantum(data=no_time_limit_stats)
+    plots_invalid_quantum(data=no_time_limit_stats)
+    plots_search_calls_quantum(data=no_time_limit_stats)
 
 
 def plots_mean_quantum(data):
@@ -98,7 +118,7 @@ def plots_invalid_quantum(data):
     plt.show()
 
 
-def plots_grover_calls_quantum(data):
+def plots_search_calls_quantum(data):
     plt.figure(figsize=(10, 6))
     for filename, dct in data.items():
         if "quantum" not in filename or "search_calls" not in dct:
