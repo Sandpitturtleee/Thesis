@@ -5,7 +5,7 @@ GRAPH_RUNS = 2
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"
-WORSTCASE = "_worstcase"
+SPECIAL_CASE = "_special_case"
 
 DATA_DIRECTORY = "data"
 GENERATED_GRAPHS_DIRECTORY = "generated_graphs"

@@ -11,17 +11,8 @@ Functions:
 - generate_graph_sparse:      Generate a sparse graph with `num_edges = num_vertices`
 - generate_graph_half_edges:  Generate a graph with half the possible simple edges
 - generate_graph_dense:       Generate a complete (dense) random-weighted graph
-- generate_graph_worstcase:   Generate a specifically structured 'worst-case' complete graph
+- generate_graph_special_case:   Generate a specifically structured 'special-case' complete graph
 - generate_graphs:            Generate and save graphs of various sizes/batches
-
-Dependencies:
--------------
-- config.py          (expects: SPARSE, WORSTCASE, HALF_EDGES, DENSE constants)
-- graphs_creation.src.helpers
-    - create_frequency
-    - save_graph_to_json
-
-Types:
 ------
 - GraphList: List[List[Tuple[int, int]]]
 """
@@ -29,7 +20,7 @@ Types:
 import random
 from typing import List, Set, Tuple
 
-from config import DENSE, HALF_EDGES, SPARSE, WORSTCASE
+from config import DENSE, HALF_EDGES, SPARSE, SPECIAL_CASE
 from graphs_creation.src.helpers import create_frequency, save_graph_to_json
 
 GraphList = List[List[Tuple[int, int]]]
@@ -37,13 +28,13 @@ GraphList = List[List[Tuple[int, int]]]
 
 def generate_graphs(times: int = 1) -> None:
     """
-    Generate and save random, dense worst-case, half-edge, and sparse graphs for several sizes.
+    Generate and save random, dense special-case, half-edge, and sparse graphs for several sizes.
 
     For each value returned by create_frequency(), generates 'times' number of:
          - sparse
          - half-edges (half density)
          - dense (complete)
-         - worst-case (specific structure)
+         - special-case (specific structure)
     graphs, and saves them with appropriate file names.
 
     Parameters
@@ -57,20 +48,22 @@ def generate_graphs(times: int = 1) -> None:
     """
     frequency = create_frequency()
     for n in frequency:
+        max_weight = n * n
         for run in range(times):
-            max_weight = n * n  # You may adjust this as needed per experiment
-
-            sparse_graph = generate_graph_sparse(num_vertices=n, max_weight=max_weight)
-            half_edges_graph = generate_graph_half_edges(
+            sparse = generate_graph_sparse(num_vertices=n, max_weight=max_weight)
+            save_graph_to_json(sparse, name=f"{n}{SPARSE}_{run + 1}")
+            print("1")
+            half_edges = generate_graph_half_edges(
                 num_vertices=n, max_weight=max_weight
             )
-            dense_graph = generate_graph_dense(num_vertices=n, max_weight=max_weight)
-            worst_case_graph = generate_graph_worstcase(num_vertices=n)
-
-            save_graph_to_json(sparse_graph, name=f"{n}{SPARSE}_{run + 1}")
-            save_graph_to_json(half_edges_graph, name=f"{n}{HALF_EDGES}_{run + 1}")
-            save_graph_to_json(dense_graph, name=f"{n}{DENSE}_{run + 1}")
-            save_graph_to_json(worst_case_graph, name=f"{n}{WORSTCASE}_{run + 1}")
+            save_graph_to_json(half_edges, name=f"{n}{HALF_EDGES}_{run + 1}")
+            print("1")
+            dense = generate_graph_dense(num_vertices=n, max_weight=max_weight)
+            save_graph_to_json(dense, name=f"{n}{DENSE}_{run + 1}")
+            print("1")
+            special_case = generate_graph_special_case(num_vertices=n)
+            save_graph_to_json(special_case, name=f"{n}{SPECIAL_CASE}_{run + 1}")
+            print("1")
 
 
 def generate_graph_sparse(
@@ -194,9 +187,9 @@ def generate_graph_dense(
     return graph
 
 
-def generate_graph_worstcase(num_vertices: int) -> GraphList:
+def generate_graph_special_case(num_vertices: int) -> GraphList:
     """
-    Generate a specifically structured 'worst-case' complete graph for Dijkstra's algorithm.
+    Generate a specifically structured 'special-case' complete graph for Dijkstra's algorithm.
 
     For each vertex i and j > i:
         - Edge (i, j) has weight 1 if j == i + 1

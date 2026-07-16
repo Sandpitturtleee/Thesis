@@ -54,7 +54,7 @@ from config import (
     RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
     RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
     SPARSE,
-    WORSTCASE,
+    SPECIAL_CASE,
 )
 from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
 from graphs_analysis.src.helpers import (
@@ -105,7 +105,7 @@ def run_all_dijkstra_quantum_time_limit():
     )
     print("Running Dijkstra's algorithm SPECIAL_CASE")
     results = run_dijkstra_quantum(
-        times=times, graph_type=WORSTCASE, time_limit=time_limit
+        times=times, graph_type=SPECIAL_CASE, time_limit=time_limit
     )
     save_results_to_json_quantum(
         directory=directory,
@@ -151,7 +151,7 @@ def run_all_dijkstra_quantum_no_time_limit():
     )
     print("Running Dijkstra's algorithm SPECIAL_CASE")
     results = run_dijkstra_quantum(
-        times=times, graph_type=WORSTCASE, time_limit=time_limit
+        times=times, graph_type=SPECIAL_CASE, time_limit=time_limit
     )
     save_results_to_json_quantum(
         directory=directory,

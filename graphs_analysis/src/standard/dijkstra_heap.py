@@ -47,11 +47,11 @@ from config import (
     RESULTS_DIRECTORY_STANDARD_HEAP,
     RESULTS_DIRECTORY_STANDARD_NAIVE,
     SPARSE,
+    SPECIAL_CASE,
     STANDARD_HEAP_DENSE_FILENAME,
     STANDARD_HEAP_HALF_EDGES_FILENAME,
     STANDARD_HEAP_SPARSE_FILENAME,
     STANDARD_HEAP_SPECIAL_CASE_FILENAME,
-    WORSTCASE,
 )
 from graphs_analysis.src.helpers import (
     create_frequency,
@@ -88,7 +88,7 @@ def run_all_dijkstra_heap():
         vertices=vertices,
         count=count,
     )
-    vertices, count = run_dijkstra_heap(times=times, graph_type=WORSTCASE)
+    vertices, count = run_dijkstra_heap(times=times, graph_type=SPECIAL_CASE)
     save_results_to_json(
         directory=directory,
         name=STANDARD_HEAP_SPECIAL_CASE_FILENAME,
