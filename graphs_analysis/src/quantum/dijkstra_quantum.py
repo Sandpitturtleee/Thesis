@@ -78,18 +78,18 @@ from graphs_analysis.src.quantum.quantum_minimum import (
 
 
 def run_all_quantum():
-    # run_all_dijkstra_quantum(
-    #     time_limit=1,
-    #     same_graph=0,
-    #     result_directory=RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
-    #     result_file_names=QUANTUM_TIME_LIMIT_FILENAMES,
-    # )
-    # run_all_dijkstra_quantum(
-    #     time_limit=0,
-    #     same_graph=0,
-    #     result_directory=RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
-    #     result_file_names=QUANTUM_NO_TIME_LIMIT_FILENAMES,
-    # )
+    run_all_dijkstra_quantum(
+        time_limit=1,
+        same_graph=0,
+        result_directory=RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
+        result_file_names=QUANTUM_TIME_LIMIT_FILENAMES,
+    )
+    run_all_dijkstra_quantum(
+        time_limit=0,
+        same_graph=0,
+        result_directory=RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+        result_file_names=QUANTUM_NO_TIME_LIMIT_FILENAMES,
+    )
 
     run_all_dijkstra_quantum(
         time_limit=1,
