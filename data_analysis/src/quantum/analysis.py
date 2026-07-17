@@ -16,9 +16,13 @@ from pathlib import Path
 from config import (
     DATA_DIRECTORY,
     RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT,
+    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT,
     RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
+    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
+    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
 )
 from data_analysis.src.helpers import per_count_row_statistics, read_results_from_json
 
@@ -38,6 +42,26 @@ def stats_analysis_quantum():
     no_time_limit_stats = stats_by_file_quantum(results=no_time_limit_results)
     save_stats_by_file_quantum(
         stats=no_time_limit_stats, directory=STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT
+    )
+
+    same_graph_time_limit_results = read_results_from_json(
+        directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT
+    )
+    same_graph_time_limit_stats = stats_by_file_quantum(
+        results=same_graph_time_limit_results
+    )
+    save_stats_by_file_quantum(
+        stats=same_graph_time_limit_stats,
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
+    )
+
+    no_time_limit_results = read_results_from_json(
+        directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT
+    )
+    no_time_limit_stats = stats_by_file_quantum(results=no_time_limit_results)
+    save_stats_by_file_quantum(
+        stats=no_time_limit_stats,
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
     )
 
 

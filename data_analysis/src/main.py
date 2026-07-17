@@ -20,19 +20,19 @@ from data_analysis.src.standard.plots_standard import plot_all_heap, plot_all_na
 if __name__ == "__main__":
     print()
     # stats_analysis_standard()
-    # stats_analysis_quantum()
-    # prob_stats_quantum_analysis()
-
+    stats_analysis_quantum()
+    prob_stats_quantum_analysis()
+    #
     # plot_all_naive()
     # plot_all_heap()
     # plot_standard_combined()
     #
-    plot_all_quantum_time_limit()
-    plot_all_quantum_no_time_limit()
-    plot_quantum_combined()
-    #
+    # plot_all_quantum_time_limit()
+    # plot_all_quantum_no_time_limit()
+    # plot_quantum_combined()
+
     # plot_standard_quantum_combined()
-    #
+
     # plot_all_other()
     #
     # plot_all_quantum_prob_time_limit()
