@@ -1,18 +1,19 @@
 """
 Graph Generation Utilities (List Adjacency Format)
---------------------------------------------------
+-------------------------------------------------
 
-This module provides functions to generate random weighted graphs
-in a **list-based adjacency format**. It also provides tools for saving
-such graphs using external helper functions.
+This module provides functions to generate random weighted graphs in a **list-based adjacency format**.
+It also provides utilities for saving such graphs using external helper functions.
 
 Functions:
 ----------
-- generate_graph_sparse:      Generate a sparse graph with `num_edges = num_vertices`
-- generate_graph_half_edges:  Generate a graph with half the possible simple edges
-- generate_graph_dense:       Generate a complete (dense) random-weighted graph
+- generate_graph_sparse:         Generate a sparse graph with `num_edges = num_vertices`
+- generate_graph_half_edges:     Generate a graph with half the possible simple edges
+- generate_graph_dense:          Generate a complete (dense) random-weighted graph
 - generate_graph_special_case:   Generate a specifically structured 'special-case' complete graph
-- generate_graphs:            Generate and save graphs of various sizes/batches
+- generate_graphs:               Generate and save graphs of various sizes/batches
+
+Types:
 ------
 - GraphList: List[List[Tuple[int, int]]]
 """
@@ -26,15 +27,15 @@ from graphs_creation.src.helpers import create_frequency, save_graph_to_json
 GraphList = List[List[Tuple[int, int]]]
 
 
-def generate_graphs(times: int = 1) -> None:
+def generate_graphs(times: int) -> None:
     """
-    Generate and save random, dense special-case, half-edge, and sparse graphs for several sizes.
+    Generate and save random, dense, special-case, half-edge, and sparse graphs for several sizes.
 
     For each value returned by create_frequency(), generates 'times' number of:
-         - sparse
-         - half-edges (half density)
-         - dense (complete)
-         - special-case (specific structure)
+        - sparse
+        - half-edges (half density)
+        - dense (complete)
+        - special-case (specific structure)
     graphs, and saves them with appropriate file names.
 
     Parameters
@@ -52,18 +53,14 @@ def generate_graphs(times: int = 1) -> None:
         for run in range(times):
             sparse = generate_graph_sparse(num_vertices=n, max_weight=max_weight)
             save_graph_to_json(sparse, name=f"{n}{SPARSE}_{run + 1}")
-            print("1")
             half_edges = generate_graph_half_edges(
                 num_vertices=n, max_weight=max_weight
             )
             save_graph_to_json(half_edges, name=f"{n}{HALF_EDGES}_{run + 1}")
-            print("1")
             dense = generate_graph_dense(num_vertices=n, max_weight=max_weight)
             save_graph_to_json(dense, name=f"{n}{DENSE}_{run + 1}")
-            print("1")
             special_case = generate_graph_special_case(num_vertices=n)
             save_graph_to_json(special_case, name=f"{n}{SPECIAL_CASE}_{run + 1}")
-            print("1")
 
 
 def generate_graph_sparse(
@@ -95,7 +92,7 @@ def generate_graph_sparse(
     existing_edges: Set[Tuple[int, int]] = set()
     max_possible = num_vertices * (num_vertices - 1) // 2
 
-    num_edges = min(num_vertices, max_possible)  # Simple graph has at most C(n,2) edges
+    num_edges = min(num_vertices, max_possible)
 
     while len(existing_edges) < num_edges:
         u = random.randint(0, num_vertices - 1)
