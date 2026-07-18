@@ -6,6 +6,8 @@ import numpy as np
 from config import (
     STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
+    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_NO_TIME_LIMIT,
+    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT,
 )
 from data_analysis.src.helpers import (
     order_filenames,
@@ -38,6 +40,54 @@ def plot_all_quantum_prob_time_limit():
 
 def plot_all_quantum_prob_no_time_limit():
     data = read_results_from_json(directory=STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT)
+    titles = ["Sparse", "Half edges", "Dense", "Special case"]
+    ordered_filenames = order_filenames(all_stats=data)
+
+    plot_dijkstra_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_find_min_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_mismatch_without_invalid_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_invalid_when_mismatch_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_grouped_dijkstra_and_find_min_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+
+
+def plot_all_quantum_prob_same_graph_time_limit():
+    data = read_results_from_json(
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT
+    )
+    titles = ["Sparse", "Half edges", "Dense", "Special case"]
+    ordered_filenames = order_filenames(all_stats=data)
+
+    plot_dijkstra_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_find_min_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_mismatch_without_invalid_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_invalid_when_mismatch_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+    plot_grouped_dijkstra_and_find_min_success_prob(
+        all_stats=data, titles=titles, ordered_filenames=ordered_filenames
+    )
+
+
+def plot_all_quantum_prob_same_graph_no_time_limit():
+    data = read_results_from_json(
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_NO_TIME_LIMIT
+    )
     titles = ["Sparse", "Half edges", "Dense", "Special case"]
     ordered_filenames = order_filenames(all_stats=data)
 

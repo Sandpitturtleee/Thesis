@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -7,6 +9,8 @@ from config import (
     GRAPH_TYPES_MAPPING,
     STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
+    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
+    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
     STATS_DIRECTORY_STANDARD_HEAP,
     STATS_DIRECTORY_STANDARD_NAIVE,
 )
@@ -55,6 +59,24 @@ def plot_quantum_combined():
     )
     merged = [time_limit_stats, no_time_limit_stats]
     merged_stats = merge_stats_dicts(dicts=merged)
+    plots_types_by_stat(data=merged_stats, stat_key="mean", exclude_files=exclude)
+    plots_types_by_stat(data=merged_stats, stat_key="median", exclude_files=exclude)
+    plots_types_by_stat(data=merged_stats, stat_key="std", exclude_files=exclude)
+
+
+def plot_quantum_same_graph_combined():
+    exclude = []
+    time_limit_stats = read_results_from_json(
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT
+    )
+    no_time_limit_stats = read_results_from_json(
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT
+    )
+    merged = [time_limit_stats, no_time_limit_stats]
+    merged_stats = merge_stats_dicts(dicts=merged)
+    print(time_limit_stats)
+    print(no_time_limit_stats)
+    print(merged_stats)
     plots_types_by_stat(data=merged_stats, stat_key="mean", exclude_files=exclude)
     plots_types_by_stat(data=merged_stats, stat_key="median", exclude_files=exclude)
     plots_types_by_stat(data=merged_stats, stat_key="std", exclude_files=exclude)

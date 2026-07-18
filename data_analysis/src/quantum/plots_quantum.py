@@ -5,12 +5,16 @@ import numpy as np
 
 from config import (
     COLOR_MAP,
+    PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT,
+    PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT,
     PLOT_TITLE_TYPE_NO_TIME_LIMIT,
     PLOT_TITLE_TYPE_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
     STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
+    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
+    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
 )
 from data_analysis.src.helpers import (
     add_custom_legend,
@@ -55,6 +59,54 @@ def plot_all_quantum_no_time_limit():
     )
     plots_search_calls_quantum(
         data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    )
+
+
+def plot_all_quantum_same_graph_time_limit():
+    time_limit_stats = read_results_from_json(
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT
+    )
+    plots_mean_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    )
+    plots_median_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    )
+    plots_std_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    )
+    plots_mismatch_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    )
+    plots_invalid_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    )
+    plots_search_calls_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    )
+
+
+def plot_all_quantum_same_graph_no_time_limit():
+    time_limit_stats = read_results_from_json(
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT
+    )
+    plots_mean_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    )
+    plots_median_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    )
+    plots_std_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    )
+    plots_mismatch_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    )
+    plots_invalid_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    )
+    plots_search_calls_quantum(
+        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
     )
 
 

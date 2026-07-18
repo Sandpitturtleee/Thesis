@@ -1,5 +1,6 @@
 from data_analysis.src.plots_combined import (
     plot_quantum_combined,
+    plot_quantum_same_graph_combined,
     plot_standard_combined,
     plot_standard_quantum_combined,
 )
@@ -8,10 +9,14 @@ from data_analysis.src.quantum.analysis import stats_analysis_quantum
 from data_analysis.src.quantum.analysis_prob import prob_stats_quantum_analysis
 from data_analysis.src.quantum.plots_quantum import (
     plot_all_quantum_no_time_limit,
+    plot_all_quantum_same_graph_no_time_limit,
+    plot_all_quantum_same_graph_time_limit,
     plot_all_quantum_time_limit,
 )
 from data_analysis.src.quantum.plots_quantum_prob import (
     plot_all_quantum_prob_no_time_limit,
+    plot_all_quantum_prob_same_graph_no_time_limit,
+    plot_all_quantum_prob_same_graph_time_limit,
     plot_all_quantum_prob_time_limit,
 )
 from data_analysis.src.standard.analysis import stats_analysis_standard
@@ -21,7 +26,7 @@ if __name__ == "__main__":
     print()
     # stats_analysis_standard()
     stats_analysis_quantum()
-    prob_stats_quantum_analysis()
+    # prob_stats_quantum_analysis()
     #
     # plot_all_naive()
     # plot_all_heap()
@@ -29,7 +34,10 @@ if __name__ == "__main__":
     #
     # plot_all_quantum_time_limit()
     # plot_all_quantum_no_time_limit()
+    # plot_all_quantum_same_graph_time_limit()
+    # plot_all_quantum_same_graph_no_time_limit()
     # plot_quantum_combined()
+    # plot_quantum_same_graph_combined()
 
     # plot_standard_quantum_combined()
 
@@ -37,3 +45,5 @@ if __name__ == "__main__":
     #
     # plot_all_quantum_prob_time_limit()
     # plot_all_quantum_prob_no_time_limit()
+    plot_all_quantum_prob_same_graph_time_limit()
+    plot_all_quantum_prob_same_graph_no_time_limit()

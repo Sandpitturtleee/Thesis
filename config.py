@@ -2,7 +2,7 @@
 import matplotlib.cm as cm
 
 MAX_GRAPH_SIZE = 100
-GRAPH_RUNS = 10
+GRAPH_RUNS = 2
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"
@@ -132,6 +132,8 @@ LEGEND_ORDER = ["sparse", "half_edges", "dense", "special_case"]
 
 PLOT_TITLE_TYPE_TIME_LIMIT = "time limit"
 PLOT_TITLE_TYPE_NO_TIME_LIMIT = "no time limit"
+PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT = "same graph time limit"
+PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT = "same graph no time limit"
 
 GRAPH_TYPES_MAPPING = [
     ("Sparse", "sparse", cm.get_cmap("Blues")),
