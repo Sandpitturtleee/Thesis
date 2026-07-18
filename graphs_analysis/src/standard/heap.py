@@ -1,10 +1,45 @@
+from typing import Any, List, Optional, Tuple
+
+
 class CountingHeap:
-    def __init__(self):
+    """
+    A simple binary min-heap that counts priority comparisons and swaps.
+    Each item is assumed to be a tuple where the first element is the priority.
+
+    Attributes
+    ----------
+    data : List[Tuple[Any, ...]]
+        Internal storage for the heap items.
+    comparisons : int
+        Number of priority (key) comparisons performed.
+    swaps : int
+        Number of swaps performed during heapify-up and heapify-down.
+
+    Methods
+    -------
+    push(item: Tuple[Any, ...]) -> None
+        Insert an item into the heap.
+    pop() -> Optional[Tuple[Any, ...]]
+        Remove and return the item with the smallest priority.
+    total_work() -> int
+        Return the sum of all comparisons and swaps.
+    """
+
+    def __init__(self) -> None:
+        """Initialize an empty heap and reset counters."""
         self.data = []
         self.comparisons = 0
         self.swaps = 0
 
-    def push(self, item):
+    def push(self, item: Tuple[Any, ...]) -> None:
+        """
+        Insert a new item into the heap, tracking swaps and comparisons.
+
+        Parameters
+        ----------
+        item : Tuple[Any, ...]
+            The item to insert. The first element of the tuple is used as the priority.
+        """
         self.data.append(item)
         i = len(self.data) - 1
         while i > 0:
@@ -17,7 +52,16 @@ class CountingHeap:
             else:
                 break
 
-    def pop(self):
+    def pop(self) -> Optional[Tuple[Any, ...]]:
+        """
+        Remove and return the smallest-priority item from the heap.
+        Returns None if the heap is empty. Updates counters.
+
+        Returns
+        -------
+        Optional[Tuple[Any, ...]]
+            The item with the lowest priority, or None if the heap is empty.
+        """
         if len(self.data) == 0:
             return None
         self.data[0], self.data[-1] = self.data[-1], self.data[0]
@@ -44,5 +88,13 @@ class CountingHeap:
             i = smallest
         return item
 
-    def total_work(self):
+    def total_work(self) -> int:
+        """
+        Return the total number of comparisons and swaps performed by the heap.
+
+        Returns
+        -------
+        int
+            The sum of comparisons and swaps.
+        """
         return self.comparisons + self.swaps

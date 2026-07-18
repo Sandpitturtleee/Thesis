@@ -3,14 +3,16 @@ Graph Handling Utilities
 ------------------------
 
 This module provides utility functions for loading graphs (in dictionary or adjacency list format) from JSON files,
-managing file paths, and constructing useful sizes for batch graph generation.
+managing file paths, timing functions, and constructing useful sizes for batch graph generation.
 
 Functions:
 ----------
 - create_file_path: Create and return a JSON file path for persisting graph data.
-- create_frequency: Build standard batch sizes/frequencies up to MAX_FREQUENCY.
+- create_frequency: Build standard batch sizes/frequencies up to MAX_GRAPH_SIZE.
 - load_graph_from_json: Load GraphList-style graphs from JSON file.
-- timing_decorator Decorator for timing any function, returns (result, elapsed_time).
+- timing_decorator: Decorator for timing any function, returns (result, elapsed_time).
+- save_results_to_json: Save graph statistical results as a JSON file.
+- save_results_to_json_quantum: Save quantum-related statistical results to a JSON file.
 
 Types:
 ------
@@ -21,7 +23,7 @@ Types:
 import json
 import time
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Tuple
 
 from config import DATA_DIRECTORY, GENERATED_GRAPHS_DIRECTORY, MAX_GRAPH_SIZE
 
@@ -38,7 +40,7 @@ def create_file_path(directory: str, name: str) -> Path:
     Parameters
     ----------
     directory : str
-        The base name of a parent directory
+        The base name of a parent directory.
     name : str
         The base name (without extension) for the JSON file.
 
@@ -57,12 +59,12 @@ def create_file_path(directory: str, name: str) -> Path:
 
 def create_frequency() -> List[int]:
     """
-    Generate a list of sizes for use in batch graph generation, up to MAX_FREQUENCY.
+    Generate a list of sizes for use in batch graph generation, up to MAX_GRAPH_SIZE.
 
     Returns
     -------
     List[int]
-        List of sizes (int), excluding 0 and not exceeding MAX_FREQUENCY.
+        List of sizes (int), excluding 0 and not exceeding MAX_GRAPH_SIZE.
     """
     intervals = [
         (10, 100, 10),
@@ -82,7 +84,7 @@ def create_frequency() -> List[int]:
     return sorted(set(filter(lambda x: x <= MAX_GRAPH_SIZE, frequency)))
 
 
-def timing_decorator(func):
+def timing_decorator(func: Callable) -> Callable:
     """
     Decorator to measure the execution time of a function.
 
@@ -110,7 +112,7 @@ def timing_decorator(func):
     return wrapper
 
 
-def load_graph_from_json(name: str) -> list:
+def load_graph_from_json(name: str) -> GraphList:
     """
     Load a graph from a JSON file already in adjacency-list list format.
 
@@ -121,7 +123,7 @@ def load_graph_from_json(name: str) -> list:
 
     Returns
     -------
-    list
+    GraphList
         The graph as a list of adjacency lists, as in [[neighbor, weight], ...] per node.
     """
     file_path = create_file_path(directory=GENERATED_GRAPHS_DIRECTORY, name=name)
@@ -130,7 +132,21 @@ def load_graph_from_json(name: str) -> list:
     return graph_list
 
 
-def save_results_to_json(directory, name, vertices, count):
+def save_results_to_json(directory: str, name: str, vertices: int, count: int) -> None:
+    """
+    Save statistical results regarding a graph to a JSON file.
+
+    Parameters
+    ----------
+    directory : str
+        Directory in which to save the JSON file.
+    name : str
+        Filename to use (without extension).
+    vertices : int
+        Number of vertices in the graph.
+    count : int
+        Some count or result associated with the graph.
+    """
     results = {"vertices": vertices, "count": count}
     file_path = create_file_path(directory=directory, name=name)
     with open(file_path, "w") as f:
@@ -138,7 +154,19 @@ def save_results_to_json(directory, name, vertices, count):
     print(f"Results stats saved to {file_path}")
 
 
-def save_results_to_json_quantum(directory, name, results):
+def save_results_to_json_quantum(directory: str, name: str, results: Any) -> None:
+    """
+    Save quantum-related statistical results to a JSON file.
+
+    Parameters
+    ----------
+    directory : str
+        Directory in which to save the JSON file.
+    name : str
+        Filename to use (without extension).
+    results : Any
+        Dictionary or other serializable data containing results.
+    """
     file_path = create_file_path(directory=directory, name=name)
     with open(file_path, "w") as f:
         json.dump(results, f, indent=4)

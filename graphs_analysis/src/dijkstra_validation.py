@@ -5,26 +5,24 @@ Shortest Path Reconstruction & Dijkstra Validation Utilities
 This module provides tools for reconstructing all shortest paths from a predecessor (previous) array,
 computing the shortest paths using NetworkX's Dijkstra, and checking for correctness of two sets of path reconstructions.
 
-Dependencies:
--------------
-- networkx
-
 Functions:
 ----------
 - reconstruct_paths_dict: Recover all shortest paths from a 'previous' node array.
 - dijkstra_lib: Use networkx to compute the shortest paths and actual paths from a source node.
-- compare_dijkstra_result_dicts: Compare two path dictionaries for path-equivalence.
+- compare_dijkstra_results: Compare two path dictionaries for path-equivalence.
 - is_dijkstra_valid: Compare the output of a custom dijkstra to networkx for correctness.
 
-Typings:
---------
-- The "graph" argument is an adjacency list: List[List[Tuple[int, int]]] (edges as [to_idx, weight]).
+Types:
+------
+- GraphList: type alias for List[List[Tuple[int, int]]]
 """
 
 from collections import defaultdict
 from typing import Any, Dict, List, Tuple
 
 import networkx as nx
+
+GraphList = List[List[Tuple[int, int]]]
 
 
 def reconstruct_paths_dict(
@@ -37,7 +35,7 @@ def reconstruct_paths_dict(
 
     Parameters
     ----------
-    previous : list
+    previous : List[Any]
         Each entry previous[i] is either None, a single integer predecessor, or a list of predecessor indices.
     start_node : int
         The source node index.
@@ -77,7 +75,7 @@ def reconstruct_paths_dict(
 
 
 def dijkstra_lib(
-    graph: List[List[List[int]]], start_node: int
+    graph: GraphList, start_node: int
 ) -> Tuple[List[float], Dict[int, List[List[int]]]]:
     """
     Compute the shortest path lengths and enumerate all shortest paths from 'start_node' using networkx's Dijkstra.
@@ -128,8 +126,8 @@ def dijkstra_lib(
 def compare_dijkstra_results(
     paths1: Dict[int, List[List[int]]],
     paths2: Dict[int, List[List[int]]],
-    length1,
-    length2,
+    length1: List[float],
+    length2: List[float],
 ) -> bool:
     """
     Compare two dictionaries of paths: validates that for each (common) key,
@@ -164,7 +162,7 @@ def compare_dijkstra_results(
 
 
 def is_dijkstra_valid(
-    graph: List[List[List[int]]],
+    graph: GraphList,
     start_node: int,
     lengths_result: List[float],
     previous_result: List[Any],

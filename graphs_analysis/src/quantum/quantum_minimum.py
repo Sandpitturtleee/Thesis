@@ -1,25 +1,70 @@
+"""
+Quantum Grover Search and Minimum Finding Utilities
+--------------------------------------------------
+
+This module implements Grover's quantum search and the Boyer-Brassard-Høyer-Tapp (BBHT)
+minimum finding algorithm using Qiskit primitives.
+
+Functions:
+----------
+- random_finite_index: Randomly chooses a non-infinite entry in an array.
+- pad_to_power_of_two_with_indices: Pads index/value lists to a power of two for quantum circuits.
+- grover_oracle: Constructs a Grover phase oracle for given target indices.
+- grover_search: Runs Grover's algorithm for a set number of iterations to find a marked state.
+- bbht_search: Universal exponential search for minimum, as per BBHT.
+- find_min: Finds (probabilistically) the minimum in a quantum-inspired way.
+
+Types:
+------
+- None (general utility functions only)
+"""
+
 import math
 import random
+from typing import Any, List, Optional, Tuple
 
 from qiskit import QuantumCircuit
 from qiskit.primitives import StatevectorSampler
 from qiskit_algorithms import AmplificationProblem, Grover
 
 
-def random_finite_index(arr):
+def random_finite_index(arr: List[float]) -> int:
     """
     Returns a random index from arr where the value is not inf.
-    Returns None if no such index exists.
+
+    Parameters
+    ----------
+    arr : List[float]
+        The array to sample from.
+
+    Returns
+    -------
+    Int
+        Index of a finite entry
     """
     valid_indices = [i for i, val in enumerate(arr) if val != float("inf")]
-    if valid_indices:
-        return random.choice(valid_indices)
-    else:
-        return None
+    return random.choice(valid_indices)
 
 
-def pad_to_power_of_two_with_indices(indices, distances):
+def pad_to_power_of_two_with_indices(
+    indices: List[int], distances: List[float]
+) -> Tuple[List[int], List[float]]:
+    """
+    Pad the index and value lists so their length is the next power of two.
+    Entries beyond the original length are padded with inf.
 
+    Parameters
+    ----------
+    indices : List[int]
+        Valid indices.
+    distances : List[float]
+        Corresponding values.
+
+    Returns
+    -------
+    Tuple[List[int], List[float]]
+        Padded indices and padded values.
+    """
     finite = [
         (idx, dist) for idx, dist in zip(indices, distances) if dist != float("inf")
     ]
@@ -37,9 +82,22 @@ def pad_to_power_of_two_with_indices(indices, distances):
     return padded_indices, padded_distances
 
 
-def grover_oracle(n, targets):
-    """Construct a phase oracle that marks the target basis states."""
+def grover_oracle(n: int, targets: List[int]) -> QuantumCircuit:
+    """
+    Construct a phase oracle that marks the 'targets' basis states.
 
+    Parameters
+    ----------
+    n : int
+        Number of qubits.
+    targets : List[int]
+        List of indices to mark as solutions.
+
+    Returns
+    -------
+    QuantumCircuit
+        The oracle as a quantum circuit.
+    """
     circ = QuantumCircuit(n)
 
     for target in targets:
@@ -66,7 +124,26 @@ def grover_oracle(n, targets):
     return circ
 
 
-def grover_search(size, marked_states, iterations):
+def grover_search(
+    size: int, marked_states: List[int], iterations: int
+) -> Optional[int]:
+    """
+    Run Grover's algorithm with a given oracle and iteration count.
+
+    Parameters
+    ----------
+    size : int
+        Size of the search space.
+    marked_states : List[int]
+        Indices considered as solutions.
+    iterations : int
+        Number of Grover iterations.
+
+    Returns
+    -------
+    Optional[int]
+        Index of the found solution, or None if not found.
+    """
     if not marked_states:
         return None
 
@@ -99,10 +176,21 @@ def grover_search(size, marked_states, iterations):
     return None
 
 
-def bbht_search(size, marked_states):
+def bbht_search(size: int, marked_states: List[int]) -> Tuple[Optional[int], int]:
     """
-    Boyer-Brassard-Høyer-Tapp exponential search.
-    Returns (candidate, cost).
+    Universal exponential search: Boyer–Brassard–Høyer–Tapp algorithm.
+
+    Parameters
+    ----------
+    size : int
+        Search space size.
+    marked_states : List[int]
+        Good states.
+
+    Returns
+    -------
+    Tuple[Optional[int], int]
+        (Found index/candidate, iteration cost)
     """
     if not marked_states:
         return None, 0
@@ -128,7 +216,24 @@ def bbht_search(size, marked_states):
             m *= lam
 
 
-def find_min(active_distances, time_limit):
+def find_min(
+    active_distances: List[float], time_limit: int = 1
+) -> tuple[int, Any, float | Any, float]:
+    """
+    Finds (probabilistically) the minimum index and its value using a Grover-style approach.
+
+    Parameters
+    ----------
+    active_distances : List[float]
+        Array whose minimum is to be found.
+    time_limit : int, optional
+        Whether to enforce a time limit (default 1: yes).
+
+    Returns
+    -------
+    Tuple[int, float, float, float]
+        (Minimum index, minimum value, time used, time limit)
+    """
     size = len(active_distances)
     threshold = random_finite_index(arr=active_distances)
     run_limit = 22.5 * math.sqrt(size) + 1.4 * math.log2(size)
@@ -161,35 +266,3 @@ def find_min(active_distances, time_limit):
         total_time,
         run_limit,
     )
-
-
-if __name__ == "__main__":
-
-    random.seed()
-
-    N = 16
-
-    nums = list(range(N))
-    random.shuffle(nums)
-
-    nums = [23, 10, 14]
-    N = len(nums)
-    print("Array:")
-    print(nums)
-
-    idx, value, runtime, limit = find_min(nums)
-
-    print("\nQuantum minimum finding")
-    print("-----------------------")
-    print(f"Minimum index : {idx}")
-    print(f"Minimum value : {value}")
-    print(f"Runtime used  : {runtime:.2f}")
-    print(f"Runtime limit : {limit:.2f}")
-
-    # Verification
-    true_idx = min(range(N), key=lambda i: nums[i])
-    print("\nVerification")
-    print("------------")
-    print(f"True index   : {true_idx}")
-    print(f"True minimum : {nums[true_idx]}")
-    print(f"Success      : {idx == true_idx}")

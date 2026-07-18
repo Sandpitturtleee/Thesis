@@ -1,64 +1,33 @@
 """
-Naive-based Dijkstra Benchmarking Utilities
-==========================================
+Quantum Dijkstra Batch Runner
+----------------------------
 
-This module provides high-level orchestration for benchmarking the naive-based Dijkstra's algorithm on different classes
-of generated graphs. It automates the loading of graph data, running performance experiments, and saving results for further analysis.
+This module provides batch experiment utilities for benchmarking quantum-inspired variants of Dijkstra's shortest path algorithm
+on multiple classes of input graphs. It systematically runs quantum Dijkstra variants with various options (resource/time limits,
+repeatability, etc), and records comparative performance, mismatch, and validity data in JSON files.
 
-Overview
---------
+Functions:
+----------
+- run_all_quantum: Run all quantum Dijkstra experiment variants and record results.
+- run_all_dijkstra_quantum: Run Dijkstra on all main graph classes (sparse, dense, etc.) and save each variant.
+- run_dijkstra_quantum: Run Dijkstra for a range of graph sizes, recording runtimes & correctness stats.
+- dijkstra_quantum: Execute quantum-inspired Dijkstra's algorithm (min search via quantum minimum) on a single graph.
 
-The main purposes of this module:
-    - Run tests for all supported graph types (random, worst-case, sparse) for a range of sizes
-    - Execute and instrument Dijkstra's shortest path algorithm (naive O(N^2) implementation here
-    - Repeat the experiments multiple times for statistical robustness
-    - Save benchmark statistics as JSON files for later plotting or analysis
-
-Functions
----------
-
-- run_all_dijkstra_naive(times):
-    Orchestrates benchmarking Dijkstra’s algorithm for various graph types and dumps results as JSON.
-
-- dijkstra_naive(graph, start_node):
-    Runs Dijkstra’s algorithm WITHOUT a heap (naive O(N^2)), returning distances, predecessors and operation count.
-
-- run_dijkstra_naive(times, graph_type):
-    Runs Dijkstra’s algorithm (naive) over a set of problem sizes for the specified type, returns statistics.
-
-Types
------
-
-- GraphList: List[List[Tuple[int, int]]]
-    Adjacency list format: each node index gives a list of (neighbor_index, weight) tuples.
-
-- vertices: List[int]
-    List of graph sizes (=number of nodes) used for the experiments.
-
-- count: List[float]
-    For each problem size, an averaged operation count (or timing).
+Types:
+------
+- AdjacencyList: type alias for List[List[Tuple[int, int]]] (each node's outgoing edges: [(neighbor_idx, weight), ...])
 """
+
+from typing import Any, Dict, List, Tuple
 
 from config import (
     DENSE,
     GRAPH_RUNS,
     HALF_EDGES,
-    QUANTUM_NO_TIME_LIMIT_DENSE_FILENAME,
     QUANTUM_NO_TIME_LIMIT_FILENAMES,
-    QUANTUM_NO_TIME_LIMIT_HALF_EDGES_FILENAME,
-    QUANTUM_NO_TIME_LIMIT_SPARSE_FILENAME,
-    QUANTUM_NO_TIME_LIMIT_SPECIAL_CASE_FILENAME,
-    QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_DENSE_FILENAME,
     QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_FILENAMES,
-    QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_HALF_EDGES_FILENAME,
-    QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_SPARSE_FILENAME,
-    QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_SPECIAL_CASE_FILENAME,
     QUANTUM_SAME_GRAPH_TIME_LIMIT_FILENAMES,
-    QUANTUM_TIME_LIMIT_DENSE_FILENAME,
     QUANTUM_TIME_LIMIT_FILENAMES,
-    QUANTUM_TIME_LIMIT_HALF_EDGES_FILENAME,
-    QUANTUM_TIME_LIMIT_SPARSE_FILENAME,
-    QUANTUM_TIME_LIMIT_SPECIAL_CASE_FILENAME,
     RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
     RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT,
     RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT,
@@ -77,8 +46,15 @@ from graphs_analysis.src.quantum.quantum_minimum import (
     pad_to_power_of_two_with_indices,
 )
 
+AdjacencyList = List[List[Tuple[int, int]]]
+
 
 def run_all_quantum():
+    """
+    Runs all quantum Dijkstra experiment variants and saves each result.
+
+    Four scenarios are executed: {time-limited, unlimited} × {same-graph, different-graph}.
+    """
     run_all_dijkstra_quantum(
         time_limit=1,
         same_graph=0,
@@ -107,10 +83,24 @@ def run_all_quantum():
 
 
 def run_all_dijkstra_quantum(
-    time_limit, same_graph, result_directory, result_file_names
+    time_limit: int,
+    same_graph: int,
+    result_directory: str,
+    result_file_names: List[str],
 ):
     """
-    Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
+    Run the quantum-based Dijkstra's algorithm for all configured graph types and save performance results.
+
+    Parameters
+    ----------
+    time_limit : int
+        If 1, applies time limit to quantum min search. If 0, unlimited (benchmark mode).
+    same_graph : int
+        If 1, all repetitions use the same graph instance; if 0, new graph per run.
+    result_directory : str
+        Directory for saving the results JSON.
+    result_file_names : list of str
+        Four JSON file names [SPARSE, HALF_EDGES, DENSE, SPECIAL_CASE].
     """
     times = GRAPH_RUNS
     print("Running Dijkstra's algorithm SPARSE")
@@ -150,28 +140,32 @@ def run_all_dijkstra_quantum(
     )
 
 
-def run_dijkstra_quantum(times, graph_type, time_limit, same_graph):
+def run_dijkstra_quantum(
+    times: int, graph_type: str, time_limit: int, same_graph: int
+) -> Dict[str, Any]:
     """
-    Run the naive Dijkstra's algorithm on all available sizes for the given graph type, multiple times.
+    Run the quantum-inspired Dijkstra's algorithm over all problem sizes and record results.
 
     Parameters
     ----------
     times : int
-        Number of repetitions for the whole set of graph sizes.
+        Number of independently repeated runs per graph size.
     graph_type : str
-        Identifies which graph set to load.
+        Type/tag of the graph family.
     time_limit : int
-        Time limit for dijkstra quantum algorithm for 0 - no time limit for 1 - time limit.
+        1 to enforce time limit in quantum min, 0 otherwise.
     same_graph : int
-        Same graph for dijkstra quantum algorithm for 0 - no same graph for 1 - same graph.
+        1 to reuse the same graph; 0 to use a new instance per repetition.
+
     Returns
     -------
     results : dict
-        Dictionary containing:
-            'vertices': The graph sizes (number of nodes) used.
-            'timings': Nested list with all timings per size, per run.
-            'mismatch_counts': Nested list with all mismatch_count per size, per run.
-            'invalid_counts': Nested list with all invalid count per size, per run.
+        Contains per-size/run arrays:
+            - 'vertices': list of graph sizes
+            - 'cost': outer list = sizes, inner = [run values]
+            - 'mismatch_counts': min-mismatch count [size][run]
+            - 'invalid_counts': count of output invalid cases [size][run]
+            - 'search_calls': quantum min search uses [size][run]
     """
     vertices = create_frequency()
     cost = []
@@ -219,7 +213,34 @@ def run_dijkstra_quantum(times, graph_type, time_limit, same_graph):
     return results
 
 
-def dijkstra_quantum(graph, start_node, time_limit):
+def dijkstra_quantum(
+    graph: AdjacencyList, start_node: int, time_limit: int
+) -> tuple[list[float], list[None], float, int, int]:
+    """
+    Quantum-inspired Dijkstra's algorithm (using quantum min search subroutine).
+
+    Parameters
+    ----------
+    graph : List[List[Tuple[int, int]]]
+        Adjacency list graph[u] = [(neighbor, weight), ...]
+    start_node : int
+        Node index to start the SSSP search from.
+    time_limit : int
+        If nonzero, use a time/resource-limited quantum minimum search.
+
+    Returns
+    -------
+    distances : List[float]
+        Distance estimates from start_node.
+    previous : List[Optional[int]]
+        Parent/pointer array for each node.
+    operation_count : float
+        Proxy for runtime cost (calls to quantum min).
+    mismatch_count : int
+        Number of times the quantum min search didn't match the true min.
+    search_calls : int
+        Number of quantum min search executions.
+    """
     n = len(graph)
     distances = [float("inf")] * n
     previous = [None] * n

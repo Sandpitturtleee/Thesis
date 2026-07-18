@@ -2,15 +2,13 @@
 Heap-based Dijkstra Benchmarking Utilities
 ==========================================
 
-This module provides high-level orchestration for benchmarking the heap-based Dijkstra's algorithm
-on various classes of generated graphs. It automates loading graph data, running timed/performance
-experiments, and saving results for later analysis.
+This module provides high-level orchestration for benchmarking the heap-based Dijkstra's algorithm on various classes
+of generated graphs. It automates loading graph data, running timed/performance experiments,
+and saving results for later analysis.
 
 Overview
 --------
-
 This module comprises the following main parts:
-
     - Running experiments for all major graph types (random, worst-case, sparse)
     - Executing and instrumenting Dijkstra's shortest path algorithm using a MinHeap
     - Automating repeated runs for statistical averaging per graph size
@@ -18,8 +16,7 @@ This module comprises the following main parts:
 
 Functions
 ---------
-
-- run_all_dijkstra_heap(times):
+- run_all_dijkstra_heap():
     Orchestrates benchmarking Dijkstra’s algorithm for various graph types and saves results as JSON.
 - dijkstra_heap(graph, start_node):
     Runs Dijkstra’s algorithm with a MinHeap and returns distances, predecessor info, and heap operation count.
@@ -28,7 +25,6 @@ Functions
 
 Types
 -----
-
 - GraphList: List[List[Tuple[int, int]]]
     Adjacency list representation; each node maps to list of (neighbor_index, weight) pairs.
 - vertices: List[int]
@@ -39,6 +35,7 @@ Types
 
 import heapq
 import math
+from typing import Any, List, Tuple
 
 from config import (
     DENSE,
@@ -59,10 +56,14 @@ from graphs_analysis.src.helpers import (
 )
 from graphs_analysis.src.standard.heap import CountingHeap
 
+GraphList = List[List[Tuple[int, int]]]
 
-def run_all_dijkstra_heap():
+
+def run_all_dijkstra_heap() -> None:
     """
     Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
+    Benchmarks are repeated as defined in config.GRAPH_RUNS.
+    Results are saved as JSON files in the directory specified by config.RESULTS_DIRECTORY_STANDARD_HEAP.
     """
     times = GRAPH_RUNS
     directory = RESULTS_DIRECTORY_STANDARD_HEAP
@@ -96,7 +97,29 @@ def run_all_dijkstra_heap():
     )
 
 
-def dijkstra_log(graph, start_node):
+def dijkstra_log(
+    graph: GraphList, start_node: int
+) -> tuple[list[float], list[None], int | Any]:
+    """
+    Perform Dijkstra's shortest-path algorithm on a graph using Python's built-in heapq,
+    logging the total "logarithmic work" (theoretical log_2 heap ops).
+
+    Parameters
+    ----------
+    graph : GraphList
+        The adjacency list graph: List of lists [ [ (neighbor, weight), ...], ... ]
+    start_node : int
+        Source vertex index.
+
+    Returns
+    -------
+    distances : List[float]
+        Shortest known distances from start_node to each vertex.
+    previous : List[int]
+        Predecessor nodes for path reconstruction.
+    total_log_work : float
+        Total of log2(heap size) work units for all heap operations (for theoretical analysis).
+    """
     n = len(graph)
     distances = [float("inf")] * n
     previous = [None] * n
@@ -135,7 +158,29 @@ def dijkstra_log(graph, start_node):
     return distances, previous, total_log_work
 
 
-def dijkstra_heap(graph, start_node):
+def dijkstra_heap(
+    graph: GraphList, start_node: int
+) -> tuple[list[float], list[None], Any]:
+    """
+    Dijkstra's shortest-path algorithm instrumentation with a specialized CountingHeap
+    that tracks the number of heap operations performed.
+
+    Parameters
+    ----------
+    graph : GraphList
+        The adjacency list graph: List of lists [ [ (neighbor, weight), ...], ... ]
+    start_node : int
+        Source vertex index.
+
+    Returns
+    -------
+    distances : List[float]
+        Shortest distances from start_node.
+    previous : List[int]
+        Predecessor node for each.
+    heap_work : float
+        The measured count (or custom "work") of heap operations from the CountingHeap.
+    """
     n = len(graph)
     distances = [float("inf")] * n
     previous = [None] * n
@@ -168,7 +213,9 @@ def dijkstra_heap(graph, start_node):
     return distances, previous, heap.total_work()
 
 
-def run_dijkstra_heap(times, graph_type):
+def run_dijkstra_heap(
+    times: int, graph_type: str
+) -> Tuple[List[int], List[List[float]]]:
     """
     Run heap-based Dijkstra's algorithm on all available sizes for the given graph type, multiple times.
 
@@ -184,7 +231,7 @@ def run_dijkstra_heap(times, graph_type):
     vertices : List[int]
         The graph sizes (number of nodes) used.
     all_results : List[List[float]]
-        Nested list with all timing per size, per full run (len = size x times).
+        Nested list with all timing/operation count per size, per full run (len = size x times).
     """
     vertices = create_frequency()
     all_results = []

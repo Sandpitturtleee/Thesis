@@ -2,22 +2,21 @@
 Naive-based Dijkstra Benchmarking Utilities
 ==========================================
 
-This module provides high-level orchestration for benchmarking the naive-based Dijkstra's algorithm on different classes
-of generated graphs. It automates the loading of graph data, running performance experiments, and saving results for further analysis.
+This module provides high-level orchestration for benchmarking the naive-based Dijkstra's algorithm
+on different classes of generated graphs. It automates the loading of graph data, running
+performance experiments, and saving results for further analysis.
 
 Overview
 --------
-
 The main purposes of this module:
     - Run tests for all supported graph types (random, worst-case, sparse) for a range of sizes
-    - Execute and instrument Dijkstra's shortest path algorithm (naive O(N^2) implementation here
+    - Execute and instrument Dijkstra's shortest path algorithm (naive O(N^2) implementation here)
     - Repeat the experiments multiple times for statistical robustness
     - Save benchmark statistics as JSON files for later plotting or analysis
 
 Functions
 ---------
-
-- run_all_dijkstra_naive(times):
+- run_all_dijkstra_naive():
     Orchestrates benchmarking Dijkstra’s algorithm for various graph types and dumps results as JSON.
 
 - dijkstra_naive(graph, start_node):
@@ -28,7 +27,6 @@ Functions
 
 Types
 -----
-
 - GraphList: List[List[Tuple[int, int]]]
     Adjacency list format: each node index gives a list of (neighbor_index, weight) tuples.
 
@@ -38,6 +36,8 @@ Types
 - count: List[float]
     For each problem size, an averaged operation count (or timing).
 """
+
+from typing import Any, List, Optional, Tuple
 
 from config import (
     DENSE,
@@ -57,10 +57,16 @@ from graphs_analysis.src.helpers import (
     save_results_to_json,
 )
 
+GraphList = List[List[Tuple[int, float]]]
 
-def run_all_dijkstra_naive():
+
+def run_all_dijkstra_naive() -> None:
     """
-    Run the heap-based Dijkstra's algorithm for all configured graph types and save performance results.
+    Run the naive Dijkstra's algorithm for all configured graph types and save performance results.
+
+    This function orchestrates running benchmarks for: SPARSE, HALF_EDGES, DENSE, and SPECIAL_CASE
+    graph types with the configured number of runs. It then saves the results to JSON files in the
+    corresponding results directory.
     """
     times = GRAPH_RUNS
     directory = RESULTS_DIRECTORY_STANDARD_NAIVE
@@ -94,7 +100,9 @@ def run_all_dijkstra_naive():
     )
 
 
-def dijkstra_naive(graph, start_node):
+def dijkstra_naive(
+    graph: GraphList, start_node: int
+) -> Tuple[List[float], List[Optional[int]], int]:
     """
     Run Dijkstra's shortest paths algorithm using a naive O(n^2) version (no heap).
 
@@ -107,10 +115,13 @@ def dijkstra_naive(graph, start_node):
 
     Returns
     -------
-    (distances, previous, operation_count)
-        distances : List[float] - Minimum distance from start_node to all nodes.
-        previous : List[Optional[int]] - Parent predecessors in the shortest paths.
-        operation_count : int - Total number of key comparisons for picking the next node.
+    (distances, previous, operation_count) : Tuple[List[float], List[Optional[int]], int]
+        distances : List[float]
+            Minimum distance from start_node to all nodes.
+        previous : List[Optional[int]]
+            Parent predecessors in the shortest paths.
+        operation_count : int
+            Total number of key comparisons for picking the next node.
     """
     n = len(graph)
     distances = [float("inf")] * n
@@ -143,7 +154,9 @@ def dijkstra_naive(graph, start_node):
     return distances, previous, operation_count
 
 
-def run_dijkstra_naive(times, graph_type):
+def run_dijkstra_naive(
+    times: int, graph_type: str
+) -> Tuple[List[int], List[List[float]]]:
     """
     Run the naive Dijkstra's algorithm on all available sizes for the given graph type, multiple times.
 
@@ -159,7 +172,7 @@ def run_dijkstra_naive(times, graph_type):
     vertices : List[int]
         The graph sizes (number of nodes) used.
     all_results : List[List[float]]
-        Nested list with all timing per size, per full run (len = size x times).
+        Nested list with all timings per size, per run (len = size x times).
     """
     vertices = create_frequency()
     all_results = []
