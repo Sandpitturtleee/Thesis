@@ -1,29 +1,46 @@
 """
-Dijkstra Operation Count Plotting Utility
-----------------------------------------
+Dijkstra Operation Count Analysis and Plotting Utilities
+-------------------------------------------------------
 
-This module provides a utility function for plotting the operation counts of Dijkstra's algorithm
-for multiple graph types, assuming results are loaded from JSONs of a specific structure.
+This module provides utility functions for analyzing and saving operation count statistics
+from Dijkstra's algorithm experiments, particularly for "standard" graph types (naive and heap variants).
+It assumes all results are loaded from JSON files with a specific structure and provides
+batch statistical analysis and bulk JSON saving of summarized data.
 
 Functions
 ---------
-- plot_dijkstra_counts: Plot Dijkstra's operation counts for different graph types loaded from result files
+- stats_analysis_standard: Batch compute and save statistics for both heap and naive graph types.
+- stats_by_file_standard: Calculate per-file statistics (mean, std, min, max) for Dijkstra operation counts.
+- save_stats_by_file: Save batch statistics as pretty-printed JSON files.
+
+Types:
+-----
+- StatsDict: type alias for Dict[str, Any]
+- ResultsDict: type alias for Dict[str, Dict[str, Any]]
 """
 
 import json
 from pathlib import Path
+from typing import Any, Dict
 
-from config import (
-    DATA_DIRECTORY,
-    RESULTS_DIRECTORY_STANDARD_HEAP,
-    RESULTS_DIRECTORY_STANDARD_NAIVE,
-    STATS_DIRECTORY_STANDARD_HEAP,
-    STATS_DIRECTORY_STANDARD_NAIVE,
-)
-from data_analysis.src.helpers import per_count_row_statistics, read_results_from_json
+from config import (DATA_DIRECTORY, RESULTS_DIRECTORY_STANDARD_HEAP,
+                    RESULTS_DIRECTORY_STANDARD_NAIVE,
+                    STATS_DIRECTORY_STANDARD_HEAP,
+                    STATS_DIRECTORY_STANDARD_NAIVE)
+from data_analysis.src.helpers import (per_count_row_statistics,
+                                       read_results_from_json)
+
+StatsDict = Dict[str, Any]
+ResultsDict = Dict[str, Dict[str, Any]]
 
 
-def stats_analysis_standard():
+def stats_analysis_standard() -> None:
+    """
+    Compute and save operation count statistics from standard Dijkstra experiments (heap and naive).
+
+    Loads JSON result files, computes statistics for each, then saves them to
+    their respective summary output directories as pretty-printed JSON files.
+    """
     heap_results = read_results_from_json(directory=RESULTS_DIRECTORY_STANDARD_HEAP)
     heap_stats = stats_by_file_standard(results=heap_results)
     save_stats_by_file(stats=heap_stats, directory=STATS_DIRECTORY_STANDARD_HEAP)
@@ -33,10 +50,21 @@ def stats_analysis_standard():
     save_stats_by_file(stats=naive_stats, directory=STATS_DIRECTORY_STANDARD_NAIVE)
 
 
-def stats_by_file_standard(results):
+def stats_by_file_standard(results: ResultsDict) -> StatsDict:
     """
-    For 'standard' files, calculate statistics for 'count' field only.
-    Returns: {fname: stats_df}
+    For each file with a key starting with 'standard', calculate summary statistics for only the 'count' field.
+
+    Parameters
+    ----------
+    results : ResultsDict
+        Mapping of file names to loaded experiment data dicts. Each data dict
+        must contain "count" (sequence of operation counts) and "vertices" fields.
+
+    Returns
+    -------
+    StatsDict
+        Dictionary mapping file name to a DataFrame of per-row statistics
+        (such as mean, std, min, max) indexed by graph size.
     """
     all_stats = {}
     for file_name, data in results.items():
@@ -48,10 +76,22 @@ def stats_by_file_standard(results):
     return all_stats
 
 
-def save_stats_by_file(stats, directory):
+def save_stats_by_file(stats: StatsDict, directory: str) -> None:
     """
-    Save stats for classic/standard files.
-    Each is wrapped in a top-level 'cost' key.
+    Save calculated statistics for standard Dijkstra result files as prettified JSON.
+    Statistics for each file are wrapped under a top-level 'cost' key
+    for convenience during later loading.
+
+    Parameters
+    ----------
+    stats : StatsDict
+        Mapping of file names to DataFrames with statistics.
+    directory : str
+        Target directory (subfolder of DATA_DIRECTORY) for output JSONs.
+
+    Returns
+    -------
+    None
     """
     project_root = Path(__file__).parent.parent.parent.parent
     output_dir = project_root / DATA_DIRECTORY / directory

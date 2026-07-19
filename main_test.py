@@ -2,16 +2,17 @@
 import math
 
 from networkx import display
-
 # Imports from Qiskit
 from qiskit import MissingOptionalLibraryError, QuantumCircuit
-from qiskit.circuit.library import MCMTGate, PhaseOracleGate, ZGate, grover_operator
+from qiskit.circuit.library import (MCMTGate, PhaseOracleGate, ZGate,
+                                    grover_operator)
 from qiskit.primitives import StatevectorSampler
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 from qiskit.visualization import plot_distribution
 from qiskit_algorithms import AmplificationProblem, Grover
 
-from graphs_analysis.src.dijkstra_validation import dijkstra_lib, is_dijkstra_valid
+from graphs_analysis.src.dijkstra_validation import (dijkstra_lib,
+                                                     is_dijkstra_valid)
 from graphs_analysis.src.quantum.dijkstra_quantum import dijkstra_quantum
 
 if __name__ == "__main__":

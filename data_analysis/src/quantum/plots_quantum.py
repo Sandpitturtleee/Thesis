@@ -1,30 +1,58 @@
-import matplotlib.cm as cm
+"""
+Quantum Statistics Plotting Utilities
+-------------------------------------
+
+This module provides functions for visualizing statistical results for quantum algorithms
+on graph datasets, including mean, median, standard deviation, mismatch and invalid counts,
+and search call statistics, under different time-limit and problem-type scenarios. It supports:
+
+Functions:
+----------
+- plot_all_quantum_time_limit:         Plot all quantum stats with a time limit across all types.
+- plot_all_quantum_no_time_limit:      Plot all quantum stats without a time limit across all types.
+- plot_all_quantum_same_graph_time_limit:     Plot all quantum stats with a time limit on the same graphs.
+- plot_all_quantum_same_graph_no_time_limit:  Plot all quantum stats without a time limit on the same graphs.
+- plot_quantum_time_limit_vs_no_time_limit_all:   Plot comparisons of quantum statistics with/without time limit.
+- plot_quantum_same_graph_time_limit_vs_no_time_limit_all: Plot comparisons for same-graph with/without time limit.
+- plot_quantum_stat_time_limit_vs_no_time_limit:            Plot a single quantum statistic split by time limit.
+- plot_quantum_stat_same_graph_time_limit_vs_no_time_limit: Plot a single quantum statistic for same-graph comparison.
+- plot_quantum_stat_subplot:                  Plot a quantum statistic on a matplotlib Axes.
+- plots_mean_quantum:                         Plot quantum mean results as a function of graph size.
+- plots_median_quantum:                       Plot quantum median results as a function of graph size.
+- plots_std_quantum:                          Plot quantum std-deviation results as a function of graph size.
+- plots_mismatch_quantum:                     Plot quantum mismatch counts as a function of graph size.
+- plots_invalid_quantum:                      Plot quantum invalid counts as a function of graph size.
+- plots_search_calls_quantum:                 Plot quantum search call stats as a function of graph size.
+
+Types:
+------
+- QuantumStatsDict: type alias for Dict[str, dict] (filename -> stat dictionary)
+- Axes:    Matplotlib Axes object for custom plotting.
+"""
+
+from typing import Any, Dict
+
 import matplotlib.pyplot as plt
-import networkx as nx
-import numpy as np
 
-from config import (
-    COLOR_MAP,
-    PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT,
-    PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT,
-    PLOT_TITLE_TYPE_NO_TIME_LIMIT,
-    PLOT_TITLE_TYPE_TIME_LIMIT,
-    STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
-    STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
-    STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
-    STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
-    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
-    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
-)
-from data_analysis.src.helpers import (
-    add_custom_legend,
-    get_type_from_filename,
-    quantum_stat_from_dict,
-    read_results_from_json,
-)
+from config import (COLOR_MAP, PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT,
+                    PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT,
+                    PLOT_TITLE_TYPE_NO_TIME_LIMIT, PLOT_TITLE_TYPE_TIME_LIMIT,
+                    STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+                    STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT)
+from data_analysis.src.helpers import (add_custom_legend,
+                                       get_type_from_filename,
+                                       quantum_stat_from_dict,
+                                       read_results_from_json)
+
+QuantumStatsDict = Dict[str, Any]
 
 
-def plot_all_quantum_time_limit():
+def plot_all_quantum_time_limit() -> None:
+    """
+    Plot all quantum statistics with a time limit for all graph types/configurations.
+    """
     time_limit_stats = read_results_from_json(
         directory=STATS_DIRECTORY_QUANTUM_TIME_LIMIT
     )
@@ -38,7 +66,10 @@ def plot_all_quantum_time_limit():
     )
 
 
-def plot_all_quantum_no_time_limit():
+def plot_all_quantum_no_time_limit() -> None:
+    """
+    Plot all quantum statistics without a time limit for all graph types/configurations.
+    """
     no_time_limit_stats = read_results_from_json(
         directory=STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT
     )
@@ -62,7 +93,10 @@ def plot_all_quantum_no_time_limit():
     )
 
 
-def plot_all_quantum_same_graph_time_limit():
+def plot_all_quantum_same_graph_time_limit() -> None:
+    """
+    Plot all quantum statistics with a time limit using the same graph instance for each configuration.
+    """
     time_limit_stats = read_results_from_json(
         directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT
     )
@@ -86,7 +120,10 @@ def plot_all_quantum_same_graph_time_limit():
     )
 
 
-def plot_all_quantum_same_graph_no_time_limit():
+def plot_all_quantum_same_graph_no_time_limit() -> None:
+    """
+    Plot all quantum statistics without a time limit using the same graph instance for each configuration.
+    """
     time_limit_stats = read_results_from_json(
         directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT
     )
@@ -110,7 +147,10 @@ def plot_all_quantum_same_graph_no_time_limit():
     )
 
 
-def plot_quantum_time_limit_vs_no_time_limit_all():
+def plot_quantum_time_limit_vs_no_time_limit_all() -> None:
+    """
+    Plot and compare all main statistics for quantum runs with and without time limits.
+    """
     plot_quantum_stat_time_limit_vs_no_time_limit("cost", "mean", "mean")
     plot_quantum_stat_time_limit_vs_no_time_limit("cost", "median", "median")
     plot_quantum_stat_time_limit_vs_no_time_limit("cost", "std", "std")
@@ -125,7 +165,10 @@ def plot_quantum_time_limit_vs_no_time_limit_all():
     )
 
 
-def plot_quantum_same_graph_time_limit_vs_no_time_limit_all():
+def plot_quantum_same_graph_time_limit_vs_no_time_limit_all() -> None:
+    """
+    Plot and compare all main statistics for same-graph quantum runs with and without time limits.
+    """
     plot_quantum_stat_same_graph_time_limit_vs_no_time_limit("cost", "mean", "mean")
     plot_quantum_stat_same_graph_time_limit_vs_no_time_limit("cost", "median", "median")
     plot_quantum_stat_same_graph_time_limit_vs_no_time_limit("cost", "std", "std")
@@ -140,7 +183,21 @@ def plot_quantum_same_graph_time_limit_vs_no_time_limit_all():
     )
 
 
-def plot_quantum_stat_time_limit_vs_no_time_limit(stat_type, stat_key, stat_label):
+def plot_quantum_stat_time_limit_vs_no_time_limit(
+    stat_type: str, stat_key: str, stat_label: str
+) -> None:
+    """
+    Plot a single quantum stat (e.g. mean cost) for time-limited and no-time-limit cases side by side.
+
+    Parameters
+    ----------
+    stat_type : str
+        Statistic type: 'cost', 'mismatch_counts', 'invalid_counts', 'search_calls', etc.
+    stat_key : str
+        Key of statistic to plot, e.g., 'mean', 'median', 'std'.
+    stat_label : str
+        Text label for use in the plot title.
+    """
     fig, axs = plt.subplots(1, 2, figsize=(16, 6))
 
     # Time limit
@@ -168,8 +225,20 @@ def plot_quantum_stat_time_limit_vs_no_time_limit(stat_type, stat_key, stat_labe
 
 
 def plot_quantum_stat_same_graph_time_limit_vs_no_time_limit(
-    stat_type, stat_key, stat_label
-):
+    stat_type: str, stat_key: str, stat_label: str
+) -> None:
+    """
+    Plot a single quantum stat for same-graph time-limited vs. no-time-limit cases side-by-side.
+
+    Parameters
+    ----------
+    stat_type : str
+        Statistic type: 'cost', 'mismatch_counts', etc.
+    stat_key : str
+        Key of statistic to plot.
+    stat_label : str
+        Text label for plot title.
+    """
     fig, axs = plt.subplots(1, 2, figsize=(16, 6))
 
     # Same graph, time limit
@@ -196,7 +265,29 @@ def plot_quantum_stat_same_graph_time_limit_vs_no_time_limit(
     plt.show()
 
 
-def plot_quantum_stat_subplot(data, stat_type, stat_key, ax, title):
+def plot_quantum_stat_subplot(
+    data: QuantumStatsDict,
+    stat_type: str,
+    stat_key: str,
+    ax: plt.Axes,
+    title: str,
+) -> None:
+    """
+    Plot a statistic (mean, median, etc.) for all types on a Matplotlib Axes.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Raw statistics dictionary loaded from JSON.
+    stat_type : str
+        Statistic type: 'cost', 'mismatch_counts', etc.
+    stat_key : str
+        Key for secondary statistic (e.g., 'mean', 'median', 'std').
+    ax : matplotlib.axes.Axes
+        Matplotlib Axes object on which to plot.
+    title : str
+        Title for this subplot.
+    """
     handles_dict = {}
     for filename, dct in data.items():
         if "quantum" not in filename or stat_type not in dct:
@@ -222,7 +313,17 @@ def plot_quantum_stat_subplot(data, stat_type, stat_key, ax, title):
     ax.set_ylabel(ylabel)
 
 
-def plots_mean_quantum(data, title_type):
+def plots_mean_quantum(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the mean quantum cost as a function of graph size for all types/configurations.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Input statistics dictionary.
+    title_type : str
+        Title string describing the type of quantum experiment/run.
+    """
     fig, ax = plt.subplots(figsize=(10, 6))
     handles_dict = {}
     for filename, dct in data.items():
@@ -243,7 +344,17 @@ def plots_mean_quantum(data, title_type):
     plt.show()
 
 
-def plots_median_quantum(data, title_type):
+def plots_median_quantum(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the median quantum cost as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
     fig, ax = plt.subplots(figsize=(10, 6))
     handles_dict = {}
     for filename, dct in data.items():
@@ -264,7 +375,17 @@ def plots_median_quantum(data, title_type):
     plt.show()
 
 
-def plots_std_quantum(data, title_type):
+def plots_std_quantum(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the standard deviation of quantum cost as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
     fig, ax = plt.subplots(figsize=(10, 6))
     handles_dict = {}
     for filename, dct in data.items():
@@ -285,7 +406,17 @@ def plots_std_quantum(data, title_type):
     plt.show()
 
 
-def plots_mismatch_quantum(data, title_type):
+def plots_mismatch_quantum(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the mean mismatch count as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
     fig, ax = plt.subplots(figsize=(10, 6))
     handles_dict = {}
     for filename, dct in data.items():
@@ -306,7 +437,17 @@ def plots_mismatch_quantum(data, title_type):
     plt.show()
 
 
-def plots_invalid_quantum(data, title_type):
+def plots_invalid_quantum(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the mean invalid count as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
     fig, ax = plt.subplots(figsize=(10, 6))
     handles_dict = {}
     for filename, dct in data.items():
@@ -327,7 +468,17 @@ def plots_invalid_quantum(data, title_type):
     plt.show()
 
 
-def plots_search_calls_quantum(data, title_type):
+def plots_search_calls_quantum(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the mean minimum number of search calls as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
     fig, ax = plt.subplots(figsize=(10, 6))
     handles_dict = {}
     for filename, dct in data.items():

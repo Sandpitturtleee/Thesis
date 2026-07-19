@@ -1,18 +1,39 @@
-import json
-import os
-from pathlib import Path
+"""
+Dijkstra Results Plotting Utilities
+-----------------------------------
 
-import matplotlib.cm as cm
+This module provides utility functions for visualizing and reading results from JSON files corresponding to Dijkstra algorithm runs across graphs of various sizes.
+
+Functions:
+----------
+- plot_all_other: Convenience function to run standard plotting routines for sparse graph result files.
+- plot_vertex_counts: Plots the count values for a specific number of vertices from a result file.
+- plot_vertices_counts: Plots the count values for multiple numbers of vertices on a single figure.
+- draw_graph_big: Visualizes large graphs with a node-link diagram layout.
+- draw_graph_small: Visualizes small graphs with labeled nodes and edge weights.
+- read_results_by_vertex: Loads and returns result data for a specific vertex number.
+- read_results_by_vertices: Loads and returns results for multiple vertex counts as a dictionary.
+
+Types:
+------
+- None exposed directly; see individual function typing signatures.
+"""
+
+import json
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
 import matplotlib.pyplot as plt
 import networkx as nx
-import numpy as np
-import pandas as pd
 
 from config import DATA_DIRECTORY, RESULTS_DIRECTORY_STANDARD_NAIVE
-from data_analysis.src.helpers import extract_methods_and_labels, read_results_from_json
 
 
-def plot_all_other():
+def plot_all_other() -> None:
+    """
+    Runs typical plotting routines for the standard naive Dijkstra results (sparse).
+    Shows count plots for 10 vertices and for [10, 50, 100] vertices from the corresponding JSON file.
+    """
     plot_vertex_counts(
         directory=RESULTS_DIRECTORY_STANDARD_NAIVE,
         file_name="standard_naive_sparse.json",
@@ -25,14 +46,18 @@ def plot_all_other():
     )
 
 
-def plot_vertex_counts(file_name: str, vertex_number: int, directory):
+def plot_vertex_counts(file_name: str, vertex_number: int, directory: str) -> None:
     """
     Plots the count values for a specific number of vertices.
 
     Parameters
     ----------
-    data : dict
-        Dictionary with keys 'vertices' (int) and 'count' (list of int).
+    file_name : str
+        Name of the .json result file to read (e.g., "some_results.json")
+    vertex_number : int
+        Number of vertices to visualize results for.
+    directory : str
+        Subdirectory under DATA_DIRECTORY where the results file is located.
     """
     data = read_results_by_vertex(
         file_name=file_name, vertex_number=vertex_number, directory=directory
@@ -54,7 +79,21 @@ def plot_vertex_counts(file_name: str, vertex_number: int, directory):
     plt.show()
 
 
-def plot_vertices_counts(file_name: str, vertices_number: list, directory):
+def plot_vertices_counts(
+    file_name: str, vertices_number: List[int], directory: str
+) -> None:
+    """
+    Plots the count values for multiple numbers of vertices on one plot.
+
+    Parameters
+    ----------
+    file_name : str
+        Result file to read
+    vertices_number : List[int]
+        List of vertex counts to plot
+    directory : str
+        Subdirectory under DATA_DIRECTORY
+    """
     """
     Plots the count values for multiple numbers of vertices on one plot.
     """
@@ -77,7 +116,15 @@ def plot_vertices_counts(file_name: str, vertices_number: list, directory):
     plt.show()
 
 
-def draw_graph_big(graph):
+def draw_graph_big(graph: List[List[List[int]]]) -> None:
+    """
+    Visualizes a large directed graph (adjacency list format) with a force-directed layout. Node labels hidden.
+
+    Parameters
+    ----------
+    graph : List[List[Tuple[int, int]]]
+        Adjacency list: graph[u] = list of (v, weight)
+    """
     g = nx.DiGraph()
     g.add_nodes_from(range(len(graph)))
     for node, edges in enumerate(graph):
@@ -91,7 +138,15 @@ def draw_graph_big(graph):
     plt.show()
 
 
-def draw_graph_small(graph):
+def draw_graph_small(graph: List[List[List[int]]]) -> None:
+    """
+    Visualizes a small directed graph (adjacency list format) with visible labels and edge weights.
+
+    Parameters
+    ----------
+    graph : List[List[Tuple[int, int]]]
+        Adjacency list: graph[u] = list of (v, weight)
+    """
     g = nx.DiGraph()
     g.add_nodes_from(range(len(graph)))
     for node, edges in enumerate(graph):
@@ -108,20 +163,24 @@ def draw_graph_small(graph):
     plt.show()
 
 
-def read_results_by_vertex(file_name: str, vertex_number: int, directory):
+def read_results_by_vertex(
+    file_name: str, vertex_number: int, directory: str
+) -> Optional[Dict[str, Any]]:
     """
-    Reads a specific JSON result file for Dijkstra algorithm runs and returns data for a selected vertex number.
+    Reads a JSON result file for Dijkstra runs and returns data for a selected vertex number.
 
     Parameters
     ----------
     file_name : str
-        Name of the .json result file to read (e.g., "some_results.json")
+        Name of the result JSON file (e.g., "some_results.json")
     vertex_number : int
         Number of vertices to look for in the file.
+    directory : str
+        Subdirectory under DATA_DIRECTORY
 
     Returns
     -------
-    dict
+    Optional[dict]
         A dictionary with the matching 'vertices' value and corresponding 'count' list, or None if not found.
     """
     project_root = Path(__file__).parent.parent.parent
@@ -136,10 +195,25 @@ def read_results_by_vertex(file_name: str, vertex_number: int, directory):
     return {"vertices": data["vertices"][idx], "count": data["count"][idx]}
 
 
-def read_results_by_vertices(file_name: str, vertices_number: list, directory):
+def read_results_by_vertices(
+    file_name: str, vertices_number: List[int], directory: str
+) -> Dict[int, List[int]]:
     """
     Reads counts for multiple vertex numbers from the given JSON results file.
-    Returns a dict with vertex_number as key and counts as value.
+
+    Parameters
+    ----------
+    file_name : str
+        Name of the result JSON file (e.g., "some_results.json")
+    vertices_number : List[int]
+        List of vertex counts to extract.
+    directory : str
+        Subdirectory under DATA_DIRECTORY
+
+    Returns
+    -------
+    Dict[int, List[int]]
+        Dictionary mapping vertex count to list of counts. Only includes found items.
     """
     project_root = Path(__file__).parent.parent.parent
     file_path = project_root / DATA_DIRECTORY / directory / file_name

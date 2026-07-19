@@ -1,26 +1,53 @@
+"""
+Quantum Probability Stats Analysis Utilities
+-------------------------------------------
+
+This module provides utility functions for analyzing quantum experiment results:
+reading results, computing various per-vertex success probabilities, merging stats,
+and saving the merged statistics to JSON files.
+
+Functions:
+----------
+- prob_stats_quantum_analysis: Run all-prob analysis over new data and save as JSON to stats/quantum_prob/...
+- compute_and_merge_all_probs: Merge a number of probability calculations for each quantum experiment file and vertex
+- compute_dijkstra_success_prob: Compute Dijkstra's algorithm success probability per vertex and file
+- compute_find_min_success_prob: Compute 'find min' operation success probability per vertex and file
+- compute_mismatch_without_invalid_prob: Compute probability that mismatch did *not* result in invalid result
+- compute_invalid_when_mismatch_prob: Compute probability that mismatch did result in invalid Dijkstra result
+- save_merged_prob_stats_by_file: Save merged per-file/vertex stats dict to separate JSON files
+
+Types:
+------
+- ResultsDict: type alias for `dict[str, dict[str, any]]`
+- StatsDict: type alias for `dict[str, dict[str, dict[str, float|int]]]`
+"""
+
 import json
-import os
 from pathlib import Path
+from typing import Any, Dict
 
-import pandas as pd
-
-from config import (
-    DATA_DIRECTORY,
-    RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
-    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT,
-    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT,
-    RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
-    STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
-    STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
-    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
-    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_NO_TIME_LIMIT,
-    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT,
-    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
-)
+from config import (DATA_DIRECTORY, RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+                    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT,
+                    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT,
+                    RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
+                    STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
+                    STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_NO_TIME_LIMIT,
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT)
 from data_analysis.src.helpers import read_results_from_json
 
+ResultsDict = Dict[str, Dict[str, Any]]
+StatsDict = Dict[str, Dict[str, Dict[str, float | int]]]
 
-def prob_stats_quantum_analysis():
+
+def prob_stats_quantum_analysis() -> None:
+    """
+    Generate and save success probability statistics for all quantum result sets.
+
+    Reads result files from configured directories, computes various success probabilities,
+    merges stats by file/vertex, and saves as individual JSON summary files into the appropriate
+    stats directories.
+    """
     time_limit_results = read_results_from_json(
         directory=RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT
     )
@@ -59,7 +86,21 @@ def prob_stats_quantum_analysis():
     )
 
 
-def compute_and_merge_all_probs(results):
+def compute_and_merge_all_probs(results: ResultsDict) -> StatsDict:
+    """
+    Merge several quantum probability/statistics calculations per file and vertex.
+
+    Parameters
+    ----------
+    results : ResultsDict
+        Dictionary of quantum experiment results (output of read_results_from_json).
+
+    Returns
+    -------
+    StatsDict
+        Nested dictionary of merged statistics:
+        {file_name: {vertex: {stat_name: value, ...}, ...}, ...}
+    """
     dijkstra_dict = compute_dijkstra_success_prob(results)
     find_min_dict = compute_find_min_success_prob(results)
     mismatch_wo_invalid_dict = compute_mismatch_without_invalid_prob(results)
@@ -94,10 +135,21 @@ def compute_and_merge_all_probs(results):
     return merged_results
 
 
-def compute_dijkstra_success_prob(all_data):
+def compute_dijkstra_success_prob(all_data: ResultsDict) -> StatsDict:
     """
-    For each file, computes success probability if dijkstra per vertex.
-    Returns: { filename: {vertex: {...}} }
+    Compute, for each file, the success probability of Dijkstra for each vertex.
+
+    Success = (calls - invalid) / calls
+
+    Parameters
+    ----------
+    all_data : ResultsDict
+        Dictionary mapping file names to per-file results.
+
+    Returns
+    -------
+    StatsDict
+        {filename: {vertex: {dijkstra_success_prob, invalid_total, calls_total}}}
     """
     results = {}
     for filename, file_data in all_data.items():
@@ -119,10 +171,20 @@ def compute_dijkstra_success_prob(all_data):
     return results
 
 
-def compute_find_min_success_prob(all_data):
+def compute_find_min_success_prob(all_data: ResultsDict) -> StatsDict:
     """
-    For each file, computes success probability against mismatch counts per vertex.
-    Returns: { filename: {vertex: {...}} }
+    For each file, compute 'find min' success probability per vertex, relative to total search calls.
+
+    Success = (search_total - mismatch_total) / search_total
+
+    Parameters
+    ----------
+    all_data : ResultsDict
+
+    Returns
+    -------
+    StatsDict
+        {filename: {vertex: {find_min_success_prob, mismatch_total, search_total}}}
     """
     results = {}
     for filename, file_data in all_data.items():
@@ -147,10 +209,20 @@ def compute_find_min_success_prob(all_data):
     return results
 
 
-def compute_mismatch_without_invalid_prob(all_data):
+def compute_mismatch_without_invalid_prob(all_data: ResultsDict) -> StatsDict:
     """
-    Computes (per file!) for each vertex, the probability that a mismatch did NOT result in invalid.
-    Returns: { filename: {vertex: {...}} }
+    For each file, compute the probability that for each vertex, a mismatch did NOT result in invalid outcome.
+
+    Probability = 1 - (# times mismatch AND invalid) / (# times mismatch occurred)
+
+    Parameters
+    ----------
+    all_data : ResultsDict
+
+    Returns
+    -------
+    StatsDict
+        {filename: {vertex: {mismatch_without_invalid_prob, mismatch_and_invalid, mismatch_total}}}
     """
     results = {}
     for filename, file_data in all_data.items():
@@ -180,10 +252,20 @@ def compute_mismatch_without_invalid_prob(all_data):
     return results
 
 
-def compute_invalid_when_mismatch_prob(all_data):
+def compute_invalid_when_mismatch_prob(all_data: ResultsDict) -> StatsDict:
     """
-    Computes (per file!) for each vertex, the probability that when a mismatch happened it resulted in invalid dijkstra result
-    Returns: { filename: {vertex: {...}} }
+    For each file, compute probability that, for each vertex, a mismatch resulted in invalid Dijkstra result.
+
+    Probability = (# times mismatch AND invalid) / (# times mismatch occurred)
+
+    Parameters
+    ----------
+    all_data : ResultsDict
+
+    Returns
+    -------
+    StatsDict
+        {filename: {vertex: {invalid_when_mismatch_prob, mismatch_and_invalid, mismatch_total}}}
     """
     results = {}
     for filename, file_data in all_data.items():
@@ -211,10 +293,18 @@ def compute_invalid_when_mismatch_prob(all_data):
     return results
 
 
-def save_merged_prob_stats_by_file(merged, directory):
+def save_merged_prob_stats_by_file(merged: StatsDict, directory: str) -> None:
     """
-    Save merged per-file/vertex stats dict to separate JSON files.
-    merged_stats_dict: {file_name: {vertex: {...stats...}, ...}, ...}
+    Save merged per-file/vertex stats dict to separate JSON files by file.
+
+    Each JSON file will contain all stats for every vertex in its corresponding experiment.
+
+    Parameters
+    ----------
+    merged : StatsDict
+        Merged per-file and per-vertex statistics dictionary.
+    directory : str
+        Relative directory name for output within the data directory.
     """
     project_root = Path(__file__).parent.parent.parent.parent
     output_dir = project_root / DATA_DIRECTORY / directory
