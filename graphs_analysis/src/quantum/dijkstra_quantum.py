@@ -20,31 +20,21 @@ Types:
 
 from typing import Any, Dict, List, Tuple
 
-from config import (
-    DENSE,
-    GRAPH_RUNS,
-    HALF_EDGES,
-    QUANTUM_NO_TIME_LIMIT_FILENAMES,
-    QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_FILENAMES,
-    QUANTUM_SAME_GRAPH_TIME_LIMIT_FILENAMES,
-    QUANTUM_TIME_LIMIT_FILENAMES,
-    RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
-    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT,
-    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT,
-    RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
-    SPARSE,
-    SPECIAL_CASE,
-)
+from config import (DENSE, GRAPH_RUNS, HALF_EDGES,
+                    QUANTUM_NO_TIME_LIMIT_FILENAMES,
+                    QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_FILENAMES,
+                    QUANTUM_SAME_GRAPH_TIME_LIMIT_FILENAMES,
+                    QUANTUM_TIME_LIMIT_FILENAMES,
+                    RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+                    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT,
+                    RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT,
+                    RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT, SPARSE, SPECIAL_CASE)
 from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
-from graphs_analysis.src.helpers import (
-    create_frequency,
-    load_graph_from_json,
-    save_results_to_json_quantum,
-)
+from graphs_analysis.src.helpers import (create_frequency,
+                                         load_graph_from_json,
+                                         save_results_to_json_quantum)
 from graphs_analysis.src.quantum.quantum_minimum import (
-    find_min,
-    pad_to_power_of_two_with_indices,
-)
+    find_min, pad_to_power_of_two_with_indices)
 
 AdjacencyList = List[List[Tuple[int, int]]]
 

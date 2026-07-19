@@ -39,23 +39,15 @@ Types
 
 from typing import Any, List, Optional, Tuple
 
-from config import (
-    DENSE,
-    GRAPH_RUNS,
-    HALF_EDGES,
-    RESULTS_DIRECTORY_STANDARD_NAIVE,
-    SPARSE,
-    SPECIAL_CASE,
-    STANDARD_NAIVE_DENSE_FILENAME,
-    STANDARD_NAIVE_HALF_EDGES_FILENAME,
-    STANDARD_NAIVE_SPARSE_FILENAME,
-    STANDARD_NAIVE_SPECIAL_CASE_FILENAME,
-)
-from graphs_analysis.src.helpers import (
-    create_frequency,
-    load_graph_from_json,
-    save_results_to_json,
-)
+from config import (DENSE, GRAPH_RUNS, HALF_EDGES,
+                    RESULTS_DIRECTORY_STANDARD_NAIVE, SPARSE, SPECIAL_CASE,
+                    STANDARD_NAIVE_DENSE_FILENAME,
+                    STANDARD_NAIVE_HALF_EDGES_FILENAME,
+                    STANDARD_NAIVE_SPARSE_FILENAME,
+                    STANDARD_NAIVE_SPECIAL_CASE_FILENAME)
+from graphs_analysis.src.helpers import (create_frequency,
+                                         load_graph_from_json,
+                                         save_results_to_json)
 
 GraphList = List[List[Tuple[int, float]]]
 
