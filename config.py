@@ -1,8 +1,9 @@
 # config.py
-import matplotlib.cm as cm
+
+import matplotlib.pyplot as plt
 
 MAX_GRAPH_SIZE = 100
-GRAPH_RUNS = 100
+GRAPH_RUNS = 10
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"
@@ -121,7 +122,7 @@ QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_FILENAMES = [
     QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_SPECIAL_CASE_FILENAME,
 ]
 
-cmap = cm.get_cmap("Blues", 8)
+cmap = plt.get_cmap("Blues", 8)
 COLOR_MAP = {
     "sparse": cmap(3),
     "half_edges": cmap(5),
@@ -136,8 +137,8 @@ PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT = "same graph time limit"
 PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT = "same graph no time limit"
 
 GRAPH_TYPES_MAPPING = [
-    ("Sparse", "sparse", cm.get_cmap("Blues")),
-    ("Half edges", "half_edges", cm.get_cmap("Blues")),
-    ("Dense", "dense", cm.get_cmap("Blues")),
-    ("Special case", "special_case", cm.get_cmap("Reds")),
+    ("Sparse", "sparse", plt.get_cmap("Blues")),
+    ("Half edges", "half_edges", plt.get_cmap("Blues")),
+    ("Dense", "dense", plt.get_cmap("Blues")),
+    ("Special case", "special_case", plt.get_cmap("Reds")),
 ]

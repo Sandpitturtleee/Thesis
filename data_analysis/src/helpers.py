@@ -132,14 +132,14 @@ def quantum_stat_from_dict(
     return vertices, y
 
 
-def order_filenames(all_stats: List[str]) -> List[str]:
+def order_filenames(all_stats: ResultDict) -> List[str]:
     """
     Orders the input filenames in a canonical order for consistent reporting.
 
     Parameters
     ----------
-    all_stats : List[str]
-        List of filenames or keys to be ordered.
+    all_stats : ResultDict:
+        Dict of filenames or keys to be ordered.
 
     Returns
     -------

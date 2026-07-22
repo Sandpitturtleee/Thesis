@@ -120,9 +120,6 @@ def plot_quantum_same_graph_combined() -> None:
     )
     merged = [time_limit_stats, no_time_limit_stats]
     merged_stats = merge_stats_dicts(dicts=merged)
-    print(time_limit_stats)
-    print(no_time_limit_stats)
-    print(merged_stats)
     plots_types_by_stat(data=merged_stats, stat_key="mean", exclude_files=exclude)
     plots_types_by_stat(data=merged_stats, stat_key="median", exclude_files=exclude)
     plots_types_by_stat(data=merged_stats, stat_key="std", exclude_files=exclude)
@@ -193,5 +190,5 @@ def plots_types_by_stat(
         axs[idx].grid(True)
 
     plt.suptitle(f"{stat_key.capitalize()} for 4 types of graphs")
-    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.tight_layout(rect=(0, 0.03, 1, 0.95))
     plt.show()
