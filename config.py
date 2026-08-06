@@ -3,7 +3,7 @@
 import matplotlib.pyplot as plt
 
 MAX_GRAPH_SIZE = 100
-GRAPH_RUNS = 10
+GRAPH_RUNS = 100
 SPARSE = "_sparse"
 HALF_EDGES = "_half_edges"
 DENSE = "_dense"
