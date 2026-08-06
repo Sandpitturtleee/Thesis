@@ -5,12 +5,14 @@
 \contentsline {section}{\numberline {2.2}Algorytm Dijkstry}{4}{section.2.2}%
 \contentsline {section}{\numberline {2.3}Znajdowanie minumum}{6}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Wersja naiwna}{6}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Wersja z kopcem binarnym}{7}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Wersja kwantowa}{8}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.2}Wersja z kopcem binarnym}{6}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Wersja kwantowa}{7}{subsection.2.3.3}%
 \contentsline {subsubsection}{Algorytm Grovera}{8}{subsubsection*.6}%
-\contentsline {section}{\numberline {2.4}Rodzaje grafów}{11}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Graf gęsty (Dense Graph)}{12}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Graf o średniej gęstości (Half Dense)}{13}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Graf rzadki (Sparse Graph)}{14}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}Przypadek szczególny (Special Case)}{15}{subsection.2.4.4}%
-\contentsline {section}{\numberline {2.5}Reprezentacja grafów}{16}{section.2.5}%
+\contentsline {subsubsection}{Algorytm BBHT}{11}{subsubsection*.7}%
+\contentsline {subsubsection}{Algorytm Dürra--Høyera}{12}{subsubsection*.8}%
+\contentsline {section}{\numberline {2.4}Rodzaje grafów}{12}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Graf gęsty (Dense Graph)}{13}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Graf o średniej gęstości (Half Dense)}{14}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Graf rzadki (Sparse Graph)}{15}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Przypadek szczególny (Special Case)}{16}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Reprezentacja grafów}{17}{section.2.5}%

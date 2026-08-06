@@ -40,14 +40,12 @@ Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołkó
 \small Opracowanie własne na podstawie \cite[Chapter~24.3]{cormen}.
 \end{center}
 
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\columnwidth]{images/documentation/dijkstra.png}
     \caption{Przykład działania algorytmu Dijkstry. \cite[Rozdział ~24.3]{cormen}} 
     \label{fig:dijkstra}
 \end{figure}
-
 
 \newpage
 \section{Znajdowanie minumum}
@@ -62,7 +60,6 @@ Najbardziej kosztownym etapem algorytmu Dijkstry jest wyznaczenie kolejnego nieo
 
 W wersji naiwnej wybór kolejnego wierzchołka realizowany jest poprzez liniowe przeszukanie tablicy odległości w celu znalezienia najmniejszej wartości spośród wszystkich nieodwiedzonych wierzchołków. Operacja ta jest wykonywana w każdej iteracji algorytmu Dijkstry, a ponieważ liczba iteracji jest proporcjonalna do liczby wierzchołków $V$, całkowity koszt wyszukiwania
 minimum wynosi $O(V^2)$. Pomimo niskiej wydajności, wersja naiwna cechuje się prostotą implementacji i często wykorzystywana jest jako punkt odniesienia podczas porównywania bardziej zaawansowanych wariantów algorytmu jak na przykład kopiec binarny.
-\newpage
 
 \subsection{Wersja z kopcem binarnym}
 W celu przyspieszenia operacji wyboru kolejnego wierzchołka można zastosować kopiec binarny przechowujący pary składające się z identyfikatora wierzchołka oraz aktualnej wartości odległości. Kopiec binarny jest strukturą danych reprezentowaną w postaci niemal pełnego drzewa binarnego, w którym każdy węzeł posiada co najwyżej dwoje dzieci. W kopcu minimalnym
@@ -90,7 +87,6 @@ Algorytm Dürra--Høyera realizuje wyszukiwanie minimum poprzez iteracyjne wywo�
 Algorytm Grovera \cite{grover1996} to kwantowa procedura sprawdzania obecności klucza w bazie danych. W nim baza danych nie ma ustalonej struktury jak w klasycznych bazach  gdzie dane są zorganizowane np. w struktury drzewiaste. Jego celem jest znalezienie elementu/elementów z wykorzystaniem wyroczni (\textit{oracle}), która potrafi rozpoznać poprawne rozwiązania. W przeciwieństwie do klasycznego przeszukiwania liniowego wymagającego średnio $O(N)$ sprawdzeń, algorytm Grovera osiąga złożoność $O(\sqrt{N})$.
 
 Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania odpowiedniej liczby iteracji. Liczba ta zależy od liczby elementów spełniających zadany warunek określony przez wyrocznie i w ogólnym przypadku nie jest znana. Zbyt mała liczba iteracji nie zapewnia wystarczającego wzmocnienia amplitudy rozwiązania, natomiast zbyt duża powoduje jej ponowne zmniejszenie, co obniża prawdopodobieństwo poprawnego wyniku. Problem ten został rozwiązany w algorytmie Boyera, Brassarda, Høyera i Tappa (BBHT), który zostanie omówiony w kolejnym podrozdziale.
-\newpage
 
 \paragraph*{\sc Algorytm Grovera}
 \begin{enumerate}
@@ -104,7 +100,7 @@ Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania 
     \item Zwróć zmierzony stan jako wynik wyszukiwania.
 \end{enumerate}
 \begin{center}
-\small Opracowanie własne na podstawie \cite{grover1996}.
+\small Opracowanie własne na podstawie \cite{grover1996}
 \end{center}
 
 W pierwszym kroku tworzona jest superpozycja wszystkich możliwych stanów.  Żeby to uzyskać w rejestrze kwantowym złożonym z \textit{n} kubitów stosujemy \textit{n}-krotnie bramkę Hadamarda. 
@@ -128,45 +124,155 @@ H^{\otimes n}|00\cdots0\rangle
 \noindent
 Dla stanu kubitu złożonego z \textit{n=3} kubitów odpowiada to temu zapisowi \cite[Strona ~278, Rozdział ~5.6]{inf_kwant}  
 \begin{equation}
-|\psi'\rangle
-=
-\frac1{2\sqrt2} ( |000\rangle+ |001\rangle+ |010\rangle+ |011\rangle+ |100\rangle+ |101\rangle+ |110\rangle+ |111\rangle ).
+\label{eq:superposition_example}
+|\psi'\rangle = \frac1{2\sqrt2} ( |000\rangle+ |001\rangle+ |010\rangle+ |011\rangle+ |100\rangle+ |101\rangle+ |110\rangle+ |111\rangle ).
 \end{equation}
 \noindent
-Wszystkie amplitudy prawdopodobieństwa mają wartość $\frac{1}{\sqrt{N}}$ co oznacza że każdy stan jest jednakowo prawdopodobny w przypadku pomiaru.
+Wszystkie amplitudy prawdopodobieństwa mają wartość $1/\sqrt{N}$ co oznacza że każdy stan jest jednakowo prawdopodobny w przypadku pomiaru.
 
-Kolejny etap stanowi iteracyjne wykonywanie operatora Grovera. Każda iteracja składa się z dwóch operacji. Pierwszą z nich jest działanie wyroczni, która identyfikuje stany spełniające zadany warunek poprzez odwrócenie znaku ich amplitudy. Jest to funkcja która odpowiada za wskazanie szukanego elementu. Jej definicja jest następująca. \cite[Strona ~162, Rozdział ~4.4]{inf_kwant}   
+Kolejny etap stanowi iteracyjne wykonywanie operatora Grovera. Każda iteracja składa się z dwóch operacji. Pierwszą z nich jest działanie wyroczni, która identyfikuje stany spełniające zadany warunek poprzez odwrócenie znaku ich amplitudy. Jest to funkcja która odpowiada za wskazanie szukanego elementu. Jej definicja w postaci klasycznej jest następująca. \cite[Strona ~162, Rozdział ~4.4]{inf_kwant}   
 \begin{equation}
-\label{eq:oracle_function}
+\label{eq:oracle}
 f(i)=
 \begin{cases}
 1,& \text{jeśli } i \text{ reprezentuje szukany element},\\
 0,& \text{w przeciwnym przypadku.}
 \end{cases}
 \end{equation}
-Przypadek w którym wyrocznia zmienia znak przy trzeciej amplitudzie można zapisać w ten sposób. \cite[Strona ~278, Rozdział ~5.6]{inf_kwant}  
+
+Bardzo ważny jest sposób implementacji tej funkcji dla rejestru kwantowego. Oczekuje się, że działanie tej funkcji implementowanej przez unitarny operator $U_f$ można opisać wzorem. \cite[Strona ~162, Rozdział ~4.4]{inf_kwant}   
 \begin{equation}
-|\psi''\rangle
-=
-\frac1{2\sqrt2}
-(
-|000\rangle+
-|001\rangle-
-|010\rangle+
-|011\rangle+
-|100\rangle+
-|101\rangle+
-|110\rangle+
-|111\rangle
-).
+\label{eq:oracle_quantum}
+U_f(|i\rangle|j\rangle)=|i\rangle|j\oplus f(i)\rangle.
 \end{equation}
 
-Sam układ kwantowy realizujący tą funkcje jest zależny jest już od rozwiązywanego problemu.
+Przypadek w którym funkcja ta zmienia znak na rejestrze kwantowym przy trzeciej amplitudzie można zapisać w ten sposób. \cite[Strona ~278, Rozdział ~5.6]{inf_kwant}  
+\begin{equation}
+\label{eq:oracle_example}
+|\psi''\rangle = \frac1{2\sqrt2} ( |000\rangle+ |001\rangle- |010\rangle+ |011\rangle+ |100\rangle+ |101\rangle+ |110\rangle+ |111\rangle ).
+\end{equation}
+\noindent
 
-Drugą operacją jest operator dyfuzji, nazywany również operatorem obrotu wokół średniej. Jego zadaniem jest zwiększenie amplitud stanów oznaczonych przez wyrocznię kosztem amplitud pozostałych stanów. Powtarzanie tych dwóch operacji prowadzi do stopniowego wzrostu prawdopodobieństwa uzyskania poprawnego rozwiązania podczas pomiaru.
+Wykonanie pomiaru bezpośrednio po zastosowaniu wyroczni nie pozwala jeszcze na wskazanie poprawnego rozwiązania. Wynika to z faktu, że wyrocznia zmienia jedynie znak amplitudy stanu odpowiadającego szukanemu elementowi, nie zmieniając jej wartości bezwzględnej. Podczas pomiaru wyznaczane jest natomiast prawdopodobieństwo otrzymania danego stanu, które jest równe kwadratowi modułu jego amplitudy. W rezultacie informacja o znaku amplitudy zostaje utracona.. Z tego powodu konieczne jest wykonanie kolejnego etapu algorytmu – operatora dyfuzji nazywanego również operatorem obrotu wokół średniej. Jego zadaniem jest zwiększenie amplitud stanów oznaczonych przez wyrocznię kosztem amplitud pozostałych stanów.
 
-Po zakończeniu iteracji wykonywany jest pomiar rejestru kwantowego.  Jeżeli liczba iteracji została dobrana poprawnie, otrzymany stan z wysokim prawdopodobieństwem odpowiada szukanemu rozwiązaniu.
-\newpage
+Definicja operatora obrotu wokół średniej, oznaczonego jako A przybiera tą postać \cite[Strona ~163, Rozdział ~4.4]{inf_kwant}   
+\begin{equation}
+\label{eq:diffusion_operator}
+A=2|\psi\rangle\langle\psi|-I.
+\end{equation}
+\noindent
+gdzie $|\psi\rangle$ to stan opisany wzorem ~\eqref{eq:superposition}
+
+Po zastosowaniu operatora $U_f$ otrzymuje się stan \cite[Strona ~163, Rozdział ~4.4]{inf_kwant}   
+\begin{equation}
+\label{eq:diffusion_operator1}
+|\psi_1\rangle=|\psi\rangle-\frac{2}{\sqrt{2^n}}|i_{U_f}\rangle.
+\end{equation}
+
+Odpowiada to takiej bramce kwantowej przedstawionej w formie macierzy \cite[Strona ~277, Rozdział ~5.6]{inf_kwant}  
+\begin{equation}
+\label{eq:diffusion_matrix} 
+G_{L\times L}=
+\begin{pmatrix}
+\frac2L-1 & \frac2L & \cdots & \frac2L\\
+\frac2L & \frac2L-1 & \cdots & \frac2L\\
+\vdots & \vdots & \ddots & \vdots\\
+\frac2L & \frac2L & \cdots & \frac2L-1
+\end{pmatrix},
+\qquad
+L=2^n.
+\end{equation}
+
+Całość działania operatora obrotu wokół średniej G na stanie ~\eqref{eq:oracle_example} można przedstawić w ten sposób \cite[Strona ~278, Rozdział ~5.6]{inf_kwant}  
+\begin{equation}
+\label{eq:matrix_example} 
+|\psi'''\rangle = G|\psi''\rangle =
+\begin{pmatrix}
+-\frac{3}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} \\
+\frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} \\
+\frac{1}{4} & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} \\
+\frac{1}{4} & \frac{1}{4} & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} \\
+\frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} \\
+\frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & \frac{1}{4} \\
+\frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} \\
+\frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & -\frac{3}{4}
+\end{pmatrix}
+\begin{pmatrix}
+\frac{1}{2\sqrt{2}}\\
+\frac{1}{2\sqrt{2}}\\
+-\frac{1}{2\sqrt{2}}\\
+\frac{1}{2\sqrt{2}}\\
+\frac{1}{2\sqrt{2}}\\
+\frac{1}{2\sqrt{2}}\\
+\frac{1}{2\sqrt{2}}\\
+\frac{1}{2\sqrt{2}}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\frac{1}{4\sqrt{2}}\\
+\frac{1}{4\sqrt{2}}\\
+\frac{5}{4\sqrt{2}}\\
+\frac{1}{4\sqrt{2}}\\
+\frac{1}{4\sqrt{2}}\\
+\frac{1}{4\sqrt{2}}\\
+\frac{1}{4\sqrt{2}}\\
+\frac{1}{4\sqrt{2}}
+\end{pmatrix}.
+\end{equation}
+
+Powtarzanie tych dwóch operacji (wyroczni i dyfuzji) prowadzi do stopniowego zwiększania prawdopodobieństwa uzyskania poprawnego rozwiązania. Po wykonaniu odpowiedniej liczby iteracji przeprowadzany jest pomiar rejestru kwantowego, podczas którego prawdopodobieństwo uzyskania danego stanu jest równe kwadratowi modułu jego amplitudy. Dzięki wcześniejszemu wzmocnieniu amplitudy stanu odpowiadającego rozwiązaniu zostaje on uzyskany z wysokim prawdopodobieństwem.
+
+\subsubsection{Algorytm BBHT}
+Algorytm opracowany przez Boyera, Brassarda, Høyera i Tappa stanowi rozszerzenie algorytmu Grovera przeznaczone dla sytuacji, w której liczba rozwiązań problemu nie jest znana. W przeciwieństwie do klasycznej wersji algorytmu nie można z góry określić optymalnej liczby iteracji operatora Grovera. Zamiast tego algorytm stopniowo zwiększa zakres możliwej liczby iteracji.\cite{bbht1996}
+
+\paragraph*{\sc Algorytm BBHT}
+\begin{enumerate}
+    \item Zainicjalizuj parametry algorytmu: ustaw $m=1$ oraz wybierz współczynnik $\lambda=\frac{6}{5}$ (ogólnie $\lambda \in (1,\frac{4}{3})$).
+    \item Wylosuj liczbę całkowitą $j$ równomiernie z przedziału $\{0,1,\dots,m-1\}$.
+    \item Przygotuj rejestr kwantowy w stanie superpozycji wszystkich $N$ możliwych stanów.
+    \item Wykonaj $j$ iteracji algorytmu Grovera.
+    \item Wykonaj pomiar rejestru kwantowego i otrzymaj stan $i$.
+    \item Jeżeli $T[i]=x$, zakończ działanie algorytmu i zwróć znalezione rozwiązanie.
+    \item W przeciwnym razie zwiększ wartość parametru $m$ zgodnie z zależnością
+    \[
+        m=\min(\lambda m,\sqrt{N}),
+    \]
+    a następnie wróć do kroku 2.
+\end{enumerate}
+
+\begin{center}
+\small Opracowanie własne na podstawie \cite{bbht1996}
+\end{center}
+
+Losowy dobór liczby iteracji pozwala uniknąć sytuacji, w której zastosowanie zbyt dużej jej ilości zmniejszyłoby prawdopodobieństwo uzyskania poprawnego rozwiązania. Dzięki stopniowemu zwiększaniu parametru $m$ algorytm zachowuje kwadratowe przyspieszenie względem algorytmów klasycznych, osiągając oczekiwany czas działania rzędu
+\begin{equation}
+\label{eq:bbht_time} 
+O\left(\sqrt{\frac{N}{t}}\right)
+\end{equation}
+gdzie $t$ oznacza liczbę rozwiązań problemu. \cite{bbht1996}
+
+
+\subsubsection{Algorytm Dürra--Høyera}
+
+
+\paragraph*{\sc Algorytm Dürra--Høyera}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Rodzaje grafów}
 
@@ -240,259 +346,3 @@ Macierz sąsiedztwa przedstawia graf w postaci dwuwymiarowej tablicy, w której 
 Lista sąsiedztwa przypisuje każdemu wierzchołkowi listę jego bezpośrednich sąsiadów. W przypadku grafu ważonego każdy element tej listy składa się z numeru sąsiedniego wierzchołka oraz wagi krawędzi łączącej oba wierzchołki.
 
 W implementacji przedstawionej w niniejszej pracy graf został zapisany w postaci listy sąsiedztwa. Dla każdego wierzchołka przechowywana jest lista wszystkich wierzchołków z nim połączonych wraz z odpowiadającymi im wagami krawędzi. W przypadku grafu nieskierowanego każda krawędź występuje dwukrotnie – na liście sąsiedztwa obu wierzchołków, które łączy.
-
-
-
-\begin{algorithm}
-\caption{Algorytm Dijkstry}
-\label{alg:dijkstra}
-\begin{algorithmic}[1]
-\Require Graf $G=(V,E)$, funkcja wag $w:E\rightarrow\mathbb{R}_{\geq 0}$,
-         wierzchołek źródłowy $s$
-\Ensure Najkrótsze odległości $d[v]$ od $s$ do każdego $v\in V$
-        oraz poprzednicy $\pi[v]$
-
-\ForAll{$v \in V$}
-    \State $d[v] \gets \infty$
-    \State $\pi[v] \gets \text{NIL}$
-\EndFor
-
-\State $d[s] \gets 0$
-\State $Q \gets V$
-
-\While{$Q \neq \emptyset$}
-    \State $u \gets \Call{ExtractMin}{Q,d}$
-
-    \ForAll{$v \in \Call{Sąsiedzi}{u}$}
-        \If{$v \in Q$ \textbf{and} $d[v] > d[u] + w(u,v)$}
-            \State $d[v] \gets d[u] + w(u,v)$
-            \State $\pi[v] \gets u$
-        \EndIf
-    \EndFor
-\EndWhile
-
-\State \Return $(d,\pi)$
-\end{algorithmic}
-\end{algorithm}
-
-
-
-01
-\[
-f(i)=
-\begin{cases}
-1,& \text{jeśli } i \text{ reprezentuje szukany element},\\
-0,& \text{w przeciwnym przypadku.}
-\end{cases}
-\]
-
-02
-\[
-U_f(|i\rangle|j\rangle)
-=
-|i\rangle
-|j\oplus f(i)\rangle.
-\]
-
-1
-\[
-1\oplus f(i)=
-\begin{cases}
-0,& \text{jeśli } i \text{ reprezentuje szukany element},\\
-1,& \text{w przeciwnym przypadku.}
-\end{cases}
-\]
-
-2
-\[
-U_f(|i\rangle|-\rangle)
-=
-\frac1{\sqrt N}
-\sum_{i=0}^{N-1}
-(-1)^{f(i)}
-|i\rangle|-\rangle.
-\]
-
-3
-\[
-A
-=
-2|\psi\rangle\langle\psi|
--
-I.
-\]
-
-4
-\begin{equation}
-|\psi\rangle
-=
-H^{\otimes n}|0\rangle^{\otimes n}
-=
-\left(
-\frac{|0\rangle+|1\rangle}{\sqrt2}
-\right)^{\otimes n}
-=
-\frac1{\sqrt N}
-\sum_{i=0}^{N-1}|i\rangle,
-\qquad N=2^n.
-\end{equation}
-
-5
-\begin{equation}
-f(i)=
-\begin{cases}
-1,& i=i_0,\\
-0,& i\neq i_0.
-\end{cases}
-\end{equation}
-
-6
-\begin{equation}
-U_f(|i\rangle|j\rangle)
-=
-|i\rangle
-|j\oplus f(i)\rangle.
-\end{equation}
-
-7
-\[
-|-\rangle=
-\frac{|0\rangle-|1\rangle}{\sqrt2}
-\]
-
-8
-\begin{equation}
-U_f(|i\rangle|-\rangle)
-=
-(-1)^{f(i)}
-|i\rangle|-\rangle.
-\end{equation}
-
-9
-\begin{equation}
-U_f
-\left(
-\frac1{\sqrt N}
-\sum_{i=0}^{N-1}|i\rangle|-\rangle
-\right)
-=
-\frac1{\sqrt N}
-\sum_{i=0}^{N-1}
-(-1)^{f(i)}
-|i\rangle|-\rangle.
-\end{equation}
-
-10
-\begin{equation}
-A
-=
-2|\psi\rangle\langle\psi|
--I.
-\end{equation}
-
-11
-\[
-|i_{f}\rangle
-\]
-
-12
-\begin{equation}
-|\psi_2\rangle
-=
-\left(
-2|\psi\rangle\langle\psi|-I
-\right)
-|\psi_1\rangle
-=
-\frac{2^{\,n-2}-1}{2^{\,n-2}}
-|\psi\rangle
-+
-\frac{2}{\sqrt{2^n}}
-|i_f\rangle.
-\end{equation}
-
-13
-\begin{equation}
-\cos\theta
-=
-\langle\psi|\psi_2\rangle
-=
-1-
-\frac1{2^n-1}.
-\end{equation}
-
-14
-\begin{equation}
-\theta
-=
-2\arccos
-\left(
-\sqrt{
-1-
-\frac1{N-1}
-}
-\right),
-\qquad
-N=2^n.
-\end{equation}
-
-15
-\begin{equation}
-U_f|x\rangle|y\rangle
-=
-(-1)^{f(x)}
-|x\rangle|y\rangle.
-\end{equation}
-
-
-16
-\begin{equation}
-f(x)=
-\begin{cases}
-1,&x=x_0,\\
-0,&x\neq x_0.
-\end{cases}
-\end{equation}
-
-17
-\begin{equation}
-G
-=
-2|\psi\rangle\langle\psi|
--
-I.
-\end{equation}
-
-18
-\begin{equation}
-G_{L\times L}
-=
-\begin{pmatrix}
-\frac2L-1 & \frac2L & \cdots & \frac2L\\
-\frac2L & \frac2L-1 & \cdots & \frac2L\\
-\vdots & \vdots & \ddots & \vdots\\
-\frac2L & \frac2L & \cdots & \frac2L-1
-\end{pmatrix},
-\qquad
-L=2^n.
-\end{equation}
-
-
-
-20
-
-
-21
-\[
-G_8=
-\begin{pmatrix}
--\frac34 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14\\
-\frac14 & -\frac34 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14\\
-\frac14 & \frac14 & -\frac34 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14\\
-\frac14 & \frac14 & \frac14 & -\frac34 & \frac14 & \frac14 & \frac14 & \frac14\\
-\frac14 & \frac14 & \frac14 & \frac14 & -\frac34 & \frac14 & \frac14 & \frac14\\
-\frac14 & \frac14 & \frac14 & \frac14 & \frac14 & -\frac34 & \frac14 & \frac14\\
-\frac14 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14 & -\frac34 & \frac14\\
-\frac14 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14 & \frac14 & -\frac34
-\end{pmatrix}.
-\]
