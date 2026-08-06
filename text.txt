@@ -1,0 +1,96 @@
+ruff check . --fix
+isort . && black .
+
+(venv) sold@Karols-MacBook-Air Project % python3 --version
+Python 3.12.3
+
+pytest - run tests
+
+Where is the Oracle?
+Your function mark_state() is called by hand, with specific bitstrings. For Grover to find the minimum (or "values less than the candidate_min") dynamically, you need to mark indices according to a condition.
+Currently:
+# mark |1110>, |0010|, |1010|
+mark_state("1110")
+mark_state("0010")
+mark_state("1010")
+This is hardcoding the oracle.
+How to Generalize the Oracle
+You want something like:
+For each possible index (state), check if arr[i] < candidate_min.
+If yes, mark |i, a⟩ by flipping its sign.
+So you would, instead of hardcoding, do:
+arr = [value0, value1, value2, value3, ...]  # Your data
+candidate_min = ...
+
+# Loop over indices you want to mark
+for idx, val in enumerate(arr):
+    if val < candidate_min:
+        bitstring = format(idx, '03b') + "0"  # ... or with the ancilla if you use it similarly
+        mark_state(bitstring)
+This way, your oracle marks all indices satisfying the condition, not just the ones you manually chose.
+Your Oracle Function (in Code)
+Here's how you could adapt your script for a 3-element list, 1 ancilla (for simplicity):
+# Suppose arr stores the values at each index (size=8 for 3 qubits)
+arr = [5, 8, 2, 4, 10, 7, 6, 3]
+candidate_min = 8
+
+def oracle_matrix_for_min(arr, candidate_min):
+    N = len(arr)
+    dim = N * 2  # include ancilla
+    oracle_matrix = np.eye(dim)
+    for idx, val in enumerate(arr):
+        if val < candidate_min:
+            # construct bitstring for index + ancilla (say ancilla=0)
+            bitstring = format(idx, '03b') + "0"
+            basis_idx = int(bitstring, 2)
+            oracle_matrix[basis_idx, basis_idx] = -1
+    return Qobj(oracle_matrix, dims=[[2] * 4, [2] * 4])
+
+oracle = oracle_matrix_for_min(arr, candidate_min)
+Now your oracle is generated automatically based on your data and condition.
+Analogy
+In real quantum: the oracle circuit uses quantum gates to compute and mark states dynamically.
+In your QuTiP code: we simulate this by constructing the operator matrix in advance using our data and the comparison.
+In summary
+This is where you’d implement my “function”: in the part where you create the oracle operator for Grover, not in the Grover iteration itself.
+The construction of the oracle must reflect your search condition programmatically (not hardcoded bitstrings).
+The rest of your code (diffuser, Hadamards, measurement) stays the same!
+Would you like to see the code for a full iterative minimum search, or to see how such a comparison would be constructed in a proper quantum gate circuit?
+
+
+kwantowy algorytm Dürra–Høyera (
+
+
+/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/venv/bin/python /Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/graphs_analysis/src/standard/main.py
+
+Traceback (most recent call last):
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/graphs_analysis/src/standard/main.py", line 8, in <module>
+    run_all_dijkstra_heap(times=GRAPH_RUNS)
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/graphs_analysis/src/standard/dijkstra_heap.py", line 85, in run_all_dijkstra_heap
+    vertices, count = run_dijkstra_heap(times=times, graph_type=SPARSE)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/graphs_analysis/src/standard/dijkstra_heap.py", line 164, in run_dijkstra_heap
+    is_dijkstra_valid(graph=loaded_graph, start_node=start_node, lengths_result=lengths_heap, previous_result=previous_heap)
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/graphs_analysis/src/dijkstra_validation.py", line 149, in is_dijkstra_valid
+
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/graphs_analysis/src/dijkstra_validation.py", line 101, in dijkstra_lib
+    lengths[start_node] = 0
+                ^^^^^^^^^^^^
+  File "<class 'networkx.utils.decorators.argmap'> compilation 8", line 3, in argmap_single_source_dijkstra_path_length_5
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/venv/lib/python3.12/site-packages/networkx/utils/backends.py", line 551, in _call_if_no_backends_installed
+    return self.orig_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/venv/lib/python3.12/site-packages/networkx/algorithms/shortest_paths/weighted.py", line 389, in single_source_dijkstra_path_length
+    return multi_source_dijkstra_path_length(G, {source}, cutoff=cutoff, weight=weight)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<class 'networkx.utils.decorators.argmap'> compilation 12", line 3, in argmap_multi_source_dijkstra_path_length_9
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/venv/lib/python3.12/site-packages/networkx/utils/backends.py", line 551, in _call_if_no_backends_installed
+    return self.orig_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sold/Personal_files/Studia2/4Semestr/Magisterka/Project/venv/lib/python3.12/site-packages/networkx/algorithms/shortest_paths/weighted.py", line 645, in multi_source_dijkstra_path_length
+    raise nx.NodeNotFound(f"Node {s} not found in graph")
+networkx.exception.NodeNotFound: Node 0 not found in graph
+
+Process finished with exit code 1
+
+'Accent', 'Accent_r', 'Blues', 'Blues_r', 'BrBG', 'BrBG_r', 'BuGn', 'BuGn_r', 'BuPu', 'BuPu_r', 'CMRmap', 'CMRmap_r', 'Dark2', 'Dark2_r', 'GnBu', 'GnBu_r', 'Grays', 'Grays_r', 'Greens', 'Greens_r', 'Greys', 'Greys_r', 'OrRd', 'OrRd_r', 'Oranges', 'Oranges_r', 'PRGn', 'PRGn_r', 'Paired', 'Paired_r', 'Pastel1', 'Pastel1_r', 'Pastel2', 'Pastel2_r', 'PiYG', 'PiYG_r', 'PuBu', 'PuBuGn', 'PuBuGn_r', 'PuBu_r', 'PuOr', 'PuOr_r', 'PuRd', 'PuRd_r', 'Purples', 'Purples_r', 'RdBu', 'RdBu_r', 'RdGy', 'RdGy_r', 'RdPu', 'RdPu_r', 'RdYlBu', 'RdYlBu_r', 'RdYlGn', 'RdYlGn_r', 'Reds', 'Reds_r', 'Set1', 'Set1_r', 'Set2', 'Set2_r', 'Set3', 'Set3_r', 'Spectral', 'Spectral_r', 'Wistia', 'Wistia_r', 'YlGn', 'YlGnBu', 'YlGnBu_r', 'YlGn_r', 'YlOrBr', 'YlOrBr_r', 'YlOrRd', 'YlOrRd_r', 'afmhot', 'afmhot_r', 'autumn', 'autumn_r', 'berlin', 'berlin_r', 'binary', 'binary_r', 'bone', 'bone_r', 'brg', 'brg_r', 'bwr', 'bwr_r', 'cividis', 'cividis_r', 'cool', 'cool_r', 'coolwarm', 'coolwarm_r', 'copper', 'copper_r', 'cubehelix', 'cubehelix_r', 'flag', 'flag_r', 'gist_earth', 'gist_earth_r', 'gist_gray', 'gist_gray_r', 'gist_grey', 'gist_grey_r', 'gist_heat', 'gist_heat_r', 'gist_ncar', 'gist_ncar_r', 'gist_rainbow', 'gist_rainbow_r', 'gist_stern', 'gist_stern_r', 'gist_yarg', 'gist_yarg_r', 'gist_yerg', 'gist_yerg_r', 'gnuplot', 'gnuplot2', 'gnuplot2_r', 'gnuplot_r', 'gray', 'gray_r', 'grey', 'grey_r', 'hot', 'hot_r', 'hsv', 'hsv_r', 'inferno', 'inferno_r', 'jet', 'jet_r', 'magma', 'magma_r', 'managua', 'managua_r', 'nipy_spectral', 'nipy_spectral_r', 'ocean', 'ocean_r', 'pink', 'pink_r', 'plasma', 'plasma_r', 'prism', 'prism_r', 'rainbow', 'rainbow_r', 'seismic', 'seismic_r', 'spring', 'spring_r', 'summer', 'summer_r', 'tab10', 'tab10_r', 'tab20', 'tab20_r', 'tab20b', 'tab20b_r', 'tab20c', 'tab20c_r', 'terrain', 'terrain_r', 'turbo', 'turbo_r', 'twilight', 'twilight_r', 'twilight_shifted', 'twilight_shifted_r', 'vanimo', 'vanimo_r', 'viridis', 'viridis_r', 'winter', 'winter_r'

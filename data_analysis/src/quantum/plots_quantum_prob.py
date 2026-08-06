@@ -49,7 +49,6 @@ TitlesList = List[str]
 FilenamesList = List[str]
 
 
-
 def plot_all_quantum_prob_time_limit() -> None:
     """
     Plot all quantum probability statistics for the scenario with quantum time limits.
@@ -220,7 +219,7 @@ def plot_dijkstra_success_prob(
     ordered_filenames : FilenamesList
         List of filenames in order to match subplot and title.
     """
-    i=0
+    i = 0
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
     for i, filename in enumerate(ordered_filenames[:4]):
@@ -259,7 +258,7 @@ def plot_find_min_success_prob(
     """
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
-    i=0
+    i = 0
     for i, filename in enumerate(ordered_filenames[:4]):
         stat_dict = all_stats[filename]
         xs = sorted(int(k) for k in stat_dict)
@@ -294,7 +293,7 @@ def plot_mismatch_without_invalid_prob(
     ordered_filenames : FilenamesList
         List of filenames in order to match subplot and title.
     """
-    i=0
+    i = 0
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
     for i, filename in enumerate(ordered_filenames[:4]):
@@ -331,7 +330,7 @@ def plot_invalid_when_mismatch_prob(
     ordered_filenames : FilenamesList
         List of filenames in order to match subplot and title.
     """
-    i=0
+    i = 0
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
     for i, filename in enumerate(ordered_filenames[:4]):
@@ -368,9 +367,9 @@ def plot_grouped_dijkstra_and_find_min_success_prob(
     ordered_filenames : FilenamesList
         List of filenames in order to match subplot and title.
     """
-    i=0
+    i = 0
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
-    cmap =plt.get_cmap("Blues", 8)
+    cmap = plt.get_cmap("Blues", 8)
     axs = axs.flatten()
     width = 2
     sep = 1

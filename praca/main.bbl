@@ -1,0 +1,52 @@
+\begin{thebibliography}{1}
+
+\bibitem{graph_metrics}
+{B. Bollobas, O. Riordan}.
+\newblock Metrics for sparse graphs.
+\newblock Surveys in Combinatorics 2009, LMS Lecture Notes Series 365, CUP
+  2009, pp. 211--287, 2008.
+\newblock \url{https://arxiv.org/abs/0708.1919}.
+
+\bibitem{cormen}
+Thomas~H. Cormen, Charles~E. Leiserson, Ronald~L. Rivest, and Clifford Stein.
+\newblock {\em Introduction to Algorithms}.
+\newblock MIT Press, 3 edition, 2009.
+\newblock
+  \url{https://www.cs.mcgill.ca/~akroit/math/compsci/Cormen%20Introduction%20to%20Algorithms.pdf}.
+
+\bibitem{dijkstra}
+{Dijkstra, E.W.}
+\newblock A note on two problems in connexion with graphs.
+\newblock Numer. Math. 1, 269–271, 1959.
+\newblock \url{https://ir.cwi.nl/pub/9256/9256D.pdf}.
+
+\bibitem{duerr1996}
+Christoph Dürr and Peter H{\o}yer.
+\newblock A quantum algorithm for finding the minimum.
+\newblock \url{https://arxiv.org/abs/quant-ph/9607014}, 1996.
+
+\bibitem{grover1996}
+Lov~K. Grover.
+\newblock A fast quantum mechanical algorithm for database search.
+\newblock Proceedings of the 28th Annual ACM Symposium on Theory of Computing,
+  1996.
+\newblock \url{https://arxiv.org/abs/quant-ph/9605043}.
+
+\bibitem{bbht1996}
+P.~H{\o}yer M.~Boyer, G.~Brassard and A.~Tapp.
+\newblock Tight bounds on quantum searching.
+\newblock Fortschritte Der Physik, 1996.
+\newblock \url{https://arxiv.org/abs/quant-ph/9605034}.
+
+\bibitem{inf_kwant}
+Sawerwain~Marek Wiśniewska~Joanna.
+\newblock {\em Informatyka kwantowa. Wybrane obwody i algorytmy}.
+\newblock Wydawnictwo Naukowe PWN, 1 edition, 2015.
+
+\bibitem{graph_complete}
+{Wolfram MathWorld}.
+\newblock Complete graph.
+\newblock \url{https://mathworld.wolfram.com/CompleteGraph.html}.
+\newblock Accessed: 04.08.2026.
+
+\end{thebibliography}

@@ -82,7 +82,7 @@ if __name__ == "__main__":
     start_node = 0
     invalid_count = 0
     lengths_naive, previous_naive, elapsed, mismatch_count, search_count = (
-        dijkstra_quantum(graph=loaded_graph, start_node=start_node)
+        dijkstra_quantum(graph=loaded_graph, start_node=start_node, time_limit=1)
     )
     T = [
         30,
@@ -104,4 +104,4 @@ if __name__ == "__main__":
     ]
     y = 2
     marked_states = [j for j in range(len(T)) if T[j] < T[y]]
-    print()
+    print(marked_states)
