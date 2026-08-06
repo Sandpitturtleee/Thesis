@@ -198,10 +198,13 @@ def bbht_search(size: int, marked_states: List[int]) -> Tuple[Optional[int], int
     lam = 6 / 5
     m = 1
     cost = 0
+    initialization_cost = math.log2(size)
 
     while True:
         upper = max(1, int(m))
         j = random.randrange(upper)
+
+        cost += initialization_cost
 
         candidate = grover_search(size=size, marked_states=marked_states, iterations=j)
 
@@ -237,11 +240,9 @@ def find_min(
     size = len(active_distances)
     threshold = random_finite_index(arr=active_distances)
     run_limit = 22.5 * math.sqrt(size) + 1.4 * math.log2(size)
-    initialization_cost = math.log2(size)
     total_time = 0.0
 
     while True:
-        total_time += initialization_cost
         marked_states = [
             i for i in range(size) if active_distances[i] < active_distances[threshold]
         ]
