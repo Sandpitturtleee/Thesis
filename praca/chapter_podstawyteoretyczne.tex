@@ -22,22 +22,32 @@ d(v) > d(u) + w(u,v)
 wartość (d(v)) zostaje zaktualizowana.
 Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołków.
 
-\paragraph*{\textsc{Algorytm Dijkstry}}
+\begin{algorithm}[H]
+\caption{Algorytm Dijkstry}
+\label{alg:dijkstra}
 \begin{enumerate}
-\item Zainicjalizuj odległości wszystkich wierzchołków od wierzchołka źródłowego.
-\item Utwórz pusty zbiór odwiedzonych wierzchołków $S \leftarrow \emptyset$.
-\item Umieść wszystkie wierzchołki grafu w zbiorze $Q$.
-\item
-    Dopóki zbiór $Q$ nie jest pusty, wykonuj:
+    \item Zainicjalizuj odległości wszystkich wierzchołków od wierzchołka źródłowego.
+    
+    \item Utwórz pusty zbiór odwiedzonych wierzchołków 
+    $S \leftarrow \emptyset$.
+    
+    \item Umieść wszystkie wierzchołki grafu w zbiorze $Q$.
+    
+    \item Dopóki zbiór $Q$ nie jest pusty, wykonuj:
     \begin{enumerate}
-        \item Wybierz i usuń ze zbioru $Q$ wierzchołek $u$ o najmniejszej aktualnej odległości od źródła.
+        \item Wybierz i usuń ze zbioru $Q$ wierzchołek $u$ 
+        o najmniejszej aktualnej odległości od źródła.
+        
         \item Dodaj wierzchołek $u$ do zbioru odwiedzonych $S$.
-        \item Dla każdego sąsiada $v$ wierzchołka $u$ wykonaj relaksację krawędzi $(u,v)$.
+        
+        \item Dla każdego sąsiada $v$ wierzchołka $u$ wykonaj 
+        relaksację krawędzi $(u,v)$.
     \end{enumerate}
 \end{enumerate}
 \begin{center}
 \small Opracowanie własne na podstawie \cite[s.~658]{cormen}
 \end{center}
+\end{algorithm}
 
 \begin{figure}[H]
     \centering
@@ -87,20 +97,31 @@ Algorytm Grovera to kwantowa procedura sprawdzania obecności klucza w bazie dan
 
 Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania odpowiedniej liczby iteracji. Liczba ta zależy od liczby elementów spełniających zadany warunek określony przez wyrocznie i w ogólnym przypadku nie jest znana. Zbyt mała liczba iteracji nie zapewnia wystarczającego wzmocnienia amplitudy rozwiązania, natomiast zbyt duża powoduje jej ponowne zmniejszenie, co obniża prawdopodobieństwo poprawnego wyniku. Problem ten został rozwiązany w algorytmie Boyera, Brassarda, Høyera i Tappa (BBHT), który zostanie omówiony w kolejnym podrozdziale.
 
-\paragraph*{\sc Algorytm Grovera}
+\begin{algorithm}[H]
+\caption{Algorytm Grovera}
+\label{alg:grover}
 \begin{enumerate}
-    \item Przygotuj rejestr kwantowy w stanie równomiernej superpozycji wszystkich $N$ możliwych stanów.
+    \item Przygotuj rejestr kwantowy w stanie równomiernej superpozycji
+    wszystkich $N$ możliwych stanów.
+
     \item Powtarzaj operator Grovera odpowiednią liczbę razy:
     \begin{enumerate}
-        \item Zastosuj wyrocznię (\textit{oracle}), która zmienia znak amplitudy stanów odpowiadających rozwiązaniom problemu.
-        \item Zastosuj operator dyfuzji (\textit{diffusion transform}), który odbija amplitudy wszystkich stanów względem ich średniej wartości, zwiększając amplitudę stanów oznaczonych przez wyrocznię i zmniejszając amplitudy pozostałych.
+        \item Zastosuj wyrocznię (\textit{oracle}), która zmienia znak
+        amplitudy stanów odpowiadających rozwiązaniom problemu.
+
+        \item Zastosuj operator dyfuzji (\textit{diffusion transform}),
+        który odbija amplitudy wszystkich stanów względem ich średniej
+        wartości, zwiększając amplitudę stanów oznaczonych przez wyrocznię
+        i zmniejszając amplitudy pozostałych.
     \end{enumerate}
+
     \item Wykonaj pomiar rejestru kwantowego.
     \item Zwróć zmierzony stan jako wynik wyszukiwania.
 \end{enumerate}
 \begin{center}
 \small Opracowanie własne na podstawie \cite{grover1996}
 \end{center}
+\end{algorithm}
 
 W pierwszym kroku tworzona jest superpozycja wszystkich możliwych stanów.  Żeby to uzyskać w rejestrze kwantowym złożonym z \textit{n} kubitów stosujemy \textit{n}-krotnie bramkę Hadamarda. 
 \cite[s.~162, wz.~(4.66)]{inf_kwant}  
@@ -224,63 +245,95 @@ Powtarzanie tych dwóch operacji (wyroczni i dyfuzji) prowadzi do stopniowego zw
 \subsubsection{Algorytm BBHT}
 Algorytm opracowany przez Boyera, Brassarda, Høyera i Tappa stanowi rozszerzenie algorytmu Grovera przeznaczone dla sytuacji, w której liczba rozwiązań problemu nie jest znana. W przeciwieństwie do klasycznej wersji algorytmu nie można z góry określić optymalnej liczby iteracji operatora Grovera. Zamiast tego algorytm stopniowo zwiększa zakres możliwej liczby iteracji.\cite{bbht1996}
 
-\paragraph*{\sc Algorytm BBHT}
+\begin{algorithm}[H]
+\caption{Algorytm BBHT}
+\label{alg:bbht}
 \begin{enumerate}
-    \item Zainicjalizuj parametry algorytmu: ustaw $m=1$ oraz wybierz współczynnik $\lambda=\frac{6}{5}$ (ogólnie $\lambda \in (1,\frac{4}{3})$).
-    \item Wylosuj liczbę całkowitą $j$ równomiernie z przedziału $\{0,1,\dots,m-1\}$.
-    \item Przygotuj rejestr kwantowy w stanie superpozycji wszystkich $N$ możliwych stanów.
-    \item Wykonaj $j$ iteracji algorytmu Grovera.
+
+    \item Zainicjalizuj parametry algorytmu: ustaw $m=1$ oraz wybierz
+    współczynnik $\lambda=\frac{6}{5}$ 
+    (ogólnie $\lambda \in (1,\frac{4}{3})$).
+
+    \item Wylosuj liczbę całkowitą $j$ równomiernie z przedziału
+    $\{0,1,\dots,m-1\}$.
+
+    \item Przygotuj rejestr kwantowy w stanie superpozycji wszystkich
+    $N$ możliwych stanów.
+
+    \item Wykonaj $j$ iteracji algorytmu Grovera (Alg.~\ref{alg:grover}).
+
     \item Wykonaj pomiar rejestru kwantowego i otrzymaj stan $i$.
-    \item Jeżeli $T[i]=x$, zakończ działanie algorytmu i zwróć znalezione rozwiązanie.
-    \item W przeciwnym razie zwiększ wartość parametru $m$ zgodnie z zależnością
+
+    \item Jeżeli $T[i]=x$, zakończ działanie algorytmu i zwróć
+    znalezione rozwiązanie.
+
+    \item W przeciwnym razie zwiększ wartość parametru $m$ zgodnie
+    z zależnością
     \[
         m=\min(\lambda m,\sqrt{N}),
     \]
     a następnie wróć do kroku 2.
-\end{enumerate}
 
+\end{enumerate}
 \begin{center}
 \small Opracowanie własne na podstawie \cite{bbht1996}
 \end{center}
+\end{algorithm}
 
 Losowy dobór liczby iteracji pozwala uniknąć sytuacji, w której zastosowanie zbyt dużej jej ilości zmniejszyłoby prawdopodobieństwo uzyskania poprawnego rozwiązania. Dzięki stopniowemu zwiększaniu parametru $m$ algorytm zachowuje kwadratowe przyspieszenie względem algorytmów klasycznych, osiągając oczekiwany czas działania rzędu
 \begin{equation}
 \label{eq:bbht_time} 
 O\left(\sqrt{\frac{N}{t}}\right)
 \end{equation}
-gdzie $t$ oznacza liczbę rozwiązań problemu. \cite{bbht1996}
+gdzie $t$ oznacza liczbę rozwiązań problemu \cite{bbht1996}.
 
 
 \subsubsection{Kwantowy algorytm wyszukiwania minimum}
 
 Algorytm wyszukiwania minimum, zaproponowany przez Dürra i Høyera, wykorzystuje algorytm BBHT jako podprocedurę służącą do znajdowania elementów o wartości mniejszej od aktualnie przyjętego progu. Algorytm ten iteracyjnie aktualizuje indeks elementu o najmniejszej dotychczas znalezionej wartości. Dzięki zastosowaniu kwantowego przeszukiwania możliwe jest znalezienie minimum tablicy w oczekiwanym czasie rzędu $\mathcal{O}(\sqrt{N})$ przy prawdopodobieństwie sukcesu wynoszącym co najmniej $\frac{1}{2}$ \cite{duerr1996}.
 
-\paragraph*{\sc Kwantowy algorytm wyszukiwania minimum}
+\begin{algorithm}[H]
+\caption{Kwantowy algorytm wyszukiwania minimum}
+\label{alg:quantum_minimum}
 \begin{enumerate}
+
     \item Wylosuj indeks $y$ z przedziału
     $\{0,1,\ldots,N-1\}$ i przyjmij go jako początkowy próg.
+
+    \item Powtarzaj poniższe kroki do momentu przekroczenia limitu
+    czasu działania opisanego w~\eqref{eq:minimum_time}:
     
-    \item Powtarzaj poniższe kroki do momentu przekroczenia limitu czasu działania opisanego w ~\eqref{eq:minimum_time}:
     \begin{enumerate}
-        \item Przygotuj rejestr kwantowy w stanie równomiernej superpozycji wszystkich stanów.
-        \item Oznacz wszystkie stany odpowiadające indeksom $j$, dla których zachodzi
+        \item Przygotuj rejestr kwantowy w stanie równomiernej
+        superpozycji wszystkich stanów.
+
+        \item Oznacz wszystkie stany odpowiadające indeksom $j$,
+        dla których zachodzi
         \[
             T[j] < T[y].
         \]
-        \item Uruchom algorytm BBHT w celu znalezienia jednego z oznaczonych elementów.
+
+        \item Uruchom algorytm BBHT (Alg.~\ref{alg:bbht}) w celu znalezienia jednego
+        z oznaczonych elementów.
+
         \item Wykonaj pomiar rejestru kwantowego i otrzymaj indeks $y'$.
+
         \item Jeżeli
         \[
             T[y'] < T[y],
         \]
         to zaktualizuj próg, przyjmując $y \leftarrow y'$.
     \end{enumerate}
-    
-    \item Po zakończeniu iteracji zwróć indeks $y$ jako wynik działania algorytmu.
+
+    \item Po zakończeniu iteracji zwróć indeks $y$ jako wynik
+    działania algorytmu.
+
 \end{enumerate}
 \begin{center}
 \small Opracowanie własne na podstawie \cite{duerr1996}
 \end{center}
+
+\end{algorithm}
 
 Łączny oczekiwany czas działania algorytmu do momentu, w którym zmienna $y$ będzie wskazywać indeks elementu minimalnego, wynosi\cite{duerr1996}
 \begin{equation}
@@ -288,68 +341,55 @@ Algorytm wyszukiwania minimum, zaproponowany przez Dürra i Høyera, wykorzystuj
 m_0=\frac{45}{4}\sqrt{N}+\frac{7}{10}\lg^2 N.
 \end{equation}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \section{Rodzaje grafów}
 
 Wpływ rodzaju grafu na wydajność algorytmu jest jednym z najważniejszych aspektów niniejszej pracy. Analiza zostanie przeprowadzona na czterech różnych rodzajach grafów: grafie rzadkim, średnio gęstym, gęstym oraz specjalnie skonstruowanym grafie, który dzięki odpowiednio dobranym wagom i liczbie krawędzi wymusza maksymalną liczbę relaksacji.
-We wszystkich analizowanych przypadkach rozpatrywane są grafy nieskierowane, bez pętli własnych, o nieujemnych wagach krawędzi. W przypadku tego ostatniego rodzaju grafu wagi krawędzi będą ściśle określone. Natomiast dla pozostałych grafów wagi będą losowane z przedziału \(1\) do \(n^2\), gdzie \(n\)   oznacza liczbę wierzchołków.
+We wszystkich analizowanych przypadkach rozpatrywane są grafy nieskierowane, bez pętli własnych, o nieujemnych wagach krawędzi. W przypadku tego ostatniego rodzaju grafu wagi krawędzi będą ściśle określone. Natomiast dla pozostałych grafów wagi będą losowane z przedziału \(1\) do \(n^2\), gdzie \(n\)  oznacza liczbę wierzchołków.
 \newpage
 
-\subsection {Graf gęsty (Dense Graph)}
+\subsection {Graf gęsty}
 Graf gęsty zawiera liczbę krawędzi bliską maksymalnej.
 \[ |E| = O(|V|^2) \cite{graph_metrics} \]
+
 W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym liczba krawędzi jest równa maksymalnej liczbie krawędzi dopuszczalnej dla grafu nieskierowanego bez pętli:
 \[ E = \frac{V(V-1)}{2} \cite{graph_complete} \]
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_dense.png}
-    \caption*{Przykład grafu "dense" analizowanego w pracy} 
+    \caption{Przykład grafu "dense" analizowanego w pracy} 
     \label{fig:graph_dense}
 \end{figure}
 \newpage
 
-\subsection {Graf o średniej gęstości (Half Dense)}
+\subsection {Graf o średniej gęstości}
 Graf średnio gęsty zajmuje pośrednią pozycję pomiędzy grafami rzadkimi i pełnymi. Liczba krawędzi jest znacznie większa niż liczba wierzchołków, jednak nadal nie osiąga wartości maksymalnej jak w grafach gęstych.
 \[ |E| = O(|V|^2) \cite{graph_metrics} \]
+
 W niniejszej pracy jako graf o średniej gęstości przyjęto graf nieskierowany, którego liczba krawędzi stanowi połowę maksymalnej liczby krawędzi:
 \[ E = \frac{V(V-1)}{4}\]
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_half_edges.png}
-    \caption*{Przykład grafu "half-edges" analizowanego w pracy} 
+    \caption{Przykład grafu "half-edges" analizowanego w pracy} 
     \label{fig:graph_half_edges}
 \end{figure}
 \newpage
 
-\subsection {Graf rzadki (Sparse Graph)}
+\subsection {Graf rzadki}
 Graf rzadki charakteryzuje się niewielką liczbą krawędzi względem maksymalnej liczby możliwych połączeń. 
 \[ |E| = O(|V|) \cite{graph_metrics} \]
+
 Przykładami grafów rzadkich są sieci drogowe, drzewa oraz wiele rzeczywistych sieci komputerowych. W niniejszej pracy jako graf rzadki przyjęto graf nieskierowany, w którym liczba krawędzi jest równa liczbie wierzchołków:
 \[ E = V \]
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_sparse.png}
-    \caption*{Przykład grafu "sparse" analizowanego w pracy} 
+    \caption{Przykład grafu "sparse" analizowanego w pracy} 
     \label{fig:graph_sparse}
 \end{figure}
 \newpage
 
-\subsection {Przypadek szczególny (Special Case)}
+\subsection {Przypadek szczególny}
 Przypadek szczególny jest specjalnie przygotowanym grafem pełnym. W odróżnieniu od pozostałych analizowanych grafów jego struktura oraz wagi krawędzi nie są losowe, lecz zostały dobrane w taki sposób, aby wymusić dużą liczbę operacji relaksacji wykonywanych przez algorytm Dijkstry. Tak jak graf gęsty, przypadek szczególny zawiera maksymalną liczbę krawędzi dla grafu nieskierowanego bez pętli:
 \[ E = \frac{V(V-1)}{2} \cite{graph_complete} \]
 Wagi krawędzi są wyznaczane zgodnie z następującą zależnością: 
@@ -363,7 +403,7 @@ w(i,j)=
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_special_case.png}
-    \caption*{Przykład grafu "special case" analizowanego w pracy} 
+    \caption{Przykład grafu "special case" analizowanego w pracy} 
     \label{fig:graph_special_case}
 \end{figure}
 \newpage

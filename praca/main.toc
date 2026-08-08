@@ -11,8 +11,8 @@
 \contentsline {subsubsection}{Algorytm BBHT}{10}{subsubsection*.7}%
 \contentsline {subsubsection}{Kwantowy algorytm wyszukiwania minimum}{11}{subsubsection*.8}%
 \contentsline {section}{\numberline {2.4}Rodzaje grafów}{12}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Graf gęsty (Dense Graph)}{13}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Graf o średniej gęstości (Half Dense)}{14}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Graf rzadki (Sparse Graph)}{15}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}Przypadek szczególny (Special Case)}{16}{subsection.2.4.4}%
-\contentsline {section}{\numberline {2.5}Reprezentacja grafów}{17}{section.2.5}%
+\contentsline {subsection}{\numberline {2.4.1}Graf gęsty}{14}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Graf o średniej gęstości}{15}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Graf rzadki}{16}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Przypadek szczególny}{17}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Reprezentacja grafów}{18}{section.2.5}%
