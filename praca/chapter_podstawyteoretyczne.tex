@@ -62,21 +62,22 @@ Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołkó
 Najbardziej kosztownym etapem algorytmu Dijkstry jest wyznaczenie kolejnego nieodwiedzonego wierzchołka o najmniejszej odległości. Sposób w jaki jest to zaimplementowane znacząco wpływa na złożoność całego algorytmu Dijkstry. Dlatego w celu porównania różnych podejść w niniejszej pracy wykorzystano trzy wersje algorytmu Dijkstry z różnymi sposobami znajdowania minimum:\begin{itemize}
     \item warsje naiwną,
     \item wersję z wykorzystaniem kopca binarnego,
-    \item wersję kwantową opartą na algorytmie wyszukiwania minimum Dürra i Høyera \cite{duerr1996}.
+    \item wersję wykorzystującą kwantowy algorytm wyszukiwania minimum.
 \end{itemize}
 
 \subsection{Wersja naiwna}
-
+\label{subsec:naive_minimum}
 W wersji naiwnej wybór kolejnego wierzchołka realizowany jest poprzez liniowe przeszukanie tablicy odległości w celu znalezienia najmniejszej wartości spośród wszystkich nieodwiedzonych wierzchołków. Operacja ta jest wykonywana w każdej iteracji algorytmu Dijkstry, a ponieważ liczba iteracji jest proporcjonalna do liczby wierzchołków $V$, całkowity koszt wyszukiwania
 minimum wynosi $O(V^2)$. Pomimo niskiej wydajności, wersja naiwna cechuje się prostotą implementacji i często wykorzystywana jest jako punkt odniesienia podczas porównywania bardziej zaawansowanych wariantów algorytmu jak na przykład kopiec binarny.
 
 \subsection{Wersja z kopcem binarnym}
+\label{subsec:naive_heap}
 W celu przyspieszenia operacji wyboru kolejnego wierzchołka można zastosować kopiec binarny przechowujący pary składające się z identyfikatora wierzchołka oraz aktualnej wartości odległości. Kopiec binarny jest strukturą danych reprezentowaną w postaci niemal pełnego drzewa binarnego, w którym każdy węzeł posiada co najwyżej dwoje dzieci. W kopcu minimalnym
 spełniona jest własność, zgodnie z którą wartość klucza każdego węzła jest nie większa od wartości kluczy jego potomków. Oznacza to, że element o najmniejszym kluczu znajduje się zawsze w korzeniu drzewa. Jego pobranie oraz usunięcie wymaga czasu $O(\log V)$. Wstawienie nowego elementu lub aktualizacja wartości klucza również wykonywane są w czasie $O(\log V)$ poprzez odpowiednie odtworzenie własności kopca. Dzięki zastosowaniu kopca binarnego wyszukiwanie wierzchołka o najmniejszej odległości nie wymaga liniowego przeszukiwania wszystkich elementów \cite[r.~6]{cormen}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{images/documentation/binary_heap.png}
-    \label{fig:binary_heap.}
+    \label{fig:binary_heap}
 \end{figure}
 \begin{figure}[H]
     \centering
@@ -342,13 +343,14 @@ m_0=\frac{45}{4}\sqrt{N}+\frac{7}{10}\lg^2 N.
 \end{equation}
 
 \section{Rodzaje grafów}
-\label{sec:rodzaje_grafow}
+\label{sec:graph_types}
 
 Wpływ rodzaju grafu na wydajność algorytmu jest jednym z najważniejszych aspektów niniejszej pracy. Analiza zostanie przeprowadzona na czterech różnych rodzajach grafów: grafie rzadkim, średnio gęstym, gęstym oraz specjalnie skonstruowanym grafie, który dzięki odpowiednio dobranym wagom i liczbie krawędzi wymusza maksymalną liczbę relaksacji.
 We wszystkich analizowanych przypadkach rozpatrywane są grafy nieskierowane, bez pętli własnych, o nieujemnych wagach krawędzi. W przypadku tego ostatniego rodzaju grafu wagi krawędzi będą ściśle określone. Natomiast dla pozostałych grafów wagi będą losowane z przedziału \(1\) do \(n^2\), gdzie \(n\)  oznacza liczbę wierzchołków.
 \newpage
 
 \subsection {Graf gęsty}
+\label{subsec:graph_dense}
 Graf gęsty zawiera liczbę krawędzi bliską maksymalnej  \cite{graph_metrics} 
 \[ |E| = O(|V|^2).\]
 
@@ -363,6 +365,7 @@ W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym lic
 \newpage
 
 \subsection {Graf o średniej gęstości}
+\label{subsec:graph_half_dense}
 Graf średnio gęsty zajmuje pośrednią pozycję pomiędzy grafami rzadkimi i pełnymi. Liczba krawędzi jest znacznie większa niż liczba wierzchołków, jednak nadal nie osiąga wartości maksymalnej jak w grafach gęstych \cite{graph_metrics} 
 \[ |E| = O(|V|^2).\]
 
@@ -377,6 +380,7 @@ W niniejszej pracy jako graf o średniej gęstości przyjęto graf nieskierowany
 \newpage
 
 \subsection {Graf rzadki}
+\label{subsec:graph_sparse}
 Graf rzadki charakteryzuje się niewielką liczbą krawędzi względem maksymalnej liczby możliwych połączeń \cite{graph_metrics} 
 \[ |E| = O(|V|).\]
 
@@ -391,6 +395,7 @@ Przykładami grafów rzadkich są sieci drogowe, drzewa oraz wiele rzeczywistych
 \newpage
 
 \subsection {Przypadek szczególny}
+\label{subsec:graph_special_case}
 Przypadek szczególny jest specjalnie przygotowanym grafem pełnym. W odróżnieniu od pozostałych analizowanych grafów jego struktura oraz wagi krawędzi nie są losowe, lecz zostały dobrane w taki sposób, aby wymusić dużą liczbę operacji relaksacji wykonywanych przez algorytm Dijkstry. Tak jak graf gęsty, przypadek szczególny zawiera maksymalną liczbę krawędzi dla grafu nieskierowanego bez pętli \cite{graph_complete} 
 \[ E = \frac{V(V-1)}{2}.\]
 Wagi krawędzi są wyznaczane zgodnie z następującą zależnością
@@ -410,7 +415,7 @@ w(i,j)=
 \newpage
 
 \section{Reprezentacja grafów}
-\label{sec:reprezentacja_grafow}
+\label{sec:graph_representation}
 
 Graf może być reprezentowany na różne sposoby, przy czym do najczęściej stosowanych metod należą macierz sąsiedztwa oraz lista sąsiedztwa. W celu zilustrowania obu sposobów reprezentacji wykorzystano graf przedstawiony na rysunku~\ref{fig:graph_half_edges}.
 
