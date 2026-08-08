@@ -342,17 +342,18 @@ m_0=\frac{45}{4}\sqrt{N}+\frac{7}{10}\lg^2 N.
 \end{equation}
 
 \section{Rodzaje grafów}
+\label{sec:rodzaje_grafow}
 
 Wpływ rodzaju grafu na wydajność algorytmu jest jednym z najważniejszych aspektów niniejszej pracy. Analiza zostanie przeprowadzona na czterech różnych rodzajach grafów: grafie rzadkim, średnio gęstym, gęstym oraz specjalnie skonstruowanym grafie, który dzięki odpowiednio dobranym wagom i liczbie krawędzi wymusza maksymalną liczbę relaksacji.
 We wszystkich analizowanych przypadkach rozpatrywane są grafy nieskierowane, bez pętli własnych, o nieujemnych wagach krawędzi. W przypadku tego ostatniego rodzaju grafu wagi krawędzi będą ściśle określone. Natomiast dla pozostałych grafów wagi będą losowane z przedziału \(1\) do \(n^2\), gdzie \(n\)  oznacza liczbę wierzchołków.
 \newpage
 
 \subsection {Graf gęsty}
-Graf gęsty zawiera liczbę krawędzi bliską maksymalnej.
-\[ |E| = O(|V|^2) \cite{graph_metrics} \]
+Graf gęsty zawiera liczbę krawędzi bliską maksymalnej  \cite{graph_metrics} 
+\[ |E| = O(|V|^2).\]
 
-W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym liczba krawędzi jest równa maksymalnej liczbie krawędzi dopuszczalnej dla grafu nieskierowanego bez pętli:
-\[ E = \frac{V(V-1)}{2} \cite{graph_complete} \]
+W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym liczba krawędzi jest równa maksymalnej liczbie krawędzi dopuszczalnej dla grafu nieskierowanego bez pętli \cite{graph_complete} 
+\[ E = \frac{V(V-1)}{2}.\]
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_dense.png}
@@ -362,11 +363,11 @@ W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym lic
 \newpage
 
 \subsection {Graf o średniej gęstości}
-Graf średnio gęsty zajmuje pośrednią pozycję pomiędzy grafami rzadkimi i pełnymi. Liczba krawędzi jest znacznie większa niż liczba wierzchołków, jednak nadal nie osiąga wartości maksymalnej jak w grafach gęstych.
-\[ |E| = O(|V|^2) \cite{graph_metrics} \]
+Graf średnio gęsty zajmuje pośrednią pozycję pomiędzy grafami rzadkimi i pełnymi. Liczba krawędzi jest znacznie większa niż liczba wierzchołków, jednak nadal nie osiąga wartości maksymalnej jak w grafach gęstych \cite{graph_metrics} 
+\[ |E| = O(|V|^2).\]
 
-W niniejszej pracy jako graf o średniej gęstości przyjęto graf nieskierowany, którego liczba krawędzi stanowi połowę maksymalnej liczby krawędzi:
-\[ E = \frac{V(V-1)}{4}\]
+W niniejszej pracy jako graf o średniej gęstości przyjęto graf nieskierowany, którego liczba krawędzi stanowi połowę maksymalnej liczby krawędzi
+\[ E = \frac{V(V-1)}{4}.\]
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_half_edges.png}
@@ -376,11 +377,11 @@ W niniejszej pracy jako graf o średniej gęstości przyjęto graf nieskierowany
 \newpage
 
 \subsection {Graf rzadki}
-Graf rzadki charakteryzuje się niewielką liczbą krawędzi względem maksymalnej liczby możliwych połączeń. 
-\[ |E| = O(|V|) \cite{graph_metrics} \]
+Graf rzadki charakteryzuje się niewielką liczbą krawędzi względem maksymalnej liczby możliwych połączeń \cite{graph_metrics} 
+\[ |E| = O(|V|).\]
 
-Przykładami grafów rzadkich są sieci drogowe, drzewa oraz wiele rzeczywistych sieci komputerowych. W niniejszej pracy jako graf rzadki przyjęto graf nieskierowany, w którym liczba krawędzi jest równa liczbie wierzchołków:
-\[ E = V \]
+Przykładami grafów rzadkich są sieci drogowe, drzewa oraz wiele rzeczywistych sieci komputerowych. W niniejszej pracy jako graf rzadki przyjęto graf nieskierowany, w którym liczba krawędzi jest równa liczbie wierzchołków
+\[ E = V. \]
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_sparse.png}
@@ -390,9 +391,9 @@ Przykładami grafów rzadkich są sieci drogowe, drzewa oraz wiele rzeczywistych
 \newpage
 
 \subsection {Przypadek szczególny}
-Przypadek szczególny jest specjalnie przygotowanym grafem pełnym. W odróżnieniu od pozostałych analizowanych grafów jego struktura oraz wagi krawędzi nie są losowe, lecz zostały dobrane w taki sposób, aby wymusić dużą liczbę operacji relaksacji wykonywanych przez algorytm Dijkstry. Tak jak graf gęsty, przypadek szczególny zawiera maksymalną liczbę krawędzi dla grafu nieskierowanego bez pętli:
-\[ E = \frac{V(V-1)}{2} \cite{graph_complete} \]
-Wagi krawędzi są wyznaczane zgodnie z następującą zależnością: 
+Przypadek szczególny jest specjalnie przygotowanym grafem pełnym. W odróżnieniu od pozostałych analizowanych grafów jego struktura oraz wagi krawędzi nie są losowe, lecz zostały dobrane w taki sposób, aby wymusić dużą liczbę operacji relaksacji wykonywanych przez algorytm Dijkstry. Tak jak graf gęsty, przypadek szczególny zawiera maksymalną liczbę krawędzi dla grafu nieskierowanego bez pętli \cite{graph_complete} 
+\[ E = \frac{V(V-1)}{2}.\]
+Wagi krawędzi są wyznaczane zgodnie z następującą zależnością
 \[
 w(i,j)=
 \begin{cases}
@@ -409,10 +410,43 @@ w(i,j)=
 \newpage
 
 \section{Reprezentacja grafów}
-Graf może być reprezentowany na różne sposoby, przy czym do najczęściej stosowanych metod należą macierz sąsiedztwa oraz lista sąsiedztwa. 
+\label{sec:reprezentacja_grafow}
+
+Graf może być reprezentowany na różne sposoby, przy czym do najczęściej stosowanych metod należą macierz sąsiedztwa oraz lista sąsiedztwa. W celu zilustrowania obu sposobów reprezentacji wykorzystano graf przedstawiony na rysunku~\ref{fig:graph_half_edges}.
+
+\begin{equation}
+\label{eq:adjacency_matrix}
+A =
+\begin{pmatrix}
+0  & 0  & 15 & 0  & 70 & 0  & 0  & 0  & 0  & 92 \\
+0  & 0  & 0  & 14 & 0  & 0  & 69 & 0  & 33 & 0  \\
+15 & 0  & 0  & 0  & 0  & 50 & 0  & 2  & 10 & 0  \\
+0  & 14 & 0  & 0  & 0  & 63 & 7  & 84 & 82 & 0  \\
+70 & 0  & 0  & 0  & 0  & 53 & 0  & 96 & 0  & 0  \\
+0  & 0  & 50 & 63 & 53 & 0  & 0  & 32 & 62 & 68 \\
+0  & 69 & 0  & 7  & 0  & 0  & 0  & 86 & 48 & 0  \\
+0  & 0  & 2  & 84 & 96 & 32 & 86 & 0  & 10 & 0  \\
+0  & 33 & 10 & 82 & 0  & 62 & 48 & 10 & 0  & 9  \\
+92 & 0  & 0  & 0  & 0  & 68 & 0  & 0  & 9  & 0
+\end{pmatrix}
+\end{equation}
 
 Macierz sąsiedztwa przedstawia graf w postaci dwuwymiarowej tablicy, w której element znajdujący się na przecięciu \(i\)-tego wiersza i \(j\)-tej kolumny określa istnienie krawędzi pomiędzy odpowiadającymi im wierzchołkami lub przechowuje jej wagę. Reprezentacja ta zawiera informacje o wszystkich możliwych parach wierzchołków, niezależnie czy są one połączone krawędzią.
 
-Lista sąsiedztwa przypisuje każdemu wierzchołkowi listę jego bezpośrednich sąsiadów. W przypadku grafu ważonego każdy element tej listy składa się z numeru sąsiedniego wierzchołka oraz wagi krawędzi łączącej oba wierzchołki.
+\begin{equation}
+\label{eq:adjacency_list}
+\begin{aligned}
+0 &: \{(2,15), (9,92), (4,70)\}, \\
+1 &: \{(6,69), (8,33), (3,14)\}, \\
+2 &: \{(8,10), (0,15), (7,2), (5,50)\}, \\
+3 &: \{(5,63), (7,84), (8,82), (1,14), (6,7)\}, \\
+4 &: \{(7,96), (5,53), (0,70)\}, \\
+5 &: \{(7,32), (8,62), (3,63), (9,68), (4,53), (2,50)\}, \\
+6 &: \{(8,48), (1,69), (7,86), (3,7)\}, \\
+7 &: \{(4,96), (6,86), (5,32), (2,2), (8,10), (3,84)\}, \\
+8 &: \{(2,10), (6,48), (1,33), (9,9), (5,62), (7,10), (3,82)\}, \\
+9 &: \{(8,9), (5,68), (0,92)\}.
+\end{aligned}
+\end{equation}
 
-W implementacji przedstawionej w niniejszej pracy graf został zapisany w postaci listy sąsiedztwa. Dla każdego wierzchołka przechowywana jest lista wszystkich wierzchołków z nim połączonych wraz z odpowiadającymi im wagami krawędzi. W przypadku grafu nieskierowanego każda krawędź występuje dwukrotnie – na liście sąsiedztwa obu wierzchołków, które łączy.
+W implementacji przedstawionej w niniejszej pracy graf został zapisany w postaci listy sąsiedztwa. W tym sposobie reprezentacji grafu dla każdego wierzchołka przechowywana jest lista wszystkich wierzchołków z nim połączonych wraz z odpowiadającymi im wagami krawędzi. W przypadku grafu nieskierowanego każda krawędź występuje dwukrotnie – na liście sąsiedztwa obu wierzchołków, które łączy.

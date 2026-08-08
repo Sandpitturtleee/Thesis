@@ -16,3 +16,5 @@
 \contentsline {subsection}{\numberline {2.4.3}Graf rzadki}{16}{subsection.2.4.3}%
 \contentsline {subsection}{\numberline {2.4.4}Przypadek szczególny}{17}{subsection.2.4.4}%
 \contentsline {section}{\numberline {2.5}Reprezentacja grafów}{18}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Opis implementacji}{20}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Tworzenie grafów}{20}{section.3.1}%
