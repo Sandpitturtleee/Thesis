@@ -8,8 +8,8 @@
 \contentsline {subsection}{\numberline {2.3.2}Wersja z kopcem binarnym}{6}{subsection.2.3.2}%
 \contentsline {subsection}{\numberline {2.3.3}Wersja kwantowa}{7}{subsection.2.3.3}%
 \contentsline {subsubsection}{Algorytm Grovera}{8}{subsubsection*.6}%
-\contentsline {subsubsection}{Algorytm BBHT}{11}{subsubsection*.7}%
-\contentsline {subsubsection}{Algorytm Dürra--Høyera}{12}{subsubsection*.8}%
+\contentsline {subsubsection}{Algorytm BBHT}{10}{subsubsection*.7}%
+\contentsline {subsubsection}{Kwantowy algorytm wyszukiwania minimum}{11}{subsubsection*.8}%
 \contentsline {section}{\numberline {2.4}Rodzaje grafów}{12}{section.2.4}%
 \contentsline {subsection}{\numberline {2.4.1}Graf gęsty (Dense Graph)}{13}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}Graf o średniej gęstości (Half Dense)}{14}{subsection.2.4.2}%

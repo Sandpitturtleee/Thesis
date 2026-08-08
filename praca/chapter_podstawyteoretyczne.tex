@@ -2,7 +2,7 @@
 \section{Problem najkrótszej scieżki}
 \indent Problem wyznaczania najkrótszej ścieżki należy do podstawowych zagadnień teorii grafów. Jego celem jest znalezienie ścieżki pomiędzy dwoma wierzchołkami grafu, której suma wag wszystkich krawędzi jest minimalna. Problem ten znajduje zastosowanie w wielu dziedzinach informatyki, takich jak systemy nawigacji, routing w sieciach komputerowych, logistyka, planowanie tras czy analiza sieci społecznościowych.
 \newline
-Formalnie graf definiowany jest jako para
+Formalnie graf definiowany jest jako para \cite[s.~2]{diestel2017}
 \begin{equation}
 \label{eq:graph}
 G = (V, E)
@@ -15,10 +15,9 @@ Jeżeli wszystkie wagi są nieujemne, jednym z najbardziej efektywnych algorytm�
 
 Algorytm Dijkstry \cite{dijkstra} został po raz pierwszy przedstawiony w 1959 roku przez Edsger W. Dijkstra. Jest to algorytm zachłanny, który znajduje najkrótsze ścieżki od jednego wierzchołka źródłowego do wszystkich pozostałych wierzchołków w grafie o nieujemnych wagach krawędzi.
 Podstawową ideą algorytmu jest stopniowe powiększanie zbioru odwiedzonych wierzchołków, dla których wyznaczono już najkrótszą możliwą odległość od źródła. W każdej kolejnej iteracji wybierany jest wierzchołek o najmniejszej znanej odległości spośród nieodwiedzonych, po czym wykonywana jest operacja relaksacji wszystkich wychodzących z niego krawędzi.
-\newpage Relaksacja polega na sprawdzeniu, czy przejście przez aktualnie analizowany wierzchołek prowadzi do krótszej ścieżki do sąsiada. Jeżeli zachodzi zależność
-\begin{equation}
+\newpage Relaksacja polega na sprawdzeniu, czy przejście przez aktualnie analizowany wierzchołek prowadzi do krótszej ścieżki do sąsiada. Jeżeli zachodzi zależność \cite[s.~649]{cormen}\begin{equation}
 \label{eq:relax}
-d(u) + w(u,v) < d(v) 
+d(v) > d(u) + w(u,v)
 \end{equation}
 wartość (d(v)) zostaje zaktualizowana.
 Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołków.
@@ -37,13 +36,13 @@ Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołkó
     \end{enumerate}
 \end{enumerate}
 \begin{center}
-\small Opracowanie własne na podstawie \cite[Chapter~24.3]{cormen}.
+\small Opracowanie własne na podstawie \cite[s.~658]{cormen}
 \end{center}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\columnwidth]{images/documentation/dijkstra.png}
-    \caption{Przykład działania algorytmu Dijkstry. \cite[Rozdział ~24.3]{cormen}} 
+    \caption{Przykład działania algorytmu Dijkstry. \cite[s.~659]{cormen}} 
     \label{fig:dijkstra}
 \end{figure}
 
@@ -63,7 +62,7 @@ minimum wynosi $O(V^2)$. Pomimo niskiej wydajności, wersja naiwna cechuje się 
 
 \subsection{Wersja z kopcem binarnym}
 W celu przyspieszenia operacji wyboru kolejnego wierzchołka można zastosować kopiec binarny przechowujący pary składające się z identyfikatora wierzchołka oraz aktualnej wartości odległości. Kopiec binarny jest strukturą danych reprezentowaną w postaci niemal pełnego drzewa binarnego, w którym każdy węzeł posiada co najwyżej dwoje dzieci. W kopcu minimalnym
-spełniona jest własność, zgodnie z którą wartość klucza każdego węzła jest nie większa od wartości kluczy jego potomków. Oznacza to, że element o najmniejszym kluczu znajduje się zawsze w korzeniu drzewa. Jego pobranie oraz usunięcie wymaga czasu $O(\log V)$. Wstawienie nowego elementu lub aktualizacja wartości klucza również wykonywane są w czasie $O(\log V)$ poprzez odpowiednie odtworzenie własności kopca. Dzięki zastosowaniu kopca binarnego wyszukiwanie wierzchołka o najmniejszej odległości nie wymaga liniowego przeszukiwania wszystkich elementów.\cite[Rozdział ~6]{cormen} 
+spełniona jest własność, zgodnie z którą wartość klucza każdego węzła jest nie większa od wartości kluczy jego potomków. Oznacza to, że element o najmniejszym kluczu znajduje się zawsze w korzeniu drzewa. Jego pobranie oraz usunięcie wymaga czasu $O(\log V)$. Wstawienie nowego elementu lub aktualizacja wartości klucza również wykonywane są w czasie $O(\log V)$ poprzez odpowiednie odtworzenie własności kopca. Dzięki zastosowaniu kopca binarnego wyszukiwanie wierzchołka o najmniejszej odległości nie wymaga liniowego przeszukiwania wszystkich elementów \cite[r.~6]{cormen}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{images/documentation/binary_heap.png}
@@ -72,7 +71,7 @@ spełniona jest własność, zgodnie z którą wartość klucza każdego węzła
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{images/documentation/binary_heap_list.png}
-    \caption{Przykład kopca binarnego max wraz z listą jego wartości i kluczy. \cite[Rozdział ~6]{cormen} W niniejszej pracy do implementacji Dijkstry jest wykorzystywana wersja min kopca binarnego} 
+    \caption{Przykład kopca binarnego $max$ wraz z listą jego wartości i kluczy \cite[s.~151]{cormen}. W niniejszej pracy do implementacji Dijkstry wykorzystywana jest wersja $min$ kopca binarnego} 
     \label{fig:binary_heap_list}
 \end{figure}
 
@@ -84,7 +83,7 @@ Algorytm Dürra--Høyera realizuje wyszukiwanie minimum poprzez iteracyjne wywo�
 
 \subsubsection{Algorytm Grovera}
 
-Algorytm Grovera \cite{grover1996} to kwantowa procedura sprawdzania obecności klucza w bazie danych. W nim baza danych nie ma ustalonej struktury jak w klasycznych bazach  gdzie dane są zorganizowane np. w struktury drzewiaste. Jego celem jest znalezienie elementu/elementów z wykorzystaniem wyroczni (\textit{oracle}), która potrafi rozpoznać poprawne rozwiązania. W przeciwieństwie do klasycznego przeszukiwania liniowego wymagającego średnio $O(N)$ sprawdzeń, algorytm Grovera osiąga złożoność $O(\sqrt{N})$.
+Algorytm Grovera to kwantowa procedura sprawdzania obecności klucza w bazie danych. W nim baza danych nie ma ustalonej struktury jak w klasycznych bazach  gdzie dane są zorganizowane np. w struktury drzewiaste. Jego celem jest znalezienie elementu/elementów z wykorzystaniem wyroczni (\textit{oracle}), która potrafi rozpoznać poprawne rozwiązania. W przeciwieństwie do klasycznego przeszukiwania liniowego wymagającego średnio $O(N)$ sprawdzeń, algorytm Grovera osiąga złożoność $O(\sqrt{N})$ \cite{grover1996} .
 
 Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania odpowiedniej liczby iteracji. Liczba ta zależy od liczby elementów spełniających zadany warunek określony przez wyrocznie i w ogólnym przypadku nie jest znana. Zbyt mała liczba iteracji nie zapewnia wystarczającego wzmocnienia amplitudy rozwiązania, natomiast zbyt duża powoduje jej ponowne zmniejszenie, co obniża prawdopodobieństwo poprawnego wyniku. Problem ten został rozwiązany w algorytmie Boyera, Brassarda, Høyera i Tappa (BBHT), który zostanie omówiony w kolejnym podrozdziale.
 
@@ -104,7 +103,7 @@ Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania 
 \end{center}
 
 W pierwszym kroku tworzona jest superpozycja wszystkich możliwych stanów.  Żeby to uzyskać w rejestrze kwantowym złożonym z \textit{n} kubitów stosujemy \textit{n}-krotnie bramkę Hadamarda. 
-\cite[Strona ~162, Rozdział ~4.4]{inf_kwant}  
+\cite[s.~162, wz.~(4.66)]{inf_kwant}  
 \begin{equation}
 \label{eq:superposition}
 |\psi\rangle
@@ -122,7 +121,7 @@ H^{\otimes n}|00\cdots0\rangle
 \end{equation}
 
 \noindent
-Dla stanu kubitu złożonego z \textit{n=3} kubitów odpowiada to temu zapisowi \cite[Strona ~278, Rozdział ~5.6]{inf_kwant}  
+Dla stanu kubitu złożonego z \textit{n=3} kubitów odpowiada to temu zapisowi \cite[s.~278, wz.~(5.366)]{inf_kwant}  
 \begin{equation}
 \label{eq:superposition_example}
 |\psi'\rangle = \frac1{2\sqrt2} ( |000\rangle+ |001\rangle+ |010\rangle+ |011\rangle+ |100\rangle+ |101\rangle+ |110\rangle+ |111\rangle ).
@@ -130,7 +129,7 @@ Dla stanu kubitu złożonego z \textit{n=3} kubitów odpowiada to temu zapisowi 
 \noindent
 Wszystkie amplitudy prawdopodobieństwa mają wartość $1/\sqrt{N}$ co oznacza że każdy stan jest jednakowo prawdopodobny w przypadku pomiaru.
 
-Kolejny etap stanowi iteracyjne wykonywanie operatora Grovera. Każda iteracja składa się z dwóch operacji. Pierwszą z nich jest działanie wyroczni, która identyfikuje stany spełniające zadany warunek poprzez odwrócenie znaku ich amplitudy. Jest to funkcja która odpowiada za wskazanie szukanego elementu. Jej definicja w postaci klasycznej jest następująca. \cite[Strona ~162, Rozdział ~4.4]{inf_kwant}   
+Kolejny etap stanowi iteracyjne wykonywanie operatora Grovera. Każda iteracja składa się z dwóch operacji. Pierwszą z nich jest działanie wyroczni, która identyfikuje stany spełniające zadany warunek poprzez odwrócenie znaku ich amplitudy. Jest to funkcja która odpowiada za wskazanie szukanego elementu \cite[s.~162, wz.~(4.67)]{inf_kwant}.
 \begin{equation}
 \label{eq:oracle}
 f(i)=
@@ -140,22 +139,22 @@ f(i)=
 \end{cases}
 \end{equation}
 
-Bardzo ważny jest sposób implementacji tej funkcji dla rejestru kwantowego. Oczekuje się, że działanie tej funkcji implementowanej przez unitarny operator $U_f$ można opisać wzorem. \cite[Strona ~162, Rozdział ~4.4]{inf_kwant}   
+Oczekuje się, że działanie tej funkcji implementowanej przez unitarny operator $U_f$ można opisać wzorem
+\cite[s.~162, wz.~(4.68)]{inf_kwant}   
 \begin{equation}
 \label{eq:oracle_quantum}
 U_f(|i\rangle|j\rangle)=|i\rangle|j\oplus f(i)\rangle.
 \end{equation}
 
-Przypadek w którym funkcja ta zmienia znak na rejestrze kwantowym przy trzeciej amplitudzie można zapisać w ten sposób. \cite[Strona ~278, Rozdział ~5.6]{inf_kwant}  
+Przypadek w którym funkcja ta zmienia znak na rejestrze kwantowym przy trzeciej amplitudzie można zapisać w ten sposób \cite[s~278, wz.~(5.367)]{inf_kwant}  
 \begin{equation}
 \label{eq:oracle_example}
 |\psi''\rangle = \frac1{2\sqrt2} ( |000\rangle+ |001\rangle- |010\rangle+ |011\rangle+ |100\rangle+ |101\rangle+ |110\rangle+ |111\rangle ).
 \end{equation}
-\noindent
 
 Wykonanie pomiaru bezpośrednio po zastosowaniu wyroczni nie pozwala jeszcze na wskazanie poprawnego rozwiązania. Wynika to z faktu, że wyrocznia zmienia jedynie znak amplitudy stanu odpowiadającego szukanemu elementowi, nie zmieniając jej wartości bezwzględnej. Podczas pomiaru wyznaczane jest natomiast prawdopodobieństwo otrzymania danego stanu, które jest równe kwadratowi modułu jego amplitudy. W rezultacie informacja o znaku amplitudy zostaje utracona.. Z tego powodu konieczne jest wykonanie kolejnego etapu algorytmu – operatora dyfuzji nazywanego również operatorem obrotu wokół średniej. Jego zadaniem jest zwiększenie amplitud stanów oznaczonych przez wyrocznię kosztem amplitud pozostałych stanów.
 
-Definicja operatora obrotu wokół średniej, oznaczonego jako A przybiera tą postać \cite[Strona ~163, Rozdział ~4.4]{inf_kwant}   
+Definicja operatora obrotu wokół średniej, oznaczonego jako A przybiera postać \cite[s.~163, wz.~(4.71)]{inf_kwant}   
 \begin{equation}
 \label{eq:diffusion_operator}
 A=2|\psi\rangle\langle\psi|-I.
@@ -163,13 +162,13 @@ A=2|\psi\rangle\langle\psi|-I.
 \noindent
 gdzie $|\psi\rangle$ to stan opisany wzorem ~\eqref{eq:superposition}
 
-Po zastosowaniu operatora $U_f$ otrzymuje się stan \cite[Strona ~163, Rozdział ~4.4]{inf_kwant}   
+Po zastosowaniu operatora $U_f$ otrzymuje się stan \cite[s.~163, wz.~(4.72)]{inf_kwant}   
 \begin{equation}
 \label{eq:diffusion_operator1}
 |\psi_1\rangle=|\psi\rangle-\frac{2}{\sqrt{2^n}}|i_{U_f}\rangle.
 \end{equation}
 
-Odpowiada to takiej bramce kwantowej przedstawionej w formie macierzy \cite[Strona ~277, Rozdział ~5.6]{inf_kwant}  
+Odpowiada to takiej bramce kwantowej przedstawionej w formie macierzy \cite[s.~277, wz.~(5.364)]{inf_kwant}
 \begin{equation}
 \label{eq:diffusion_matrix} 
 G_{L\times L}=
@@ -183,7 +182,7 @@ G_{L\times L}=
 L=2^n.
 \end{equation}
 
-Całość działania operatora obrotu wokół średniej G na stanie ~\eqref{eq:oracle_example} można przedstawić w ten sposób \cite[Strona ~278, Rozdział ~5.6]{inf_kwant}  
+Całość działania operatora obrotu wokół średniej G na stanie ~\eqref{eq:oracle_example} można przedstawić w ten sposób \cite[s.~278, wz.~(5.368)]{inf_kwant}
 \begin{equation}
 \label{eq:matrix_example} 
 |\psi'''\rangle = G|\psi''\rangle =
@@ -252,11 +251,42 @@ O\left(\sqrt{\frac{N}{t}}\right)
 gdzie $t$ oznacza liczbę rozwiązań problemu. \cite{bbht1996}
 
 
-\subsubsection{Algorytm Dürra--Høyera}
+\subsubsection{Kwantowy algorytm wyszukiwania minimum}
 
+Algorytm wyszukiwania minimum, zaproponowany przez Dürra i Høyera, wykorzystuje algorytm BBHT jako podprocedurę służącą do znajdowania elementów o wartości mniejszej od aktualnie przyjętego progu. Algorytm ten iteracyjnie aktualizuje indeks elementu o najmniejszej dotychczas znalezionej wartości. Dzięki zastosowaniu kwantowego przeszukiwania możliwe jest znalezienie minimum tablicy w oczekiwanym czasie rzędu $\mathcal{O}(\sqrt{N})$ przy prawdopodobieństwie sukcesu wynoszącym co najmniej $\frac{1}{2}$ \cite{duerr1996}.
 
-\paragraph*{\sc Algorytm Dürra--Høyera}
+\paragraph*{\sc Kwantowy algorytm wyszukiwania minimum}
+\begin{enumerate}
+    \item Wylosuj indeks $y$ z przedziału
+    $\{0,1,\ldots,N-1\}$ i przyjmij go jako początkowy próg.
+    
+    \item Powtarzaj poniższe kroki do momentu przekroczenia limitu czasu działania opisanego w ~\eqref{eq:minimum_time}:
+    \begin{enumerate}
+        \item Przygotuj rejestr kwantowy w stanie równomiernej superpozycji wszystkich stanów.
+        \item Oznacz wszystkie stany odpowiadające indeksom $j$, dla których zachodzi
+        \[
+            T[j] < T[y].
+        \]
+        \item Uruchom algorytm BBHT w celu znalezienia jednego z oznaczonych elementów.
+        \item Wykonaj pomiar rejestru kwantowego i otrzymaj indeks $y'$.
+        \item Jeżeli
+        \[
+            T[y'] < T[y],
+        \]
+        to zaktualizuj próg, przyjmując $y \leftarrow y'$.
+    \end{enumerate}
+    
+    \item Po zakończeniu iteracji zwróć indeks $y$ jako wynik działania algorytmu.
+\end{enumerate}
+\begin{center}
+\small Opracowanie własne na podstawie \cite{duerr1996}
+\end{center}
 
+Łączny oczekiwany czas działania algorytmu do momentu, w którym zmienna $y$ będzie wskazywać indeks elementu minimalnego, wynosi\cite{duerr1996}
+\begin{equation}
+\label{eq:minimum_time} 
+m_0=\frac{45}{4}\sqrt{N}+\frac{7}{10}\lg^2 N.
+\end{equation}
 
 
 
