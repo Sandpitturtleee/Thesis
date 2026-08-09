@@ -9,13 +9,14 @@ G = (V, E)
 \end{equation}
 gdzie (V) oznacza zbiór wierzchołków, natomiast (E) zbiór krawędzi łączących pary wierzchołków. W przypadku grafów ważonych każdej krawędzi przypisana jest waga określająca koszt przejścia pomiędzy dwoma sąsiadującymi wierzchołkami.
 Jeżeli wszystkie wagi są nieujemne, jednym z najbardziej efektywnych algorytmów rozwiązujących problem najkrótszych ścieżek z początkowego wierzchołka jest algorytm Dijkstry.
-
+\newpage
 
 \section{Algorytm Dijkstry}
 
 Algorytm Dijkstry \cite{dijkstra} został po raz pierwszy przedstawiony w 1959 roku przez Edsger W. Dijkstra. Jest to algorytm zachłanny, który znajduje najkrótsze ścieżki od jednego wierzchołka źródłowego do wszystkich pozostałych wierzchołków w grafie o nieujemnych wagach krawędzi.
 Podstawową ideą algorytmu jest stopniowe powiększanie zbioru odwiedzonych wierzchołków, dla których wyznaczono już najkrótszą możliwą odległość od źródła. W każdej kolejnej iteracji wybierany jest wierzchołek o najmniejszej znanej odległości spośród nieodwiedzonych, po czym wykonywana jest operacja relaksacji wszystkich wychodzących z niego krawędzi.
-\newpage Relaksacja polega na sprawdzeniu, czy przejście przez aktualnie analizowany wierzchołek prowadzi do krótszej ścieżki do sąsiada. Jeżeli zachodzi zależność \cite[s.~649]{cormen}\begin{equation}
+
+Relaksacja polega na sprawdzeniu, czy przejście przez aktualnie analizowany wierzchołek prowadzi do krótszej ścieżki do sąsiada. Jeżeli zachodzi zależność \cite[s.~649]{cormen}\begin{equation}
 \label{eq:relax}
 d(v) > d(u) + w(u,v)
 \end{equation}
@@ -56,7 +57,6 @@ Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołkó
     \label{fig:dijkstra}
 \end{figure}
 
-\newpage
 \section{Znajdowanie minumum}
 
 Najbardziej kosztownym etapem algorytmu Dijkstry jest wyznaczenie kolejnego nieodwiedzonego wierzchołka o najmniejszej odległości. Sposób w jaki jest to zaimplementowane znacząco wpływa na złożoność całego algorytmu Dijkstry. Dlatego w celu porównania różnych podejść w niniejszej pracy wykorzystano trzy wersje algorytmu Dijkstry z różnymi sposobami znajdowania minimum:\begin{itemize}
@@ -123,7 +123,7 @@ Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania 
 \small Opracowanie własne na podstawie \cite{grover1996}
 \end{center}
 \end{algorithm}
-\newpage
+
 W pierwszym kroku tworzona jest superpozycja wszystkich możliwych stanów.  Żeby to uzyskać w rejestrze kwantowym złożonym z \textit{n} kubitów stosujemy \textit{n}-krotnie bramkę Hadamarda. 
 \cite[s.~162, wz.~(4.66)]{inf_kwant}  
 \begin{equation}
@@ -150,7 +150,7 @@ Dla stanu kubitu złożonego z \textit{n=3} kubitów odpowiada to temu zapisowi 
 \end{equation}
 \noindent
 Wszystkie amplitudy prawdopodobieństwa mają wartość $1/\sqrt{N}$ co oznacza że każdy stan jest jednakowo prawdopodobny w przypadku pomiaru.
-
+\newpage
 Kolejny etap stanowi iteracyjne wykonywanie operatora Grovera. Każda iteracja składa się z dwóch operacji. Pierwszą z nich jest działanie wyroczni, która identyfikuje stany spełniające zadany warunek poprzez odwrócenie znaku ich amplitudy. Jest to funkcja która odpowiada za wskazanie szukanego elementu \cite[s.~162, wz.~(4.67)]{inf_kwant}.
 \begin{equation}
 \label{eq:oracle}
@@ -243,6 +243,7 @@ Całość działania operatora obrotu wokół średniej G na stanie ~\eqref{eq:o
 
 Powtarzanie tych dwóch operacji (wyroczni i dyfuzji) prowadzi do stopniowego zwiększania prawdopodobieństwa uzyskania poprawnego rozwiązania. Po wykonaniu odpowiedniej liczby iteracji przeprowadzany jest pomiar rejestru kwantowego, podczas którego prawdopodobieństwo uzyskania danego stanu jest równe kwadratowi modułu jego amplitudy. Dzięki wcześniejszemu wzmocnieniu amplitudy stanu odpowiadającego rozwiązaniu zostaje on uzyskany z wysokim prawdopodobieństwem.
 
+\newpage
 \subsubsection{Algorytm BBHT}
 Algorytm opracowany przez Boyera, Brassarda, Høyera i Tappa stanowi rozszerzenie algorytmu Grovera przeznaczone dla sytuacji, w której liczba rozwiązań problemu nie jest znana. W przeciwieństwie do klasycznej wersji algorytmu nie można z góry określić optymalnej liczby iteracji operatora Grovera. Zamiast tego algorytm stopniowo zwiększa zakres możliwej liczby iteracji.\cite{bbht1996}
 
@@ -252,8 +253,7 @@ Algorytm opracowany przez Boyera, Brassarda, Høyera i Tappa stanowi rozszerzeni
 \begin{enumerate}
 
     \item Zainicjalizuj parametry algorytmu: ustaw $m=1$ oraz wybierz
-    współczynnik $\lambda=\frac{6}{5}$ 
-    (ogólnie $\lambda \in (1,\frac{4}{3})$).
+    współczynnik $\lambda=\frac{6}{5}$.
 
     \item Wylosuj liczbę całkowitą $j$ równomiernie z przedziału
     $\{0,1,\dots,m-1\}$.
@@ -335,7 +335,7 @@ Algorytm wyszukiwania minimum, zaproponowany przez Dürra i Høyera, wykorzystuj
 \end{center}
 
 \end{algorithm}
-
+\newpage
 Łączny oczekiwany czas działania algorytmu do momentu, w którym zmienna $y$ będzie wskazywać indeks elementu minimalnego, wynosi\cite{duerr1996}
 \begin{equation}
 \label{eq:minimum_time} 
@@ -418,9 +418,9 @@ w(i,j)=
 \label{sec:graph_representation}
 
 Graf może być reprezentowany na różne sposoby, przy czym do najczęściej stosowanych metod należą macierz sąsiedztwa oraz lista sąsiedztwa. W celu zilustrowania obu sposobów reprezentacji wykorzystano graf przedstawiony na rysunku~\ref{fig:graph_half_edges}.
-
 \begin{equation}
 \label{eq:adjacency_matrix}
+\small
 A =
 \begin{pmatrix}
 0  & 0  & 15 & 0  & 70 & 0  & 0  & 0  & 0  & 92 \\
@@ -436,10 +436,10 @@ A =
 \end{pmatrix}
 \end{equation}
 
-Macierz sąsiedztwa przedstawia graf w postaci dwuwymiarowej tablicy, w której element znajdujący się na przecięciu \(i\)-tego wiersza i \(j\)-tej kolumny określa istnienie krawędzi pomiędzy odpowiadającymi im wierzchołkami lub przechowuje jej wagę. Reprezentacja ta zawiera informacje o wszystkich możliwych parach wierzchołków, niezależnie czy są one połączone krawędzią.
-
+Macierz sąsiedztwa przedstawia graf w postaci dwuwymiarowej tablicy, w której element znajdujący się na przecięciu \(i\)-tego wiersza i \(j\)-tej kolumny określa wagę krawędzi pomiędzy odpowiadającymi im wierzchołkami.
 \begin{equation}
 \label{eq:adjacency_list}
+\small
 \begin{aligned}
 0 &: \{(2,15), (9,92), (4,70)\}, \\
 1 &: \{(6,69), (8,33), (3,14)\}, \\
@@ -454,4 +454,4 @@ Macierz sąsiedztwa przedstawia graf w postaci dwuwymiarowej tablicy, w której 
 \end{aligned}
 \end{equation}
 
-W implementacji przedstawionej w niniejszej pracy graf został zapisany w postaci listy sąsiedztwa. W tym sposobie reprezentacji grafu dla każdego wierzchołka przechowywana jest lista wszystkich wierzchołków z nim połączonych wraz z odpowiadającymi im wagami krawędzi. W przypadku grafu nieskierowanego każda krawędź występuje dwukrotnie – na liście sąsiedztwa obu wierzchołków, które łączy.
+W implementacji przedstawionej w niniejszej pracy graf został zapisany w postaci listy sąsiedztwa. W niej dla każdego wierzchołka przechowywana jest lista wszystkich wierzchołków z nim połączonych wraz z odpowiadającymi im wagami krawędzi.

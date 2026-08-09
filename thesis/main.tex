@@ -1,74 +1,77 @@
+\documentclass[12pt,a4paper,oneside]{book}
 
-\documentclass[12pt, letterpaper,oneside]{book}
-
-\usepackage[utf8]{inputenc} % usually not needed (loaded by default)
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[
+    a4paper,
+    portrait,
+    left=25mm,
+    right=25mm,
+    top=25mm,
+    bottom=25mm,
+    headheight=12.5mm,
+    footskip=12.5mm
+]{geometry}
+
 \usepackage{changepage}
 \usepackage{titlesec}
-\usepackage{lipsum}
-\usepackage{setspace} 
+\usepackage{setspace}
 \usepackage{array}
 \usepackage[table]{xcolor}
-\usepackage{hyperref}
+\usepackage{graphicx}
 \usepackage{float}
 \usepackage[center]{caption}
 \usepackage{amsmath}
-
-\usepackage[polish]{babel} 
-\usepackage{algorithm} 
-\usepackage{algpseudocode} 
-\floatname{algorithm}{Algorytm}
 \usepackage{amssymb}
-
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\floatname{algorithm}{Algorytm}
 
 \titleformat{\chapter}[display]
-  {\normalfont\bfseries}{}{0pt}{\Large}
+    {\normalfont\bfseries}
+    {}
+    {0pt}
+    {\Large}
+
 \renewcommand{\contentsname}{Spis treści}
 
-\usepackage{geometry}
- \geometry{
- a4paper,
- left=10mm,
- right=10mm,
- top=25mm,
- bottom=25mm,
- }
-\usepackage{xcolor}
 \pagecolor{white}
-\usepackage{graphicx}
 \setstretch{1.5}
-\pagenumbering{arabic}
-
-\usepackage{fancyhdr}            
-\fancypagestyle{plain}{
-    \lhead{}
-    \fancyhead[R]{\thepage}
-    \fancyhead[L]{}
-    \renewcommand{\headrulewidth}{0pt}
-    \fancyfoot{}
-}
 
 \pagestyle{fancy}
+\fancyhf{}
 \fancyhead[R]{\thepage}
-\fancyhead[L]{}
 \renewcommand{\headrulewidth}{0pt}
-\fancyfoot{}
+\renewcommand{\footrulewidth}{0pt}
 
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[R]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
 
 \begin{document}
+\pagenumbering{gobble}
 \include{chapter_stronatytulowa}
-\tableofcontents
 
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\tableofcontents
 
 \include{chapter_wstep}
 \include{chapter_podstawyteoretyczne}
 \include{chapter_opisimplementacji}
 
-
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \renewcommand{\bibname}{Bibliografia}
 \bibliography{ref}
-
 
 \end{document}
