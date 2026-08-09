@@ -123,7 +123,7 @@ Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania 
 \small Opracowanie własne na podstawie \cite{grover1996}
 \end{center}
 \end{algorithm}
-
+\newpage
 W pierwszym kroku tworzona jest superpozycja wszystkich możliwych stanów.  Żeby to uzyskać w rejestrze kwantowym złożonym z \textit{n} kubitów stosujemy \textit{n}-krotnie bramkę Hadamarda. 
 \cite[s.~162, wz.~(4.66)]{inf_kwant}  
 \begin{equation}
@@ -174,7 +174,7 @@ Przypadek w którym funkcja ta zmienia znak na rejestrze kwantowym przy trzeciej
 |\psi''\rangle = \frac1{2\sqrt2} ( |000\rangle+ |001\rangle- |010\rangle+ |011\rangle+ |100\rangle+ |101\rangle+ |110\rangle+ |111\rangle ).
 \end{equation}
 
-Wykonanie pomiaru bezpośrednio po zastosowaniu wyroczni nie pozwala jeszcze na wskazanie poprawnego rozwiązania. Wynika to z faktu, że wyrocznia zmienia jedynie znak amplitudy stanu odpowiadającego szukanemu elementowi, nie zmieniając jej wartości bezwzględnej. Podczas pomiaru wyznaczane jest natomiast prawdopodobieństwo otrzymania danego stanu, które jest równe kwadratowi modułu jego amplitudy. W rezultacie informacja o znaku amplitudy zostaje utracona.. Z tego powodu konieczne jest wykonanie kolejnego etapu algorytmu – operatora dyfuzji nazywanego również operatorem obrotu wokół średniej. Jego zadaniem jest zwiększenie amplitud stanów oznaczonych przez wyrocznię kosztem amplitud pozostałych stanów.
+Wykonanie pomiaru bezpośrednio po zastosowaniu wyroczni nie pozwala jeszcze na wskazanie poprawnego rozwiązania. Wynika to z faktu, że wyrocznia zmienia na ujemny znak amplitudy stanu odpowiadającego szukanemu elementowi. Podczas pomiaru wyznaczane jest natomiast prawdopodobieństwo otrzymania danego stanu, które jest równe kwadratowi modułu jego amplitudy. W rezultacie informacja o znaku zostaje utracona. Z tego powodu konieczne jest wykonanie kolejnego etapu algorytmu operatora dyfuzji nazywanego również operatorem obrotu wokół średniej. Jego zadaniem jest zwiększenie amplitud stanów oznaczonych przez wyrocznię kosztem amplitud pozostałych stanów.
 
 Definicja operatora obrotu wokół średniej, oznaczonego jako A przybiera postać \cite[s.~163, wz.~(4.71)]{inf_kwant}   
 \begin{equation}
@@ -345,7 +345,7 @@ m_0=\frac{45}{4}\sqrt{N}+\frac{7}{10}\lg^2 N.
 \section{Rodzaje grafów}
 \label{sec:graph_types}
 
-Wpływ rodzaju grafu na wydajność algorytmu jest jednym z najważniejszych aspektów niniejszej pracy. Analiza zostanie przeprowadzona na czterech różnych rodzajach grafów: grafie rzadkim, średnio gęstym, gęstym oraz specjalnie skonstruowanym grafie, który dzięki odpowiednio dobranym wagom i liczbie krawędzi wymusza maksymalną liczbę relaksacji.
+Wpływ rodzaju grafu na wydajność algorytmu jest jednym z najważniejszych aspektów niniejszej pracy. Analiza zostanie przeprowadzona na czterech różnych rodzajach grafów: grafie rzadkim, średnio gęstym, gęstym oraz specjalnie przygotowanym grafie, który wymusza dużą liczbę relaksacji.
 We wszystkich analizowanych przypadkach rozpatrywane są grafy nieskierowane, bez pętli własnych, o nieujemnych wagach krawędzi. W przypadku tego ostatniego rodzaju grafu wagi krawędzi będą ściśle określone. Natomiast dla pozostałych grafów wagi będą losowane z przedziału \(1\) do \(n^2\), gdzie \(n\)  oznacza liczbę wierzchołków.
 \newpage
 
