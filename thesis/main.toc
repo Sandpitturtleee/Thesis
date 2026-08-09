@@ -25,4 +25,4 @@
 \contentsline {section}{\numberline {3.2}Implementacja algorytmu Dijkstry}{22}{section.3.2}%
 \contentsline {subsection}{\numberline {3.2.1}Wersja naiwna}{22}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}Wersja z kopcem binarnym}{23}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Wersja kwantowa}{23}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.3}Wersja kwantowa}{24}{subsection.3.2.3}%
