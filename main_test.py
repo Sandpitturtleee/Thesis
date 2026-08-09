@@ -14,6 +14,7 @@ from qiskit_algorithms import AmplificationProblem, Grover
 from graphs_analysis.src.dijkstra_validation import (dijkstra_lib,
                                                      is_dijkstra_valid)
 from graphs_analysis.src.quantum.dijkstra_quantum import dijkstra_quantum
+from graphs_analysis.src.standard.dijkstra_heap import dijkstra_heap
 
 if __name__ == "__main__":
     # -------------------------Step 1-------------------------
@@ -80,28 +81,32 @@ if __name__ == "__main__":
         ],
     ]
     start_node = 0
-    invalid_count = 0
-    lengths_naive, previous_naive, elapsed, mismatch_count, search_count = (
-        dijkstra_quantum(graph=loaded_graph, start_node=start_node, time_limit=1)
+    # invalid_count = 0
+    # lengths_naive, previous_naive, elapsed, mismatch_count, search_count = (
+    #     dijkstra_quantum(graph=loaded_graph, start_node=start_node, time_limit=1)
+    # )
+    # T = [
+    #     30,
+    #     34,
+    #     28,
+    #     6,
+    #     61,
+    #     21,
+    #     21,
+    #     19,
+    #     39,
+    #     float("inf"),
+    #     float("inf"),
+    #     float("inf"),
+    #     float("inf"),
+    #     float("inf"),
+    #     float("inf"),
+    #     float("inf"),
+    # ]
+    # y = 2
+    # marked_states = [j for j in range(len(T)) if T[j] < T[y]]
+    # print(marked_states)
+
+    lengths_heap, previous_heap, elapsed = dijkstra_heap(
+        graph=loaded_graph, start_node=start_node
     )
-    T = [
-        30,
-        34,
-        28,
-        6,
-        61,
-        21,
-        21,
-        19,
-        39,
-        float("inf"),
-        float("inf"),
-        float("inf"),
-        float("inf"),
-        float("inf"),
-        float("inf"),
-        float("inf"),
-    ]
-    y = 2
-    marked_states = [j for j in range(len(T)) if T[j] < T[y]]
-    print(marked_states)

@@ -98,3 +98,48 @@ class CountingHeap:
             The sum of comparisons and swaps.
         """
         return self.comparisons + self.swaps
+
+    def visualize(self) -> None:
+        """Print the heap as a tree."""
+        if not self.data:
+            print("[empty heap]")
+            return
+
+        self._print_tree(0, "", True)
+
+    def _print_tree(
+            self,
+            index: int,
+            prefix: str,
+            is_left: bool
+    ) -> None:
+        """Recursively print the heap tree."""
+
+        if index >= len(self.data):
+            return
+
+        right = 2 * index + 2
+        left = 2 * index + 1
+
+        # Print right subtree first
+        if right < len(self.data):
+            self._print_tree(
+                right,
+                prefix + ("│   " if is_left else "    "),
+                False
+            )
+
+        # Print current node
+        print(
+            prefix
+            + ("└── " if is_left else "┌── ")
+            + str(self.data[index])
+        )
+
+        # Print left subtree
+        if left < len(self.data):
+            self._print_tree(
+                left,
+                prefix + ("    " if is_left else "│   "),
+                True
+            )

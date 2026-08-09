@@ -43,6 +43,7 @@ from config import (DENSE, GRAPH_RUNS, HALF_EDGES,
                     STANDARD_HEAP_HALF_EDGES_FILENAME,
                     STANDARD_HEAP_SPARSE_FILENAME,
                     STANDARD_HEAP_SPECIAL_CASE_FILENAME)
+from graphs_analysis.src.dijkstra_validation import is_dijkstra_valid
 from graphs_analysis.src.helpers import (create_frequency,
                                          load_graph_from_json,
                                          save_results_to_json)
@@ -154,53 +155,53 @@ def dijkstra_heap(
     graph: GraphList, start_node: int
 ) -> tuple[list[float], list[None], Any]:
     """
-    Dijkstra's shortest-path algorithm instrumentation with a specialized CountingHeap
-    that tracks the number of heap operations performed.
+    Dijkstra's shortest-path algorithm using a lazy binary min-heap.
 
-    Parameters
-    ----------
-    graph : GraphList
-        The adjacency list graph: List of lists [ [ (neighbor, weight), ...], ... ]
-    start_node : int
-        Source vertex index.
+    The heap contains only vertices for which a finite tentative distance
+    has been discovered. Outdated heap entries are ignored when popped.
 
     Returns
     -------
-    distances : List[float]
+    distances : list[float]
         Shortest distances from start_node.
-    previous : List[int]
-        Predecessor node for each.
-    heap_work : float
-        The measured count (or custom "work") of heap operations from the CountingHeap.
+    previous : list[int | None]
+        Predecessor of each vertex on the shortest path.
+    heap_work : int
+        Total heap work measured as comparisons + swaps.
     """
+
     n = len(graph)
+
     distances = [float("inf")] * n
     previous = [None] * n
-    in_heap = [True] * n
 
     heap = CountingHeap()
 
-    for node in range(n):
-        dist = 0 if node == start_node else float("inf")
-        heap.push((dist, node))
-        distances[node] = dist
+    distances[start_node] = 0
+    heap.push((0, start_node))
 
     while heap.data:
+        #heap.visualize()
         result = heap.pop()
+
         if result is None:
             break
+
         dist_u, u = result
 
+        # Ignore an outdated heap entry.
         if dist_u > distances[u]:
             continue
-        in_heap[u] = False
+
         for v, weight in graph[u]:
-            if in_heap[v]:
-                alt = distances[u] + weight
-                if alt < distances[v]:
-                    distances[v] = alt
-                    previous[v] = u
-                    heap.push((alt, v))
+            alt = dist_u + weight
+
+            if alt < distances[v]:
+                distances[v] = alt
+                previous[v] = u
+
+                # Add a new entry with the improved distance.
+                heap.push((alt, v))
 
     return distances, previous, heap.total_work()
 
