@@ -164,11 +164,10 @@ def plots_types_by_stat(
             axs[idx].set_title(f"{display_name} (No Data)")
             continue
 
-        # Prepare one color for each file (shades)
         shades = [
             cmap(0.5 + 0.5 * i / max(len(files) - 1, 1)) for i in range(len(files))
         ]
-        handles_dict = {}  # for custom legend
+        handles_dict = {}
 
         for i, filename in enumerate(files):
             records = data[filename]["cost"]
@@ -181,7 +180,6 @@ def plots_types_by_stat(
             )
             handles_dict[label_nice] = handle
 
-        # Sorted legend by desired label order (not raw file order)
         y_label = STAT_NAME_MAP.get(stat_key, stat_key.capitalize())
         legend_labels = sorted(handles_dict.keys())
         axs[idx].legend([handles_dict[k] for k in legend_labels], legend_labels)

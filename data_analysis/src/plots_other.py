@@ -26,7 +26,8 @@ from typing import Any, Dict, List, Optional
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from config import DATA_DIRECTORY, RESULTS_DIRECTORY_STANDARD_NAIVE
+from config import DATA_DIRECTORY, RESULTS_DIRECTORY_STANDARD_NAIVE, RESULTS_DIRECTORY_STANDARD_HEAP, \
+    RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT
 
 
 def plot_all_other() -> None:
@@ -34,15 +35,25 @@ def plot_all_other() -> None:
     Runs typical plotting routines for the standard naive Dijkstra results (sparse).
     Shows count plots for 10 vertices and for [10, 50, 100] vertices from the corresponding JSON file.
     """
-    plot_vertex_counts(
-        directory=RESULTS_DIRECTORY_STANDARD_NAIVE,
-        file_name="standard_naive_sparse.json",
-        vertex_number=10,
-    )
+    # plot_vertex_counts(
+    #     directory=RESULTS_DIRECTORY_STANDARD_NAIVE,
+    #     file_name="standard_naive_sparse.json",
+    #     vertex_number=10,
+    # )
     plot_vertices_counts(
         directory=RESULTS_DIRECTORY_STANDARD_NAIVE,
         file_name="standard_naive_sparse.json",
-        vertices_number=[10, 50, 100],
+        vertices_number=[50, 70, 100],
+    )
+    plot_vertices_counts(
+        directory=RESULTS_DIRECTORY_STANDARD_HEAP,
+        file_name="standard_heap_sparse.json",
+        vertices_number=[50, 70, 100],
+    )
+    plot_vertices_counts(
+        directory=RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
+        file_name="quantum_time_limit_sparse.json",
+        vertices_number=[50, 70, 100],
     )
 
 
@@ -71,9 +82,9 @@ def plot_vertex_counts(file_name: str, vertex_number: int, directory: str) -> No
 
     plt.figure(figsize=(8, 5))
     plt.plot(trials, counts, marker="o", linestyle="-")
-    plt.title(f"Results for {data['vertices']} Vertices")
-    plt.xlabel("Trial")
-    plt.ylabel("Count")
+    plt.title(f"Wynik dla grafu o {data['vertices']} wierzchołkach")
+    plt.xlabel("Numer grafu")
+    plt.ylabel("Liczba operacji")
     plt.grid(True)
     plt.tight_layout()
     plt.show()
@@ -107,9 +118,9 @@ def plot_vertices_counts(
         trials = list(range(1, len(counts) + 1))
         plt.plot(trials, counts, marker="o", linestyle="-", label=f"{v} vertices")
 
-    plt.title("Results for Multiple Vertex Counts")
-    plt.xlabel("Trial")
-    plt.ylabel("Count")
+    plt.title("Wyniki dla różnych liczb wierzchołków")
+    plt.xlabel("Numer grafu")
+    plt.ylabel("Liczba operacji")
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
@@ -225,7 +236,10 @@ def read_results_by_vertices(
     for v in vertices_number:
         if v in data["vertices"]:
             idx = data["vertices"].index(v)
-            results[v] = data["count"][idx]
+            if "quantum" in file_name:
+                results[v] = data["cost"][idx]
+            else:
+                results[v] = data["count"][idx]
         else:
             print(f"Vertex {v} not found in file.")
     return results

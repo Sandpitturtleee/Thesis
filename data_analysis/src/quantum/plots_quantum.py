@@ -40,7 +40,7 @@ from config import (COLOR_MAP, PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT,
                     STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
                     STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
-                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT)
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT, VERTICES_X_PLOT_LABEL, STAT_NAME_MAP)
 from data_analysis.src.helpers import (add_custom_legend,
                                        get_type_from_filename,
                                        quantum_stat_from_dict,
@@ -56,14 +56,24 @@ def plot_all_quantum_time_limit() -> None:
     time_limit_stats = read_results_from_json(
         directory=STATS_DIRECTORY_QUANTUM_TIME_LIMIT
     )
-    plots_mean_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_median_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_std_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_mismatch_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_invalid_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_search_calls_quantum(
-        data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
-    )
+    # plots_mean_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_median_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_std_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_mismatch_quantum_mean(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_mismatch_quantum_median(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_mismatch_quantum_std(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_invalid_quantum_mean(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_invalid_quantum_median(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_invalid_quantum_std(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    # plots_search_calls_quantum_mean(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_median(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_std(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    # )
 
 
 def plot_all_quantum_no_time_limit() -> None:
@@ -82,15 +92,33 @@ def plot_all_quantum_no_time_limit() -> None:
     plots_std_quantum(
         data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
     )
-    plots_mismatch_quantum(
-        data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
-    )
-    plots_invalid_quantum(
-        data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
-    )
-    plots_search_calls_quantum(
-        data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
-    )
+    # plots_mismatch_quantum_mean(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_mismatch_quantum_median(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_mismatch_quantum_std(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_mean(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_median(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_std(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_mean(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_median(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_std(
+    #     data=no_time_limit_stats, title_type=PLOT_TITLE_TYPE_NO_TIME_LIMIT
+    # )
 
 
 def plot_all_quantum_same_graph_time_limit() -> None:
@@ -109,15 +137,33 @@ def plot_all_quantum_same_graph_time_limit() -> None:
     plots_std_quantum(
         data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
     )
-    plots_mismatch_quantum(
-        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
-    )
-    plots_invalid_quantum(
-        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
-    )
-    plots_search_calls_quantum(
-        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
-    )
+    # plots_mismatch_quantum_mean(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
+    # plots_mismatch_quantum_median(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
+    # plots_mismatch_quantum_std(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_mean(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_median(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_std(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_mean(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_median(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_std(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT
+    # )
 
 
 def plot_all_quantum_same_graph_no_time_limit() -> None:
@@ -136,24 +182,42 @@ def plot_all_quantum_same_graph_no_time_limit() -> None:
     plots_std_quantum(
         data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
     )
-    plots_mismatch_quantum(
-        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
-    )
-    plots_invalid_quantum(
-        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
-    )
-    plots_search_calls_quantum(
-        data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
-    )
+    # plots_mismatch_quantum_mean(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_mismatch_quantum_median(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_mismatch_quantum_std(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_mean(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_median(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_invalid_quantum_std(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_mean(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_median(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
+    # plots_search_calls_quantum_std(
+    #     data=time_limit_stats, title_type=PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT
+    # )
 
 
 def plot_quantum_time_limit_vs_no_time_limit_all() -> None:
     """
     Plot and compare all main statistics for quantum runs with and without time limits.
     """
-    plot_quantum_stat_time_limit_vs_no_time_limit("cost", "mean", "mean")
-    plot_quantum_stat_time_limit_vs_no_time_limit("cost", "median", "median")
-    plot_quantum_stat_time_limit_vs_no_time_limit("cost", "std", "std")
+    plot_quantum_stat_time_limit_vs_no_time_limit("cost", "mean", "średnia")
+    plot_quantum_stat_time_limit_vs_no_time_limit("cost", "median", "mediana")
+    plot_quantum_stat_time_limit_vs_no_time_limit("cost", "std", "odchylenie standardowe")
     plot_quantum_stat_time_limit_vs_no_time_limit(
         "mismatch_counts", "mean", "mean mismatch count"
     )
@@ -207,7 +271,7 @@ def plot_quantum_stat_time_limit_vs_no_time_limit(
         stat_type,
         stat_key,
         axs[0],
-        f"Quantum {PLOT_TITLE_TYPE_TIME_LIMIT} - {stat_label}",
+        f"Wersja kwantowa {PLOT_TITLE_TYPE_TIME_LIMIT} - {stat_label}",
     )
 
     # No time limit
@@ -217,7 +281,7 @@ def plot_quantum_stat_time_limit_vs_no_time_limit(
         stat_type,
         stat_key,
         axs[1],
-        f"Quantum {PLOT_TITLE_TYPE_NO_TIME_LIMIT} - {stat_label}",
+        f"Wersja kwantow {PLOT_TITLE_TYPE_NO_TIME_LIMIT} - {stat_label}",
     )
 
     fig.tight_layout()
@@ -300,17 +364,10 @@ def plot_quantum_stat_subplot(
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
     ax.set_title(title)
-    ax.set_xlabel("Vertices")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
     ax.grid(True)
-    if stat_type == "cost":
-        ylabel = stat_key.capitalize()
-    elif stat_type in ("mismatch_counts", "invalid_counts"):
-        ylabel = "Mean " + stat_type.replace("_", " ")
-    elif stat_type == "search_calls":
-        ylabel = "Mean min search calls"
-    else:
-        ylabel = stat_type
-    ax.set_ylabel(ylabel)
+    y_label = STAT_NAME_MAP.get(stat_key, stat_key.capitalize())
+    ax.set_ylabel(y_label)
 
 
 def plots_mean_quantum(data: QuantumStatsDict, title_type: str) -> None:
@@ -331,14 +388,13 @@ def plots_mean_quantum(data: QuantumStatsDict, title_type: str) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         x, y = quantum_stat_from_dict(dct["cost"], key="mean")
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Quantum {title_type} - mean")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Mean")
+    ax.set_title(f"Wersja kwantowa {title_type} - średnia")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Średnia")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
@@ -362,14 +418,13 @@ def plots_median_quantum(data: QuantumStatsDict, title_type: str) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         x, y = quantum_stat_from_dict(dct["cost"], "median")
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Quantum {title_type} - median")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Median")
+    ax.set_title(f"Wersja kwantowa {title_type} - mediana")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Mediana")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
@@ -393,20 +448,19 @@ def plots_std_quantum(data: QuantumStatsDict, title_type: str) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         x, y = quantum_stat_from_dict(dct["cost"], "std")
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Quantum {title_type} - std")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Std")
+    ax.set_title(f"Wersja kwantowa {title_type} - odchylenie standardowe")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Odchylenie standardowe")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
 
 
-def plots_mismatch_quantum(data: QuantumStatsDict, title_type: str) -> None:
+def plots_mismatch_quantum_mean(data: QuantumStatsDict, title_type: str) -> None:
     """
     Plot the mean mismatch count as a function of graph size.
 
@@ -424,20 +478,110 @@ def plots_mismatch_quantum(data: QuantumStatsDict, title_type: str) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         x, y = quantum_stat_from_dict(dct["mismatch_counts"], "mean")
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Quantum {title_type} - mean mismatch count")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Mean mismatch")
+    ax.set_title(f"Wersja kwantowa {title_type} - średnia błędne minimum")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Średnia")
+    ax.grid(True)
+    fig.tight_layout()
+    plt.show()
+
+def plots_mismatch_quantum_median(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the median mismatch count as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+    handles_dict = {}
+    for filename, dct in data.items():
+        if "quantum" not in filename or "mismatch_counts" not in dct:
+            continue
+        type_key = get_type_from_filename(filename)
+        color = COLOR_MAP.get(type_key, "gray")
+        x, y = quantum_stat_from_dict(dct["mismatch_counts"], "median")
+        (line,) = ax.plot(x, y, marker="o", color=color)
+        handles_dict[type_key] = line
+    add_custom_legend(ax, handles_dict)
+    ax.set_title(f"Wersja kwantowa {title_type} - mediana błędne minimum")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Mediana")
+    ax.grid(True)
+    fig.tight_layout()
+    plt.show()
+
+def plots_mismatch_quantum_std(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the std mismatch count as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+    handles_dict = {}
+    for filename, dct in data.items():
+        if "quantum" not in filename or "mismatch_counts" not in dct:
+            continue
+        type_key = get_type_from_filename(filename)
+        color = COLOR_MAP.get(type_key, "gray")
+        x, y = quantum_stat_from_dict(dct["mismatch_counts"], "std")
+        (line,) = ax.plot(x, y, marker="o", color=color)
+        handles_dict[type_key] = line
+    add_custom_legend(ax, handles_dict)
+    ax.set_title(f"Wersja kwantowa {title_type} - odchylenie standardowe błędne minimum")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Odchylenie standardowe")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
 
 
-def plots_invalid_quantum(data: QuantumStatsDict, title_type: str) -> None:
+def plots_invalid_quantum_mean(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the mean invalid count as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+    handles_dict = {}
+    for filename, dct in data.items():
+        if "quantum" not in filename or "invalid_counts" not in dct:
+            continue
+        print(filename)
+        print(dct)
+        type_key = get_type_from_filename(filename)
+        color = COLOR_MAP.get(type_key, "gray")
+        x, y = quantum_stat_from_dict(dct["invalid_counts"], "mean")
+        print(x)
+        print(y)
+        (line,) = ax.plot(x, y, marker="o", color=color)
+        handles_dict[type_key] = line
+    add_custom_legend(ax, handles_dict)
+    ax.set_title(f"Wersja kwantowa {title_type} - średnia niepoprawny wynik Dijkstra")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Średnia")
+    ax.grid(True)
+    fig.tight_layout()
+    plt.show()
+
+def plots_invalid_quantum_median(data: QuantumStatsDict, title_type: str) -> None:
     """
     Plot the mean invalid count as a function of graph size.
 
@@ -455,20 +599,47 @@ def plots_invalid_quantum(data: QuantumStatsDict, title_type: str) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
-        x, y = quantum_stat_from_dict(dct["invalid_counts"], "mean")
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        x, y = quantum_stat_from_dict(dct["invalid_counts"], "median")
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Quantum {title_type} - mean invalid count")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Mean invalid")
+    ax.set_title(f"Wersja kwantowa {title_type} - mediana niepoprawny wynik Dijkstra")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Mediana")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
 
+def plots_invalid_quantum_std(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the mean invalid count as a function of graph size.
 
-def plots_search_calls_quantum(data: QuantumStatsDict, title_type: str) -> None:
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+    handles_dict = {}
+    for filename, dct in data.items():
+        if "quantum" not in filename or "invalid_counts" not in dct:
+            continue
+        type_key = get_type_from_filename(filename)
+        color = COLOR_MAP.get(type_key, "gray")
+        x, y = quantum_stat_from_dict(dct["invalid_counts"], "std")
+        (line,) = ax.plot(x, y, marker="o", color=color)
+        handles_dict[type_key] = line
+    add_custom_legend(ax, handles_dict)
+    ax.set_title(f"Wersja kwantowa {title_type} - odchylenie standardowe niepoprawny wynik Dijkstra")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Odchylenie standardowe")
+    ax.grid(True)
+    fig.tight_layout()
+    plt.show()
+
+def plots_search_calls_quantum_mean(data: QuantumStatsDict, title_type: str) -> None:
     """
     Plot the mean minimum number of search calls as a function of graph size.
 
@@ -486,14 +657,72 @@ def plots_search_calls_quantum(data: QuantumStatsDict, title_type: str) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         x, y = quantum_stat_from_dict(dct["search_calls"], "mean")
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Quantum {title_type} - mean min search calls")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Mean min search calls")
+    ax.set_title(f"Wersja kwantowa {title_type} - średnia liczba wyszukiwań minumum")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Średnia")
+    ax.grid(True)
+    fig.tight_layout()
+    plt.show()
+
+def plots_search_calls_quantum_median(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the mean minimum number of search calls as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+    handles_dict = {}
+    for filename, dct in data.items():
+        if "quantum" not in filename or "search_calls" not in dct:
+            continue
+        type_key = get_type_from_filename(filename)
+        color = COLOR_MAP.get(type_key, "gray")
+        x, y = quantum_stat_from_dict(dct["search_calls"], "median")
+        (line,) = ax.plot(x, y, marker="o", color=color)
+        handles_dict[type_key] = line
+    add_custom_legend(ax, handles_dict)
+    ax.set_title(f"Wersja kwantowa {title_type} - mediana liczba wyszukiwań minumum")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Mediana")
+    ax.grid(True)
+    fig.tight_layout()
+    plt.show()
+
+
+def plots_search_calls_quantum_std(data: QuantumStatsDict, title_type: str) -> None:
+    """
+    Plot the mean minimum number of search calls as a function of graph size.
+
+    Parameters
+    ----------
+    data : QuantumStatsDict
+        Dictionary mapping filenames to their quantum cost/statistics dictionaries.
+    title_type : str
+        String to be used in the plot title to indicate type/category.
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+    handles_dict = {}
+    for filename, dct in data.items():
+        if "quantum" not in filename or "search_calls" not in dct:
+            continue
+        type_key = get_type_from_filename(filename)
+        color = COLOR_MAP.get(type_key, "gray")
+        x, y = quantum_stat_from_dict(dct["search_calls"], "mean")
+        (line,) = ax.plot(x, y, marker="o", color=color)
+        handles_dict[type_key] = line
+    add_custom_legend(ax, handles_dict)
+    ax.set_title(f"Wersja kwantowa {title_type} - odchylenie standardowe liczba wyszukiwań minumum")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Odchylenie standardowe")
     ax.grid(True)
     fig.tight_layout()
     plt.show()

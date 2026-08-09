@@ -25,22 +25,22 @@ if __name__ == "__main__":
     # plot_naive_vs_heap_all()
     # plot_standard_combined()
     #
-    plot_all_quantum_time_limit()
-    # plot_all_quantum_no_time_limit()
-    # plot_quantum_time_limit_vs_no_time_limit_all()
-    #
-    # plot_all_quantum_same_graph_time_limit()
-    # plot_all_quantum_same_graph_no_time_limit()
-    # plot_quantum_same_graph_time_limit_vs_no_time_limit_all()
+    #plot_all_quantum_time_limit() !
+    #plot_all_quantum_no_time_limit() !
+    #plot_quantum_time_limit_vs_no_time_limit_all() !
     #
     # plot_quantum_combined()
-    # plot_quantum_same_graph_combined()
     #
-    #plot_standard_quantum_combined()
+    # plot_standard_quantum_combined()
 
-    #plot_all_other()
+    # plot_all_other()
 
-    # plot_all_quantum_prob_time_limit()
+    plot_all_quantum_prob_time_limit()
     # plot_all_quantum_prob_no_time_limit()
+
+    # plot_all_quantum_same_graph_time_limit()
+    # plot_all_quantum_same_graph_no_time_limit()
+    # plot_quantum_same_graph_combined()
+    # plot_quantum_same_graph_time_limit_vs_no_time_limit_all()
     # plot_all_quantum_prob_same_graph_time_limit()
     # plot_all_quantum_prob_same_graph_no_time_limit()

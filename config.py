@@ -146,6 +146,18 @@ GRAPH_LABELS_MAP = {
 
     "standard_naive_special_case": "Wersja naiwna",
     "standard_heap_special_case": "Wersja z kopcem binarnym",
+
+    "quantum_no_time_limit_sparse": "Wersja kwantowa z limitem",
+    "quantum_time_limit_sparse": "Wersja kwantowa bez limitu",
+
+    "quantum_no_time_limit_half_edges": "Wersja kwantowa z limitem",
+    "quantum_time_limit_half_edges": "Wersja kwantowa bez limitu",
+
+    "quantum_no_time_limit_dense": "Wersja kwantowa z limitem",
+    "quantum_time_limit_dense": "Wersja kwantowa bez limitu",
+
+    "quantum_no_time_limit_special_case": "Wersja kwantowa z limitem",
+    "quantum_time_limit_special_case": "Wersja kwantowa bez limitu",
 }
 
 STAT_NAME_MAP = {
@@ -153,14 +165,15 @@ STAT_NAME_MAP = {
     "median": "Mediana",
     "std": "Odchylenie standardowe",
 }
+
 VERTICES_X_PLOT_LABEL = "Liczba wierzchołków"
 LEGEND_ORDER = ["sparse", "half_edges", "dense", "special_case"]
 
 
-PLOT_TITLE_TYPE_TIME_LIMIT = "time limit"
-PLOT_TITLE_TYPE_NO_TIME_LIMIT = "no time limit"
-PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT = "same graph time limit"
-PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT = "same graph no time limit"
+PLOT_TITLE_TYPE_TIME_LIMIT = "z limitem czasowym"
+PLOT_TITLE_TYPE_NO_TIME_LIMIT = "bez limitu czasowego"
+PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT = "ten sam graf z limitem czasowym"
+PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT = "ten sam bez limitu czasowego"
 
 GRAPH_TYPES_MAPPING = [
     ("Graf rzadki", "sparse", plt.get_cmap("Blues")),
