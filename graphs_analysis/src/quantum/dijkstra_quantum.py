@@ -58,18 +58,18 @@ def run_all_quantum():
         result_file_names=QUANTUM_NO_TIME_LIMIT_FILENAMES,
     )
 
-    run_all_dijkstra_quantum(
-        time_limit=1,
-        same_graph=1,
-        result_directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT,
-        result_file_names=QUANTUM_SAME_GRAPH_TIME_LIMIT_FILENAMES,
-    )
-    run_all_dijkstra_quantum(
-        time_limit=0,
-        same_graph=1,
-        result_directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT,
-        result_file_names=QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_FILENAMES,
-    )
+    # run_all_dijkstra_quantum(
+    #     time_limit=1,
+    #     same_graph=1,
+    #     result_directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT,
+    #     result_file_names=QUANTUM_SAME_GRAPH_TIME_LIMIT_FILENAMES,
+    # )
+    # run_all_dijkstra_quantum(
+    #     time_limit=0,
+    #     same_graph=1,
+    #     result_directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT,
+    #     result_file_names=QUANTUM_SAME_GRAPH_NO_TIME_LIMIT_FILENAMES,
+    # )
 
 
 def run_all_dijkstra_quantum(

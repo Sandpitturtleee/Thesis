@@ -40,7 +40,7 @@ import numpy as np
 from config import (STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
                     STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_NO_TIME_LIMIT,
-                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT)
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT, VERTICES_X_PLOT_LABEL)
 from data_analysis.src.helpers import order_filenames, read_results_from_json
 
 StatDict = Dict[str, Dict[str, float]]
@@ -55,7 +55,7 @@ def plot_all_quantum_prob_time_limit() -> None:
     Loads data from the corresponding directory and generates all bar plots.
     """
     data = read_results_from_json(directory=STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT)
-    titles = ["Sparse", "Half edges", "Dense", "Special case"]
+    titles = ["Graf rzadki", "Graf średnio gęsty", "Graf gęsty", "Przypadek szczególny"]
     ordered_filenames = order_filenames(all_stats=data)
 
     plot_dijkstra_success_prob(
@@ -81,7 +81,7 @@ def plot_all_quantum_prob_no_time_limit() -> None:
     Loads data from the corresponding directory and generates all bar plots.
     """
     data = read_results_from_json(directory=STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT)
-    titles = ["Sparse", "Half edges", "Dense", "Special case"]
+    titles = ["Graf rzadki", "Graf średnio gęsty", "Graf gęsty", "Przypadek szczególny"]
     ordered_filenames = order_filenames(all_stats=data)
 
     plot_dijkstra_success_prob(
@@ -230,13 +230,13 @@ def plot_dijkstra_success_prob(
             axs[i],
             xs,
             ys,
-            y_label="Probability (%)",
+            y_label="Prawdopodobieństwo",
             title=titles[i],
-            x_label="Vertices",
+            x_label=VERTICES_X_PLOT_LABEL,
         )
     for j in range(i + 1, 4):
         axs[j].axis("off")
-    fig.suptitle("Dijkstra Success Probability")
+    fig.suptitle("Dijkstra prawdopodobieństwo sukcesu")
     plt.tight_layout(rect=(0, 0.03, 1, 0.97))
     plt.show()
 
@@ -267,13 +267,13 @@ def plot_find_min_success_prob(
             axs[i],
             xs,
             ys,
-            y_label="Probability (%)",
+            y_label="Prawdopodobieństwo",
             title=titles[i],
-            x_label="Vertices",
+            x_label=VERTICES_X_PLOT_LABEL,
         )
     for j in range(i + 1, 4):
         axs[j].axis("off")
-    fig.suptitle("Find Min Success Probability")
+    fig.suptitle("Znajdowanie minimum prawdopodobieństwo sukcesu")
     plt.tight_layout(rect=(0, 0.03, 1, 0.97))
     plt.show()
 
@@ -304,13 +304,13 @@ def plot_mismatch_without_invalid_prob(
             axs[i],
             xs,
             ys,
-            y_label="Probability (%)",
+            y_label="Prawdopodobieństwo",
             title=titles[i],
-            x_label="Vertices",
+            x_label=VERTICES_X_PLOT_LABEL,
         )
     for j in range(i + 1, 4):
         axs[j].axis("off")
-    fig.suptitle("Mismatch Without Invalid Probability")
+    fig.suptitle("Poprawny djikstra mimo błędnego minimum prawdopodobieństwo")
     plt.tight_layout(rect=(0, 0.03, 1, 0.97))
     plt.show()
 
@@ -341,13 +341,13 @@ def plot_invalid_when_mismatch_prob(
             axs[i],
             xs,
             ys,
-            y_label="Probability (%)",
+            y_label="Prawdopodobieństwo",
             title=titles[i],
-            x_label="Vertices",
+            x_label=VERTICES_X_PLOT_LABEL,
         )
     for j in range(i + 1, 4):
         axs[j].axis("off")
-    fig.suptitle("Invalid When Mismatch Probability")
+    fig.suptitle("Błedny Djikstra gdy błędne minimum prawdopodobieństwo")
     plt.tight_layout(rect=(0, 0.03, 1, 0.97))
     plt.show()
 
@@ -383,8 +383,8 @@ def plot_grouped_dijkstra_and_find_min_success_prob(
 
         axs[i].bar(x1, ys1, width=width, color=cmap(3), label="Dijkstra Success Prob")
         axs[i].bar(x2, ys2, width=width, color=cmap(5), label="Find Min Success Prob")
-        axs[i].set_ylabel("Probability (%)")
-        axs[i].set_xlabel("Vertices")
+        axs[i].set_ylabel("Prawdopodobieństwo")
+        axs[i].set_xlabel(VERTICES_X_PLOT_LABEL)
         axs[i].set_title(titles[i], pad=20)
         axs[i].set_ylim(0, 1)
         axs[i].yaxis.set_major_formatter(ticker.PercentFormatter(1.0, decimals=0))
@@ -393,6 +393,6 @@ def plot_grouped_dijkstra_and_find_min_success_prob(
         axs[i].legend()
     for j in range(i + 1, 4):
         axs[j].axis("off")
-    fig.suptitle("Dijkstra vs Find Min Success Probability")
+    fig.suptitle("Dijkstra vs znajdowanie minimum prawdobodobieństwo sukcesu")
     plt.tight_layout(rect=(0, 0.03, 1, 0.97))
     plt.show()

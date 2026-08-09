@@ -31,12 +31,12 @@ if __name__ == "__main__":
     #
     # plot_quantum_combined()
     #
-    # plot_standard_quantum_combined()
+    plot_standard_quantum_combined()
 
     # plot_all_other()
 
-    plot_all_quantum_prob_time_limit()
-    # plot_all_quantum_prob_no_time_limit()
+    #plot_all_quantum_prob_time_limit()
+    #plot_all_quantum_prob_no_time_limit()
 
     # plot_all_quantum_same_graph_time_limit()
     # plot_all_quantum_same_graph_no_time_limit()
