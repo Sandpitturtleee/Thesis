@@ -40,7 +40,7 @@ from config import (GRAPH_TYPES_MAPPING, STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
                     STATS_DIRECTORY_STANDARD_HEAP,
-                    STATS_DIRECTORY_STANDARD_NAIVE)
+                    STATS_DIRECTORY_STANDARD_NAIVE, VERTICES_X_PLOT_LABEL, GRAPH_LABELS_MAP, STAT_NAME_MAP)
 from data_analysis.src.helpers import merge_stats_dicts, read_results_from_json
 
 DataStats = Dict[str, Any]
@@ -152,6 +152,7 @@ def plots_types_by_stat(
 
     fig, axs = plt.subplots(2, 2, figsize=(14, 10))
     axs = axs.flatten()
+    y_label = ""
 
     for idx, (display_name, keyword, cmap) in enumerate(GRAPH_TYPES_MAPPING):
         files = [
@@ -174,21 +175,22 @@ def plots_types_by_stat(
             x = sorted(int(size) for size in records.keys() if size.isdigit())
             y = [records[str(size)][stat_key] for size in x]
             file_label = filename.replace(".json", "")
-            label_nice = file_label.replace("_", " ")
+            label_nice = GRAPH_LABELS_MAP.get(file_label, file_label)
             (handle,) = axs[idx].plot(
-                x, y, marker="o", label=label_nice, color=shades[i]
+                x, y, marker="o", color=shades[i]
             )
             handles_dict[label_nice] = handle
 
         # Sorted legend by desired label order (not raw file order)
+        y_label = STAT_NAME_MAP.get(stat_key, stat_key.capitalize())
         legend_labels = sorted(handles_dict.keys())
         axs[idx].legend([handles_dict[k] for k in legend_labels], legend_labels)
 
         axs[idx].set_title(display_name)
-        axs[idx].set_xlabel("Vertices")
-        axs[idx].set_ylabel(stat_key.capitalize())
+        axs[idx].set_xlabel(VERTICES_X_PLOT_LABEL)
+        axs[idx].set_ylabel(y_label)
         axs[idx].grid(True)
 
-    plt.suptitle(f"{stat_key.capitalize()} for 4 types of graphs")
+    plt.suptitle(f"{y_label} dla czterech typów grafów")
     plt.tight_layout(rect=(0, 0.03, 1, 0.95))
     plt.show()

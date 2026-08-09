@@ -127,9 +127,35 @@ COLOR_MAP = {
     "sparse": cmap(3),
     "half_edges": cmap(5),
     "dense": cmap(7),
-    "special_case": "red",  # blue!
+    "special_case": "red",
 }
+GRAPH_LABELS_MAP = {
+    "sparse": "Graf rzadki",
+    "half_edges": "Graf średnio gęsty",
+    "dense": "Graf gęsty",
+    "special_case": "Przypadek szczególny",
+
+    "standard_naive_sparse": "Wersja naiwna",
+    "standard_heap_sparse": "Wersja z kopcem binarnym",
+
+    "standard_naive_half_edges": "Wersja naiwna",
+    "standard_heap_half_edges": "Wersja z kopcem binarnym",
+
+    "standard_naive_dense": "Wersja naiwna",
+    "standard_heap_dense": "Wersja z kopcem binarnym",
+
+    "standard_naive_special_case": "Wersja naiwna",
+    "standard_heap_special_case": "Wersja z kopcem binarnym",
+}
+
+STAT_NAME_MAP = {
+    "mean": "Średnia",
+    "median": "Mediana",
+    "std": "Odchylenie standardowe",
+}
+VERTICES_X_PLOT_LABEL = "Liczba wierzchołków"
 LEGEND_ORDER = ["sparse", "half_edges", "dense", "special_case"]
+
 
 PLOT_TITLE_TYPE_TIME_LIMIT = "time limit"
 PLOT_TITLE_TYPE_NO_TIME_LIMIT = "no time limit"
@@ -137,8 +163,8 @@ PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT = "same graph time limit"
 PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT = "same graph no time limit"
 
 GRAPH_TYPES_MAPPING = [
-    ("Sparse", "sparse", plt.get_cmap("Blues")),
-    ("Half edges", "half_edges", plt.get_cmap("Blues")),
-    ("Dense", "dense", plt.get_cmap("Blues")),
-    ("Special case", "special_case", plt.get_cmap("Reds")),
+    ("Graf rzadki", "sparse", plt.get_cmap("Blues")),
+    ("Graf średnio gęsty", "half_edges", plt.get_cmap("Blues")),
+    ("Graf gęsty", "dense", plt.get_cmap("Blues")),
+    ("Przypadek szczególny", "special_case", plt.get_cmap("Reds")),
 ]

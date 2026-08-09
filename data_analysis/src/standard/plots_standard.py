@@ -32,7 +32,7 @@ from typing import Any, Dict, Tuple
 import matplotlib.pyplot as plt
 
 from config import (COLOR_MAP, STATS_DIRECTORY_STANDARD_HEAP,
-                    STATS_DIRECTORY_STANDARD_NAIVE)
+                    STATS_DIRECTORY_STANDARD_NAIVE, STAT_NAME_MAP, VERTICES_X_PLOT_LABEL)
 from data_analysis.src.helpers import (add_custom_legend,
                                        get_type_from_filename,
                                        merge_stats_dicts,
@@ -66,9 +66,9 @@ def plot_naive_vs_heap_all() -> None:
     """
     Plot comparisons (side-by-side) for mean, median, and std between naive and heap approaches.
     """
-    plot_naive_vs_heap(stat_key="mean", stat_label="mean", fig_size=(16, 6))
-    plot_naive_vs_heap(stat_key="median", stat_label="median", fig_size=(16, 6))
-    plot_naive_vs_heap(stat_key="std", stat_label="std", fig_size=(16, 6))
+    plot_naive_vs_heap(stat_key="mean", stat_label="średnia", fig_size=(16, 6))
+    plot_naive_vs_heap(stat_key="median", stat_label="mediana", fig_size=(16, 6))
+    plot_naive_vs_heap(stat_key="std", stat_label="odchylenie standardowe", fig_size=(16, 6))
 
 
 def plot_naive_vs_heap(
@@ -93,8 +93,8 @@ def plot_naive_vs_heap(
     naive_stats = read_results_from_json(directory=STATS_DIRECTORY_STANDARD_NAIVE)
     heap_stats = read_results_from_json(directory=STATS_DIRECTORY_STANDARD_HEAP)
     merged = merge_stats_dicts(dicts=[naive_stats, heap_stats])
-    plot_stat_subplot(merged, "naive", stat_key, axs[0], f"Naive - {stat_label}")
-    plot_stat_subplot(merged, "heap", stat_key, axs[1], f"Heap - {stat_label}")
+    plot_stat_subplot(merged, "naive", stat_key, axs[0], f"Wersja naiwna - {stat_label}")
+    plot_stat_subplot(merged, "heap", stat_key, axs[1], f"Wersja z kopcem binarnym - {stat_label}")
     fig.tight_layout()
     plt.show()
 
@@ -116,30 +116,16 @@ def plots_mean_heap(data: StatsDict) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         records = methods["cost"]
         x = sorted(int(size) for size in records.keys() if size.isdigit())
         y = [records[str(size)]["mean"] for size in x]
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
 
-    # Add n^2*logn curve
-    xs = [
-        int(size)
-        for filename, methods in data.items()
-        if "heap" in filename and "cost" in methods
-        for size in methods["cost"].keys()
-        if size.isdigit()
-    ]
-    x_all = sorted(set(xs))
-    # y_lognn = [2.55 * n * n * np.log2(n) for n in x_all]
-    # extra_curve, = ax.plot(x_all, y_lognn, label=r"$n^2 \log n$", linestyle="--", color="black")
-
     add_custom_legend(ax, handles_dict)
-    # add_custom_legend(ax, handles_dict, [extra_curve], [r"$n^2 \log n$"])
-    ax.set_title("Heap - mean")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Mean")
+    ax.set_title("Wersja z kopcem binarnym - średnia")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Średnia")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
@@ -162,11 +148,10 @@ def plots_mean_naive(data: StatsDict) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         records = methods["cost"]
         x = sorted(int(size) for size in records.keys() if size.isdigit())
         y = [records[str(size)]["mean"] for size in x]
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
 
     xs = [
@@ -176,15 +161,11 @@ def plots_mean_naive(data: StatsDict) -> None:
         for size in methods["cost"].keys()
         if size.isdigit()
     ]
-    x_all_naive = sorted(set(xs))
-    # y_n2 = [n * n for n in x_all_naive]
-    # extra_curve, = ax.plot(x_all_naive, y_n2, label=r"$n^2$", linestyle="--", color="black")
 
     add_custom_legend(ax, handles_dict)
-    # add_custom_legend(ax, handles_dict, [extra_curve], [r"$n^2$"])
-    ax.set_title("Naive - mean")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Mean")
+    ax.set_title("Wersja naiwna - średnia")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Średnia")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
@@ -207,17 +188,16 @@ def plots_median_heap(data: StatsDict) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         records = methods["cost"]
         x = sorted(int(size) for size in records.keys() if size.isdigit())
         y = [records[str(size)]["median"] for size in x]
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
 
     add_custom_legend(ax, handles_dict)
-    ax.set_title("Heap - median")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Median")
+    ax.set_title("Wersja z kopcem binarnym - mediana")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Mediana")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
@@ -240,17 +220,16 @@ def plots_median_naive(data: StatsDict) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         records = methods["cost"]
         x = sorted(int(size) for size in records.keys() if size.isdigit())
         y = [records[str(size)]["median"] for size in x]
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
 
     add_custom_legend(ax, handles_dict)
-    ax.set_title("Naive - median")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Median")
+    ax.set_title("Wersja naiwna - mediana")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Mediana")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
@@ -273,17 +252,16 @@ def plots_std_heap(data: StatsDict) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         records = methods["cost"]
         x = sorted(int(size) for size in records.keys() if size.isdigit())
         y = [records[str(size)]["std"] for size in x]
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
 
     add_custom_legend(ax, handles_dict)
-    ax.set_title("Heap - std")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Std")
+    ax.set_title("Wersja z kopcem binarnym - odchylenie standardowe")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Odchylenie standardowe")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
@@ -306,17 +284,16 @@ def plots_std_naive(data: StatsDict) -> None:
             continue
         type_key = get_type_from_filename(filename)
         color = COLOR_MAP.get(type_key, "gray")
-        label = type_key if type_key in COLOR_MAP else filename.replace(".json", "")
         records = methods["cost"]
         x = sorted(int(size) for size in records.keys() if size.isdigit())
         y = [records[str(size)]["std"] for size in x]
-        (line,) = ax.plot(x, y, marker="o", color=color, label=label)
+        (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
 
     add_custom_legend(ax, handles_dict)
-    ax.set_title("Naive - std")
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel("Std")
+    ax.set_title("Wersja naiwna - odchylenie standardowe")
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel("Odchylenie standardowe")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
@@ -359,6 +336,6 @@ def plot_stat_subplot(
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
     ax.set_title(title)
-    ax.set_xlabel("Vertices")
-    ax.set_ylabel(stat_key.capitalize())
+    ax.set_xlabel(VERTICES_X_PLOT_LABEL)
+    ax.set_ylabel(STAT_NAME_MAP.get(stat_key, stat_key.capitalize()))
     ax.grid(True)

@@ -31,7 +31,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 
-from config import COLOR_MAP, DATA_DIRECTORY, LEGEND_ORDER
+from config import COLOR_MAP, DATA_DIRECTORY, LEGEND_ORDER, GRAPH_LABELS_MAP
 
 ResultDict = Dict[str, dict]
 MethodLabels = Dict[str, str]
@@ -299,9 +299,20 @@ def add_custom_legend(
     -------
     None
     """
-    handles = [handles_dict[key] for key in LEGEND_ORDER if key in handles_dict]
-    labels = [key for key in LEGEND_ORDER if key in handles_dict]
+    handles = [
+        handles_dict[key]
+        for key in LEGEND_ORDER
+        if key in handles_dict
+    ]
+
+    labels = [
+        GRAPH_LABELS_MAP.get(key, key)
+        for key in LEGEND_ORDER
+        if key in handles_dict
+    ]
+
     if extra_curves and extra_labels:
         handles.extend(extra_curves)
         labels.extend(extra_labels)
+
     ax.legend(handles, labels)
