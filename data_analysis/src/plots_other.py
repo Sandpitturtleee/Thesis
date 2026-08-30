@@ -50,11 +50,11 @@ def plot_all_other() -> None:
         file_name="standard_heap_sparse.json",
         vertices_number=[50, 70, 100],
     )
-    plot_vertices_counts(
-        directory=RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
-        file_name="quantum_time_limit_sparse.json",
-        vertices_number=[50, 70, 100],
-    )
+    # plot_vertices_counts(
+    #     directory=RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
+    #     file_name="quantum_time_limit_sparse.json",
+    #     vertices_number=[50, 70, 100],
+    # )
 
 
 def plot_vertex_counts(file_name: str, vertex_number: int, directory: str) -> None:
@@ -116,9 +116,9 @@ def plot_vertices_counts(
     plt.figure(figsize=(10, 6))
     for v, counts in data.items():
         trials = list(range(1, len(counts) + 1))
-        plt.plot(trials, counts, marker="o", linestyle="-", label=f"{v} vertices")
+        plt.plot(trials, counts, marker="o", linestyle="-", label=f"{v} wierzchołków")
 
-    plt.title("Wyniki dla różnych liczb wierzchołków")
+    plt.title("Wyniki dla różnej liczby wierzchołków")
     plt.xlabel("Numer grafu")
     plt.ylabel("Liczba operacji")
     plt.grid(True)

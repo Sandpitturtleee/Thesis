@@ -27,6 +27,7 @@ STATS_DIRECTORY_STANDARD_HEAP = "dijkstra_stats/standard/heap"
 STATS_DIRECTORY_STANDARD_NAIVE = "dijkstra_stats/standard/naive"
 
 STATS_DIRECTORY_QUANTUM_TIME_LIMIT = "dijkstra_stats/quantum/time_limit"
+STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON = "dijkstra_stats/quantum/time_limit_cost_comparison"
 STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT = "dijkstra_stats/quantum/no_time_limit"
 STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT = "dijkstra_stats/quantum_prob/time_limit"
 STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT = "dijkstra_stats/quantum_prob/no_time_limit"
