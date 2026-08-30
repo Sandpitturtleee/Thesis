@@ -30,3 +30,13 @@
 \contentsline {subsection}{\numberline {3.3.1}Ogólna analiza wyników}{26}{subsection.3.3.1}%
 \contentsline {subsection}{\numberline {3.3.2}Analiza wyników wersji kwantowej}{27}{subsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.3.3}Tworzenie wykresów}{28}{subsection.3.3.3}%
+\contentsline {chapter}{\numberline {4}Analiza wyników implementacji klasycznych}{29}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Wyniki wersji naiwnej}{29}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Wyniki wersji z kopcem binarnym}{33}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Graf rzadki}{33}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Graf o średniej gęstości i graf gęsty}{33}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Przypadek szczególny}{34}{subsection.4.2.3}%
+\contentsline {subsubsection}{Przykład działania dla dziesięciu wierzchołków}{34}{subsubsection*.17}%
+\contentsline {subsection}{\numberline {4.2.4}Odchylenie standardowe wersji z kopcem}{39}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Bezpośrednie porównanie średnich wartości}{41}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Porównanie odchylenia standardowego}{43}{section.4.4}%

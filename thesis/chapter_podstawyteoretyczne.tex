@@ -352,10 +352,17 @@ We wszystkich analizowanych przypadkach rozpatrywane są grafy nieskierowane, be
 \subsection {Graf gęsty}
 \label{subsec:graph_dense}
 Graf gęsty zawiera liczbę krawędzi bliską maksymalnej  \cite{graph_metrics} 
-\[ |E| = O(|V|^2).\]
+\begin{equation}
+\label{eq:graph_dense_create1} 
+ |E| = O(|V|^2).
+\end{equation}
 
 W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym liczba krawędzi jest równa maksymalnej liczbie krawędzi dopuszczalnej dla grafu nieskierowanego bez pętli \cite{graph_complete} 
-\[ E = \frac{V(V-1)}{2}.\]
+\begin{equation}
+\label{eq:graph_dense_create2} 
+E = \frac{V(V-1)}{2}.
+\end{equation}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_dense.png}
@@ -367,10 +374,18 @@ W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym lic
 \subsection {Graf o średniej gęstości}
 \label{subsec:graph_half_dense}
 Graf średnio gęsty zajmuje pośrednią pozycję pomiędzy grafami rzadkimi i pełnymi. Liczba krawędzi jest znacznie większa niż liczba wierzchołków, jednak nadal nie osiąga wartości maksymalnej jak w grafach gęstych \cite{graph_metrics} 
-\[ |E| = O(|V|^2).\]
+
+\begin{equation}
+\label{eq:graph_half_dense_create1} 
+|E| = O(|V|^2).
+\end{equation}
 
 W niniejszej pracy jako graf o średniej gęstości przyjęto graf nieskierowany, którego liczba krawędzi stanowi połowę maksymalnej liczby krawędzi
-\[ E = \frac{V(V-1)}{4}.\]
+\begin{equation}
+\label{eq:graph_half_dense_create2} 
+E = \frac{V(V-1)}{4}.
+\end{equation}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_half_edges.png}
@@ -382,10 +397,17 @@ W niniejszej pracy jako graf o średniej gęstości przyjęto graf nieskierowany
 \subsection {Graf rzadki}
 \label{subsec:graph_sparse}
 Graf rzadki charakteryzuje się niewielką liczbą krawędzi względem maksymalnej liczby możliwych połączeń \cite{graph_metrics} 
-\[ |E| = O(|V|).\]
+\begin{equation}
+\label{eq:graph_sprase_create1} 
+|E| = O(|V|).
+\end{equation}
 
 Przykładami grafów rzadkich są sieci drogowe, drzewa oraz wiele rzeczywistych sieci komputerowych. W niniejszej pracy jako graf rzadki przyjęto graf nieskierowany, w którym liczba krawędzi jest równa liczbie wierzchołków
-\[ E = V. \]
+\begin{equation}
+\label{eq:graph_sprase_create2} 
+E = V.
+\end{equation}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_sparse.png}
@@ -397,15 +419,19 @@ Przykładami grafów rzadkich są sieci drogowe, drzewa oraz wiele rzeczywistych
 \subsection {Przypadek szczególny}
 \label{subsec:graph_special_case}
 Przypadek szczególny jest specjalnie przygotowanym grafem pełnym. W odróżnieniu od pozostałych analizowanych grafów jego struktura oraz wagi krawędzi nie są losowe, lecz zostały dobrane w taki sposób, aby wymusić dużą liczbę operacji relaksacji wykonywanych przez algorytm Dijkstry. Tak jak graf gęsty, przypadek szczególny zawiera maksymalną liczbę krawędzi dla grafu nieskierowanego bez pętli \cite{graph_complete} 
-\[ E = \frac{V(V-1)}{2}.\]
+\begin{equation}
+\label{eq:graph_special_case_create1} 
+E = \frac{V(V-1)}{2}.
+\end{equation}
+
 Wagi krawędzi są wyznaczane zgodnie z następującą zależnością
-\[
-w(i,j)=
-\begin{cases}
-1, & \text{gdy } j=i+1,\\[6pt]
-2\left(|V|-i\right), & \text{gdy } j>i+1.
+\begin{equation}
+\label{eq:graph_special_case_create2} 
+w(i,j)=\begin{cases}1, & \text{gdy } j=i+1,\\[6pt]2\left(|V|-i\right), & \text{gdy } j>i+1.
 \end{cases}
-\]
+\end{equation}
+
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_special_case.png}

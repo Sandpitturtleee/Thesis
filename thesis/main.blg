@@ -5,11 +5,12 @@ A level-1 auxiliary file: chapter_stronatytulowa.aux
 A level-1 auxiliary file: chapter_wstep.aux
 A level-1 auxiliary file: chapter_podstawyteoretyczne.aux
 A level-1 auxiliary file: chapter_opisimplementacji.aux
+A level-1 auxiliary file: chapter_analizawynikowklasyczne.aux
 The style file: unsrt.bst
 Database file #1: ref.bib
 You've used 9 entries,
             1791 wiz_defined-function locations,
-            499 strings with 5048 characters,
+            500 strings with 5083 characters,
 and the built_in function-call counts, 1395 in all, are:
 = -- 124
 > -- 54
