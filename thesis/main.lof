@@ -1,0 +1,10 @@
+\babel@toc {polish}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Przykład działania algorytmu Dijkstry. \cite [s.~659]{cormen}\relax }}{9}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Przykład kopca binarnego $max$ wraz z listą jego wartości i kluczy \cite [s.~151]{cormen}. W niniejszej pracy do implementacji Dijkstry wykorzystywana jest wersja $min$ kopca binarnego\relax }}{11}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Przykład grafu "dense" analizowanego w pracy\relax }}{18}{figure.caption.12}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Przykład grafu "half-edges" analizowanego w pracy\relax }}{19}{figure.caption.13}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Przykład grafu "sparse" analizowanego w pracy\relax }}{20}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Przykład grafu "special case" analizowanego w pracy\relax }}{21}{figure.caption.15}%
+\addvspace {10\p@ }

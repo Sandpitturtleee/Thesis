@@ -1,0 +1,9 @@
+\chapter{Podsumowanie}
+\label{chap:summary}
+
+Celem pracy było zaimplementowanie i porównanie różnych wersji wyszukiwania minimum w algorytmie Dijkstry. Analizie poddano klasyczną wersję naiwną, implementację wykorzystującą kopiec binarny oraz implementację kwantową opartą na algorytmie Dürra-Høyera, wykorzystującym algorytmy BBHT i Grovera. Analizę przeprowadzono dla kilku typów grafów różniących się gęstością, strukturą połączeń oraz sposobem doboru wag.
+
+Przeprowadzone badania pokazują, że wybór najlepszego sposobu wyszukiwania minimum w algorytmie Dijkstry powinien być uzależniony od struktury grafu. Kopiec binarny bardzo dobrze wykorzystuje rzadkość grafu, ale traci swoją przewagę wraz z wzrastającą liczbą wierzchołków.. Wersja naiwna jest bardziej przewidywalna, ale nie korzysta bezpośrednio z małej liczby krawędzi. Implementacja kwantowa charakteryzuje się probabilistycznym kosztem i dla  badanych grafów nie wykazuje przewagi na implementacjami klasycznymi.
+
+Najważniejszym wnioskiem jest więc brak jednej uniwersalnie najlepszej implementacji. Otrzymane wyniki pokazują, że gęstość grafu, jego spójność, struktura wag oraz przebieg relaksacji mają duży wpływ na koszt wyszukiwania minimum. Analiza średniej liczby operacji, odchylenia standardowego i poprawności pozwala pełniej ocenić zalety oraz wady każdej z badanej wersji.
+

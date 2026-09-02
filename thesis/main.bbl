@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{diestel2017}
 Reinhard Diestel.
@@ -56,5 +56,45 @@ Sawerwain~Marek Wiśniewska~Joanna.
 \newblock Complete graph.
 \newblock \url{https://mathworld.wolfram.com/CompleteGraph.html}.
 \newblock Accessed: 04.08.2026.
+
+\bibitem{python}
+{Python}.
+\newblock \url{https://www.python.org/downloads/release/python-3146/}.
+
+\bibitem{qiskit}
+{Qiskit}.
+\newblock \url{https://pypi.org/project/qiskit/2.5.0/}.
+
+\bibitem{qiskit_algorithms}
+{Qiskit algorithms}.
+\newblock \url{https://pypi.org/project/qiskit-algorithms/}.
+
+\bibitem{networkx}
+{Networkx}.
+\newblock \url{https://pypi.org/project/networkx/}.
+
+\bibitem{numpy}
+{Numpy}.
+\newblock \url{https://pypi.org/project/numpy/2.5.1/}.
+
+\bibitem{pandas}
+{Pandas}.
+\newblock \url{https://pypi.org/project/pandas/3.0.3/}.
+
+\bibitem{matplotlib}
+{Matplotlib}.
+\newblock \url{https://pypi.org/project/matplotlib/}.
+
+\bibitem{repo}
+{Repozytorium}.
+\newblock \url{https://github.com/Sandpitturtleee/Thesis}.
+
+\bibitem{pycharm}
+{PyCharm}.
+\newblock \url{https://www.jetbrains.com/pycharm/}.
+
+\bibitem{visualstudiocode}
+{Visual Studio Code}.
+\newblock \url{https://code.visualstudio.com}.
 
 \end{thebibliography}

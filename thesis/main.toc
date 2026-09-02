@@ -1,42 +1,83 @@
 \babel@toc {polish}{}\relax 
-\contentsline {chapter}{\numberline {1}Wstęp}{3}{chapter.1}%
-\contentsline {chapter}{\numberline {2}Podstawy teoretyczne}{4}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Problem najkrótszej scieżki}{4}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Algorytm Dijkstry}{5}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Znajdowanie minumum}{6}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Wersja naiwna}{6}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Wersja z kopcem binarnym}{7}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Wersja kwantowa}{8}{subsection.2.3.3}%
-\contentsline {subsubsection}{Algorytm Grovera}{8}{subsubsection*.6}%
-\contentsline {subsubsection}{Algorytm BBHT}{12}{subsubsection*.7}%
-\contentsline {subsubsection}{Kwantowy algorytm wyszukiwania minimum}{13}{subsubsection*.8}%
-\contentsline {section}{\numberline {2.4}Rodzaje grafów}{14}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Graf gęsty}{15}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Graf o średniej gęstości}{16}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Graf rzadki}{17}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}Przypadek szczególny}{18}{subsection.2.4.4}%
-\contentsline {section}{\numberline {2.5}Reprezentacja grafów}{19}{section.2.5}%
-\contentsline {chapter}{\numberline {3}Opis implementacji}{20}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Tworzenie grafów}{21}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Generowanie grafu gęstego}{21}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Generowanie grafu o średniej gęstości}{22}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Generowanie grafu rzadkiego}{22}{subsection.3.1.3}%
-\contentsline {subsection}{\numberline {3.1.4}Generowanie przypadku szczególnego}{22}{subsection.3.1.4}%
-\contentsline {section}{\numberline {3.2}Implementacja algorytmu Dijkstry}{23}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Wersja naiwna}{23}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Wersja z kopcem binarnym}{24}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Wersja kwantowa}{25}{subsection.3.2.3}%
-\contentsline {section}{\numberline {3.3}Analiza wyników}{26}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Ogólna analiza wyników}{26}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Analiza wyników wersji kwantowej}{27}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Tworzenie wykresów}{28}{subsection.3.3.3}%
-\contentsline {chapter}{\numberline {4}Analiza wyników implementacji klasycznych}{29}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Wyniki wersji naiwnej}{29}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Wyniki wersji z kopcem binarnym}{33}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Graf rzadki}{33}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Graf o średniej gęstości i graf gęsty}{33}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Przypadek szczególny}{34}{subsection.4.2.3}%
-\contentsline {subsubsection}{Przykład działania dla dziesięciu wierzchołków}{34}{subsubsection*.17}%
-\contentsline {subsection}{\numberline {4.2.4}Odchylenie standardowe wersji z kopcem}{39}{subsection.4.2.4}%
-\contentsline {section}{\numberline {4.3}Bezpośrednie porównanie średnich wartości}{41}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Porównanie odchylenia standardowego}{43}{section.4.4}%
+\contentsline {chapter}{\numberline {1}Wstęp}{4}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Podstawy teoretyczne}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Problem najkrótszej scieżki}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Algorytm Dijkstry}{6}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Znajdowanie minumum}{7}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Wersja naiwna}{7}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Wersja z kopcem binarnym}{8}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Wersja kwantowa}{9}{subsection.2.3.3}%
+\contentsline {subsubsection}{Algorytm Grovera}{9}{subsubsection*.6}%
+\contentsline {subsubsection}{Algorytm BBHT}{13}{subsubsection*.7}%
+\contentsline {subsubsection}{Kwantowy algorytm wyszukiwania minimum}{14}{subsubsection*.8}%
+\contentsline {section}{\numberline {2.4}Rodzaje grafów}{15}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Graf gęsty}{16}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Graf o średniej gęstości}{17}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Graf rzadki}{18}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Przypadek szczególny}{19}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Reprezentacja grafów}{20}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Opis implementacji}{21}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Tworzenie grafów}{22}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Generowanie grafu gęstego}{22}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Generowanie grafu o średniej gęstości}{23}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Generowanie grafu rzadkiego}{23}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Generowanie przypadku szczególnego}{23}{subsection.3.1.4}%
+\contentsline {section}{\numberline {3.2}Implementacja algorytmu Dijkstry}{24}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Wersja naiwna}{24}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Wersja z kopcem binarnym}{25}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Wersja kwantowa}{26}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Analiza wyników}{27}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Ogólna analiza wyników}{27}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Analiza wyników wersji kwantowej}{28}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Tworzenie wykresów}{29}{subsection.3.3.3}%
+\contentsline {chapter}{\numberline {4}Analiza wyników implementacji klasycznych}{30}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Wyniki wersji naiwnej}{30}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Wyniki wersji z kopcem binarnym}{34}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Graf rzadki}{34}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Graf o średniej gęstości i graf gęsty}{34}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Przypadek szczególny}{35}{subsection.4.2.3}%
+\contentsline {subsubsection}{Przykład działania dla dziesięciu wierzchołków}{35}{subsubsection*.17}%
+\contentsline {subsection}{\numberline {4.2.4}Odchylenie standardowe wersji z kopcem}{40}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Bezpośrednie porównanie średnich wartości}{42}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Porównanie odchylenia standardowego}{44}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Analiza poprawności wersji kwantowej}{46}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Skuteczność wyszukiwania minimum z limitem}{47}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Skuteczność algorytmu Dijkstry z limitem}{49}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Skuteczność wyszukiwania minimum bez limitu}{50}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Skuteczność algorytmu Dijkstry bez limitu}{51}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Zależność pomiędzy błędnym minimum a wynikiem algorytmu Dijkstry}{52}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Dlaczego błędne minimum nie zawsze prowadzi do błędnego wyniku}{53}{subsection.5.5.1}%
+\contentsline {chapter}{\numberline {6}Analiza wyników implementacji kwantowej}{55}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Wyniki dla wersji z limitem}{56}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Średnia liczba operacji}{56}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Odchylenie standardowe}{57}{subsection.6.1.2}%
+\contentsline {section}{\numberline {6.2}Wyniki dla wersji bez limitu}{58}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Średnia liczba operacji}{58}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Odchylenie standardowe}{59}{subsection.6.2.2}%
+\contentsline {section}{\numberline {6.3}Porównanie wersji z limitem i bez limitu}{60}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Porównanie średniej liczby operacji}{60}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Porównanie odchylenia standardowego}{61}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Dlaczego koszt wersji z limitem i bez limitu jest podobny}{61}{subsection.6.3.3}%
+\contentsline {section}{\numberline {6.4}Zależność pomiędzy kosztem a poprawnością}{63}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Porównanie implementacji klasycznych i kwantowej}{64}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Porównanie średniej liczby operacji}{64}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Graf rzadki}{65}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Graf o średniej gęstości}{65}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Graf gęsty}{65}{subsection.7.1.3}%
+\contentsline {subsection}{\numberline {7.1.4}Przypadek szczególny}{65}{subsection.7.1.4}%
+\contentsline {section}{\numberline {7.2}Porównanie odchylenia standardowego}{66}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Graf rzadki}{66}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Graf o średniej gęstości}{67}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Graf gęsty}{67}{subsection.7.2.3}%
+\contentsline {subsection}{\numberline {7.2.4}Przypadek szczególny}{67}{subsection.7.2.4}%
+\contentsline {chapter}{\numberline {8}Podsumowanie}{68}{chapter.8}%
+\contentsline {chapter}{\numberline {9}Opis metod i technologii wykorzystanych w pracy}{69}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Język programowania}{69}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Zewnętrzne paczki pythonowe}{69}{section.9.2}%
+\contentsline {chapter}{\numberline {10}Instrukcja instalacji i obsługi}{70}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Instalacja}{70}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Instrukcja obsługi}{70}{section.10.2}%
+\contentsline {subsection}{\numberline {10.2.1}Generowanie grafów}{71}{subsection.10.2.1}%
+\contentsline {subsection}{\numberline {10.2.2}Analiza grafów}{71}{subsection.10.2.2}%
+\contentsline {subsection}{\numberline {10.2.3}Analiza statystyczna wyników}{71}{subsection.10.2.3}%
+\contentsline {subsection}{\numberline {10.2.4}Generowanie wykresów}{71}{subsection.10.2.4}%
