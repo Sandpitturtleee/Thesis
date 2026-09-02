@@ -192,7 +192,7 @@ def plot_bars_with_percent(
             textcoords="offset points",
             ha="center",
             va="bottom",
-            fontsize=10,
+            fontsize=8,
         )
     ax.set_ylabel(y_label)
     ax.set_xlabel(x_label)
