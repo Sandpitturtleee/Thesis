@@ -40,7 +40,8 @@ import numpy as np
 from config import (STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
                     STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_NO_TIME_LIMIT,
-                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT, VERTICES_X_PLOT_LABEL)
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT,
+                    VERTICES_X_PLOT_LABEL)
 from data_analysis.src.helpers import order_filenames, read_results_from_json
 
 StatDict = Dict[str, Dict[str, float]]
@@ -310,7 +311,7 @@ def plot_mismatch_without_invalid_prob(
         )
     for j in range(i + 1, 4):
         axs[j].axis("off")
-    fig.suptitle("Poprawny djikstra mimo błędnego minimum prawdopodobieństwo")
+    fig.suptitle("Poprawny Djikstra mimo błędnego minimum prawdopodobieństwo")
     plt.tight_layout(rect=(0, 0.03, 1, 0.97))
     plt.show()
 
