@@ -12,29 +12,29 @@ W niniejszym rozdziale przeprowadzono analizę wyników otrzymanych dla dwóch k
     \label{fig:standard_naive_mean}
 \end{figure}
 
-Na rys.~\ref{fig:standard_naive_mean} przedstawiono średnią liczbę operacji wykonywanych przez naiwną wersję algorytmu. Dla grafu o średniej gęstości, grafu gęstego oraz przypadku szczególnego widoczny jest ten sam wykres. Wynika to ze sposobu zliczania operacji w tej implementacji.
-
-Podczas pojedynczej iteracji algorytmu sprawdzane jest wszystkie \(n\) wierzchołków, niezależnie od liczby krawędzi oraz ich wag. Jeżeli graf jest spójny, algorytm wykonuje \(n\) takich iteracji. Liczba zliczonych operacji jest zatem równa
+Na rys.~\ref{fig:standard_naive_mean} przedstawiono średnią liczbę operacji wykonywanych przez naiwną wersję algorytmu. Dla grafu o średniej gęstości, grafu gęstego oraz przypadku szczególnego widoczny jest ten sam przebieg. Wynika to ze sposobu zliczania operacji w tej implementacji. Podczas pojedynczej iteracji algorytmu sprawdzane jest wszystkie \(n\) wierzchołków, niezależnie od liczby krawędzi oraz ich wag. Jeżeli graf jest spójny, algorytm wykonuje \(n\) takich iteracji. Liczba zliczonych operacji jest zatem równa
 
 \begin{equation}
 C_{\mathrm{naive}} = n \cdot n = n^2.
 \label{eq:naive_results_n2}
 \end{equation}
 
+\noindent
 Dla przykładu, dla \(n=100\) otrzymywana jest wartość
 
 \begin{equation}
 C_{\mathrm{naive}} = 100^2 = 10000,
 \end{equation}
-
+\noindent 
 co odpowiada wartości widocznej na wykresie dla grafu średnio gęstego, gęstego oraz przypadku szczególnego.
 
-Wyjątkiem jest graf rzadki. Jego średnia liczba operacji jest wyraźnie mniejsza od liczby operacji dla pozostałych typów grafów. Nie jest to spowodowane tym, że dla niego pojedyncza operacja wyszukiwania minimum wymagana mniejszej liczby operacji. Taki graf graf zawiera tylko
+Wyjątkiem jest graf rzadki. Jego średnia liczba operacji jest wyraźnie mniejsza od liczby operacji dla pozostałych typów. Nie jest to spowodowane tym, że dla niego pojedyncza operacja wyszukiwania minimum wymagana mniejszej liczby operacji. Taki graf zawiera tylko
 
 \begin{equation}
 |E|=|V|
 \end{equation}
 
+\noindent
 krawędzi i podczas generowania nie jest wymuszane, żeby graf był spójny. Może więc powstać sytuacja, w której z wierzchołka początkowego nie da się osiągnąć wszystkich pozostałych wierzchołków.
 
 \begin{figure}[H]
@@ -44,7 +44,7 @@ krawędzi i podczas generowania nie jest wymuszane, żeby graf był spójny. Mo�
     \label{fig:naive_vertices_raw}
 \end{figure}
 
-Na wykresie można zauważyć wyraźny podział wyników na dwie grupy. Jednocześnie występują pojedyncze przypadki, w których liczba operacji jest bardzo mała. Takie zachowanie wynika ze struktury losowych grafów rzadkich. W wielu przypadkach wierzchołek startowy i kolejne wierzchołki są połączone z wieloma innymi. Wtedy algorytm może dotrzeć do większości wierzchołków i wykonuje dużą liczbę iteracji. Jeżeli natomiast z wierzchołka startowego lub przez jego sąsiadów nie można przejść do wielu kolejnych wierzchołków, algorytm kończy działanie znacznie wcześniej bo nie dociera do wielu wierzchołków.
+Na wykresie można zauważyć wyraźny podział wyników na dwie grupy. Jednocześnie oprócz dużych wartości występują pojedyncze przypadki, w których liczba operacji jest bardzo mała. Takie zachowanie wynika ze struktury losowych grafów rzadkich. W większości przypadków wierzchołek startowy i kolejne wierzchołki są połączone z wieloma innymi. Wtedy algorytm może dotrzeć do większości wierzchołków i wykonuje dużą liczbę iteracji. Jeżeli natomiast z wierzchołka startowego lub przez jego sąsiadów nie można przejść do wielu kolejnych wierzchołków, algorytm kończy działanie znacznie wcześniej.
 
 Można to zauważyć na podstawie liczby operacji. Dla \(n=100\) wartości liczby operacji gdy algorytm dociera do dużej liczby wierzchołków znajdują się w okolicach \(8000\). Wynika wtedy, że stosunek liczby operacji do wierzchołków wynosi
 
@@ -58,14 +58,15 @@ Oznacza to, że w tych przypadkach z wierzchołka początkowego osiągalnych jes
 k \approx \frac{2000}{50}=40,
 \end{equation}
 
+\noindent
 natomiast dla \(n=70\), przy około \(4000\) operacji,
 
 \begin{equation}
 k \approx \frac{4000}{70}\approx57.
 \end{equation}
 
-W każdym z tych przypadków osiągalnych jest około \(80\%\) wszystkich wierzchołków. Na wykresie są też przypadki, dla których koszt
-jest wielokrotnie mniejszy. Odpowiadają one grafom, w których algorytm kończy działanie znacznie wcześniej.
+\noindent
+W każdym z tych przypadków osiągalnych jest około \(80\%\) wszystkich wierzchołków. Na wykresie są też przypadki, dla których koszt jest wielokrotnie mniejszy. Odpowiadają one grafom, w których algorytm kończy działanie znacznie wcześniej.
 
 \begin{figure}[H]
     \centering
@@ -76,7 +77,7 @@ jest wielokrotnie mniejszy. Odpowiadają one grafom, w których algorytm kończy
 
 Rysunek~\ref{fig:standard_naive_std} to potwierdza. Dla grafu średnio gęstego, gęstego oraz przypadku szczególnego odchylenie standardowe wynosi zero. Każde uruchomienie dla ustalonej liczby wierzchołków wykonuje dokładnie taką samą liczbę operacji równą \(n^2\). Losowość wag i połączeń nie ma wpływu na koszt wyszukiwania w tablicy w celu znalezienia minimum.
 
-Inaczej zachowują się grafy rzadkie. W ich przypadku widoczny jest bardzo duży wzrost odchylenia standardowego wraz ze wzrostem liczby wierzchołków. Powodem jest występowanie dwóch odległych grup wyników - tej gdzie przez algorytm jest osiągana duża liczba wierzchołków oraz drugiej gdzie algorytm kończy działanie bardzo wcześnie.
+Inaczej zachowują się grafy rzadkie. W ich przypadku widoczny jest bardzo duży wzrost odchylenia standardowego wraz ze wzrostem liczby wierzchołków. Powodem jest występowanie dwóch odległych grup wyników - tej gdzie jest osiągana duża liczba wierzchołków oraz drugiej gdzie algorytm kończy działanie bardzo wcześnie.
 
 \section{Wyniki wersji z kopcem binarnym}
 \label{sec:heap_results}
@@ -103,9 +104,7 @@ wykonywanych wewnątrz kopca jest znacznie większa niż w przypadku grafu rzadk
 \subsection{Przypadek szczególny}
 \label{subsec:special_case_heap_results}
 
-Najbardziej wyróżniającym się wynikiem jest bardzo duża liczba operacji wykonywana przez wersję z kopcem dla przypadku szczególnego. Dla \(n=100\) średnia osiąga około \(1.66\cdot10^5\) operacji, podczas gdy wersja naiwna wykonuje \(10^4\) operacji. Oznacza to ponad szesnastokrotną różnicę na korzyść wersji naiwnej.
-
-W tym przypadku bardzo duże znaczenie ma sposób dobrania wag krawędzi. Dla przypadku szczególnego zastosowano zależność opisaną we wzorze~\eqref{eq:graph_special_case_create2}
+Najbardziej wyróżniającym się wynikiem jest bardzo duża liczba operacji wykonywana przez wersję z kopcem dla przypadku szczególnego. Dla \(n=100\) średnia osiąga około \(1.66\cdot10^5\) operacji, podczas gdy wersja naiwna wykonuje \(10^4\) operacji. Oznacza to ponad szesnastokrotną różnicę na korzyść wersji naiwnej. W tym przypadku bardzo duże znaczenie ma sposób dobrania wag krawędzi. Dla przypadku szczególnego zastosowano zależność opisaną we wzorze~\eqref{eq:graph_special_case_create2}
 
 \begin{equation}
 \label{eq:graph_special_case_create2} 
@@ -113,20 +112,24 @@ w(i,j)=\begin{cases}1, & \text{gdy } j=i+1,\\[6pt]2\left(|V|-i\right), & \text{g
 \end{cases}
 \end{equation}
 
+\noindent
 Powoduje ona, że najkrótsza droga od wierzchołka \(0\) prowadzi kolejno przez wierzchołki
 
 \[
 0\rightarrow1\rightarrow2\rightarrow\ldots\rightarrow n-1,
 \]
 
+\noindent
 a odległości przyjmują wartości
 
 \[
 d(0)=0,\qquad d(1)=1,\qquad d(2)=2,\qquad \ldots,\qquad d(n-1)=n-1.
 \]
 
+\noindent
 Jednocześnie bezpośrednie krawędzie do dalszych wierzchołków mają duże wagi. Dzięki temu początkowo otrzymywane są duże wartości odległości, które następnie są wielokrotnie zmniejszane na etapie relaksacji.
 
+\newpage
 \subsubsection{Przykład działania dla dziesięciu wierzchołków}
 
 W celu dokładniejszego pokazania powodu dużej liczby operacji wykonywanych przez wersję wykorzystującą kopiec binarny można przeanalizować przypadek
@@ -139,38 +142,46 @@ szczególny dla \(n=10\). Przykład takiego grafu przedstawiono na rys.~\ref{fig
     \label{fig:special_case_results_example}
 \end{figure}
 
+\noindent
 Wagi krawędzi w tym grafie są określone zgodnie z zależnością
 
-\[
+\begin{equation}
 w(i,j)=\begin{cases}1, & \text{gdy } j=i+1,\\[4pt]2(10-i), & \text{gdy } j>i+1.
 \end{cases}
-\]
+\end{equation}
 
+\noindent
 Oznacza to, że krawędzie łączące kolejne wierzchołki
 
 \[
 (0,1),(1,2),(2,3),\ldots,(8,9)
 \]
 
-mają wagę równą \(1\). Pozostałe krawędzie wychodzące od wierzchołka o mniejszym numerze mają odpowiednio większe wagi. Przykładowo dla
-wierzchołka \(0\) wszystkie krawędzie prowadzące dalej niż do wierzchołka\(1\) mają wagę
+\noindent
+mają wagę równą \(1\). Pozostałe krawędzie wychodzące od wierzchołka o mniejszym numerze mają odpowiednio większe wagi. 
+
+\newpage
+Przykładowo dla wierzchołka \(0\) wszystkie krawędzie prowadzące dalej niż do wierzchołka\(1\) mają wagę
 
 \[
 2(10-0)=20.
 \]
 
+\noindent
 Dla wierzchołka \(1\) odpowiednia wartość wynosi
 
 \[
 2(10-1)=18,
 \]
 
+\noindent
 a dla wierzchołka \(2\)
 
 \[
 2(10-2)=16,
 \]
 
+\noindent
 Taką zależność jest też widoczna na rys.~\ref{fig:special_case_results_example}, gdzie występują między innymi wagi \(20\), \(18\), \(16\), \(14\), \(12\), \(10\), \(8\) oraz \(6\).
 
 Gdy algorytm rozpoczyna działanie w wierzchołku \(0\), jego początkowa odległość wynosi
@@ -179,6 +190,7 @@ Gdy algorytm rozpoczyna działanie w wierzchołku \(0\), jego początkowa odleg�
 d(0)=0.
 \]
 
+\noindent
 Po przetworzeniu wierzchołka \(0\) krawędź prowadząca do wierzchołka
 \(1\) ma wagę \(1\), dlatego
 
@@ -186,50 +198,60 @@ Po przetworzeniu wierzchołka \(0\) krawędź prowadząca do wierzchołka
 d(1)=1.
 \]
 
+\noindent
 A do wszystkich pozostałych wierzchołków prowadzą krawędzie o wadze \(20\). Otrzymywane są więc odległości
 
 \[
 d(2)=d(3)=\ldots=d(9)=20.
 \]
 
+\noindent
 Po pierwszej relaksacji w kopcu znajdują się zatem między innymi wpisy
 
 \[
 (1,1),(20,2),(20,3),\ldots,(20,9).
 \]
 
+\noindent
 Najmniejszą wartość jest dla \((1,1)\), dlatego jako następny sprawdzany jest wierzchołek \(1\).
 
+\newpage
+\noindent
 Krawędź \((1,2)\) ma wagę \(1\), zatem odległość do wierzchołka \(2\) zostaje poprawiona z \(20\) do
 
 \[
 d(2)=d(1)+1=2.
 \]
 
+\noindent
 Dla wszystkich dalszych wierzchołków \(j>2\) waga krawędzi wychodzącej z wierzchołka \(1\) wynosi \(18\). Nowy kandydat na odległość ma więc wartość
 
 \[
 d(1)+18=1+18=19.
 \]
 
+\noindent
 Otrzymuje się zatem
 
 \[
 d(3)=d(4)=\ldots=d(9)=19.
 \]
 
+\noindent
 Wszystkie te wartości są mniejsze od wcześniejszej wartości \(20\). Do kopca dodawane są więc nowe wpisy
 
 \[
 (2,2),(19,3),(19,4),\ldots,(19,9).
 \]
 
-W tym miejscu ujawnia się istotna cecha implementacji \textit{lazy heap}. Poprzednie elementy
+\noindent
+W tym miejscu widoczna jest cecha implementacji \textit{lazy heap}. Poprzednie elementy
 
 \[
 (20,2),(20,3),\ldots,(20,9)
 \]
 
+\noindent
 nie są usuwane z kopca. Pozostają w nim jako wpisy nieaktualne.
 
 Następnie z kopca pobierany jest wierzchołek \(2\), którego poprawna odległość wynosi
@@ -238,36 +260,43 @@ Następnie z kopca pobierany jest wierzchołek \(2\), którego poprawna odległo
 d(2)=2.
 \]
 
+\noindent
 Krawędź \((2,3)\) ma wagę \(1\), dlatego
 
 \[
 d(3)=3.
 \]
 
+\noindent
 Dla wierzchołków \(4,\ldots,9\) waga odpowiednich krawędzi wychodzących z wierzchołka \(2\) wynosi
 
 \[
 2(10-2)=16.
 \]
 
+\newpage
+\noindent
 Nowa odległość wynosi zatem
 
 \[
 d(2)+16=2+16=18.
 \]
 
+\noindent
 Wcześniej wartości te były równe \(19\), dlatego ponownie następuje udana relaksacja:
 
 \[
 d(4)=d(5)=\ldots=d(9)=18.
 \]
 
+\noindent
 Do kopca trafia więc kolejny zestaw elementów
 
 \[
 (3,3),(18,4),(18,5),\ldots,(18,9).
 \]
 
+\noindent
 Jednocześnie znajdują się w nim nadal wcześniejsze wpisy z odległościami \(19\) oraz \(20\).
 
 Po przetworzeniu wierzchołka \(3\) sytuacja znowu się powtarza. Otrzymywana jest odległość
@@ -276,14 +305,17 @@ Po przetworzeniu wierzchołka \(3\) sytuacja znowu się powtarza. Otrzymywana je
 d(4)=4,
 \]
 
+\noindent
 a dla wierzchołków \(5,\ldots,9\)
 
 \[
 d(j)=d(3)+2(10-3)=3+14=17.
 \]
 
+\noindent
 Poprzednia wartość wynosiła \(18\), dlatego wszystkie te odległości ponownie zostają poprawione.
 
+\newpage
 Pierwsze etapy działania algorytmu można więc przedstawić w ten sposób:
 
 \begin{center}
@@ -306,6 +338,8 @@ Pierwsze etapy działania algorytmu można więc przedstawić w ten sposób:
 8 & \(d(9)=9\) & 12 \\
 \end{tabularx}
 \end{center}
+
+\noindent
 Widoczny jest więc mechanizm działania algorytmu na przygotowanym grafie. Przetworzenie kolejnego wierzchołka powoduje poprawienie odległości do prawie wszystkich wierzchołków znajdujących się dalej w kolejności. Wartość kandydata zmniejsza się przy tym o \(1\) w stosunku do wartości uzyskanej w poprzedniej iteracji.
 
 Dla przykładu odległość do wierzchołka \(9\) jest aktualizowana wielokrotnie:
@@ -314,14 +348,16 @@ Dla przykładu odległość do wierzchołka \(9\) jest aktualizowana wielokrotni
 20 \rightarrow 19 \rightarrow 18 \rightarrow 17 \rightarrow 16 \rightarrow 15 \rightarrow 14\rightarrow 13 \rightarrow 9.
 \]
 
+\noindent
 To samo jest dla pozostałych dalszych wierzchołków. Dlatego ten sam wierzchołek posiada w kopcu wiele wpisów odpowiadających kolejnym, coraz mniejszym odległościom.
 
-Przykładowo dla wierzchołka \(9\) w trakcie działania algorytmu mogą pojawić się wpisy
+Dla wierzchołka \(9\) w trakcie działania algorytmu mogą pojawić się wpisy
 
 \[
 (20,9),\;(19,9),\;(18,9),\;(17,9),\;(16,9),\;(15,9),\;(14,9),\;(13,9),\;(9,9).
 \]
 
+\noindent
 Tylko ostatni z nich odpowiada ostatecznej najkrótszej odległości. Pozostałe elementy stają się wpisami nieaktualnymi, jednak nadal znajdują się w kopcu. Dlatego pobieranie nowych elementów z kopca staje się coraz bardziej kosztowne. Powoduje ono wiele operacji przesuwania elementów w celu przywrócenia własności kopca.
 
 \subsection{Odchylenie standardowe wersji z kopcem}
@@ -335,7 +371,7 @@ Tylko ostatni z nich odpowiada ostatecznej najkrótszej odległości. Pozostałe
 
 Na rys.~\ref{fig:standard_heap_std} widoczny jest wzrost odchylenia standardowego dla trzech losowo generowanych typów grafów. Jest to konsekwencją losowego doboru krawędzi, jak i ich wag.
 
-W przypadku grafu średnio gęstego i gęstego różne wagi prowadzą do różnej liczby udanych relaksacji. Jeżeli pierwsza znaleziona droga do wierzchołka jest już stosunkowo krótka, liczba kolejnych aktualizacji wag będzie niewielka. Jeżeli natomiast początkowo znaleziona zostanie droga o dużym koszcie, może być ona poprawiana wielokrotnie. Każda poprawa powoduje wstawienie nowego elementu do kopca i zwiększa całkowitą liczbę operacji. Dla grafu rzadkiego dodatkowym czynnikiem jest fakt że wygenerowany graf rzadki nie zawsze jest spójny. 
+W przypadku grafu średnio gęstego i gęstego różne wagi prowadzą do różnej liczby udanych relaksacji. Jeżeli pierwsza znaleziona droga do wierzchołka jest już stosunkowo krótka, liczba kolejnych aktualizacji wag będzie niewielka. Jeżeli natomiast początkowo znaleziona zostanie droga o dużym koszcie, może być ona poprawiana wielokrotnie. Każda poprawa powoduje wstawienie nowego elementu do kopca i zwiększa całkowitą liczbę operacji. Dla grafu rzadkiego dodatkowym czynnikiem jest fakt, że wygenerowany graf rzadki nie zawsze jest spójny. 
 
 \begin{figure}[H]
     \centering
@@ -359,25 +395,7 @@ W przypadku szczególnym odchylenie standardowe wynosi dokładnie zero bo nie wy
 
 Rysunek~\ref{fig:standard_mean_graph_types} pozwala bezpośrednio porównać obie implementacje dla każdego rodzaju grafu.
 
-Dla grafu rzadkiego zastosowanie kopca przynosi największą korzyść. Niewielka liczba krawędzi ogranicza liczbę relaksacji, czyli też liczbę nowych wpisów umieszczanych w kopcu. Na tym samym grafie wersja naiwna przy każdej iteracji nadal przegląda całą tablicę wierzchołków. W przypadku grafu o średniej gęstości przewaga kopca jest mniejsza jednak powiększa się ona wraz ze wzrostem liczby krawędzi. Natomiast dla grafu gęstego wartości obu wariantów stają się do siebie zbliżone a dla 100 wierzchołków wersja naiwna zaczyna być lepsza od kopcowej. Wynika to z coraz większej liczby relaksacji przy zwiększającej się liczbie wierzchołków. Zupełnie inne wyniki widoczne są dla przypadku szczególnego. Wersja naiwna pozostaje na poziomie \(n^2\), a koszt wersji z kopcem bardzo szybko rośnie. Dla \(n=100\) wartości wynoszą odpowiednio około
-
-\[
-10000
-\]
-
-oraz
-
-\[
-166000.
-\]
-
-Stosunek tych wartości wynosi w przybliżeniu
-
-\begin{equation}
-\frac{166000}{10000}\approx16.6.
-\end{equation}
-
-Oznacza to, że w algorytm wykorzystujący kopiec wykonuje w tym przypadku około \(16.6\) razy więcej operacji niż w wersji naiwnej.
+Dla grafu rzadkiego zastosowanie kopca przynosi największą korzyść. Niewielka liczba krawędzi ogranicza liczbę relaksacji, czyli też liczbę nowych wpisów umieszczanych w kopcu. Na tym samym grafie wersja naiwna przy każdej iteracji nadal przegląda całą tablicę wierzchołków. W przypadku grafu o średniej gęstości przewaga kopca jest mniejsza jednak powiększa się ona wraz ze wzrostem liczby krawędzi. Natomiast dla grafu gęstego wartości obu wariantów stają się do siebie zbliżone a dla 100 wierzchołków wersja naiwna zaczyna być lepsza od kopcowej. Wynika to z coraz większej liczby relaksacji przy zwiększającej się liczbie wierzchołków. Zupełnie inne wyniki widoczne są dla przypadku szczególnego. Wersja naiwna pozostaje na poziomie \(n^2\), a koszt wersji z kopcem bardzo szybko rośnie. 
 
 \begin{figure}[H]
     \centering

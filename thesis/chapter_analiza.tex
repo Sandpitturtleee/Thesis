@@ -16,7 +16,7 @@ Na rys.~\ref{fig:combined_mean} przedstawiono porównanie średniej liczby opera
 
 \subsection{Graf rzadki}
 
-Dla grafów rzadkich średnia liczba operacji dla implementacji wykorzystującej kopiec binarny rośnie wyraźnie wolniej niż w przypadku pozostałych metod. Wynika to z niewielkiej liczby krawędzi, która ogranicza liczbę relaksacji oraz liczbę operacji wykonywanych w kopcu. Wersja naiwna zachowuje się gorzej, ponieważ podczas kolejnych wyborów minimum algorytm nadal sprawdza wszystkie wierzchołki. Wyniki wersji kwantowych znajdują się pomiędzy implementacją naiwną a kopcową .
+Dla grafów rzadkich średnia liczba operacji dla implementacji wykorzystującej kopiec binarny rośnie wyraźnie wolniej niż w przypadku pozostałych metod. Wynika to z niewielkiej liczby krawędzi, która ogranicza liczbę relaksacji oraz liczbę operacji wykonywanych w kopcu. Wersja naiwna zachowuje się gorzej, ponieważ podczas kolejnych wyborów minimum algorytm nadal sprawdza wszystkie wierzchołki. Wyniki wersji kwantowych znajdują się pomiędzy implementacją naiwną a kopcową.
 
 \subsection{Graf o średniej gęstości}
 
@@ -43,7 +43,7 @@ Rysunek~\ref{fig:combined_std} pokazuje, że poszczególne implementacje różni
 
 \subsection{Graf rzadki}
 
-Dla grafów rzadkich szczególnie duże odchylenie standardowe występuje w wersji naiwnej. Jest on spowodowany losową strukturą grafów oraz brakiem wymuszonej spójności. W zależności od wygenerowanego grafu algorytm może dotrzeć do dużej części wierzchołków albo zakończyć działanie znacznie wcześniej. To samo zjawisko zachodzi dla wersji z kopcem jednak w znacznie mniejszym stopniu. W przypadku implementacji kwantowej do zmienności spowodowanej strukturą grafu dochodzi probabilistyczny charakter BBHT i Dürra-Høyera. Powoduje to wzrost odchylenia standardowego wraz z rozmiarem grafu.
+Dla grafów rzadkich szczególnie duże odchylenie standardowe występuje w wersji naiwnej. Jest ono spowodowane losową strukturą grafów oraz brakiem wymuszonej spójności. W zależności od wygenerowanego grafu algorytm może dotrzeć do dużej części wierzchołków albo zakończyć działanie znacznie wcześniej. To samo zjawisko zachodzi dla wersji z kopcem jednak w znacznie mniejszym stopniu. W przypadku implementacji kwantowej do zmienności spowodowanej strukturą grafu dochodzi probabilistyczny charakter BBHT i Dürra-Høyera. Powoduje to wzrost odchylenia standardowego wraz z rozmiarem grafu.
 
 \subsection{Graf o średniej gęstości}
 
@@ -55,4 +55,4 @@ Dla grafów gęstych utrzymuje się podobna zależność jak dla grafów o śred
 
 \subsection{Przypadek szczególny}
 
-Przypadek szczególny pozwala dobrze rozdzielić wpływ struktury struktury grafu na rozrzut wyników. Ze względu na specyficzny typ grafu odchylenie standardowe dla wersji klasycznych jest równe zeru niezależnie od liczby wierzchołków. Natomiast wersja kwantowa zachowuje niewielkie, lecz niezerowe odchylenie standardowe. Wynika ono z samego sposobu działania probabilistycznego wyszukiwania minimum. 
+Przypadek szczególny pozwala dobrze rozdzielić wpływ struktury grafu na rozrzut wyników. Ze względu na specyficzny typ grafu odchylenie standardowe dla wersji klasycznych jest równe zeru niezależnie od liczby wierzchołków. Natomiast wersja kwantowa zachowuje niewielkie, lecz niezerowe odchylenie standardowe. Wynika ono z samego sposobu działania probabilistycznego wyszukiwania minimum. 

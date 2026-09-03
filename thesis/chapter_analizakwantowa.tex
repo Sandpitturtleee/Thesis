@@ -3,7 +3,7 @@
 
 W niniejszym rozdziale przeprowadzono analizę liczby operacji wykonywanych przez kwantową wersję algorytmu Dijkstry wykorzystującą algorytm wyszukiwania minimum Dürra-Høyera. Analizie poddano te same cztery rodzaje grafów co w pozostałej części pracy: graf rzadki, graf o średniej gęstości, graf gęsty oraz przypadek szczególny.
 
-Liczba operacji wersji kwantowej została wyznaczona zgodnie ze sposobem zliczania opisanym w rozdziale dotyczącym implementacji. Uwzględnia ona koszt przygotowania rejestru w stanie superpozycji oraz liczbę wykonanych iteracji algorytmu Grovera.. Wyniki przedstawiono osobno dla wersji z limitem liczby operacji oraz bez limitu.
+Liczba operacji wersji kwantowej została wyznaczona zgodnie ze sposobem zliczania opisanym w rozdziale dotyczącym implementacji. Uwzględnia ona koszt przygotowania rejestru w stanie superpozycji oraz liczbę wykonanych iteracji algorytmu Grovera. Wyniki przedstawiono osobno dla wersji z limitem oraz bez limitu.
 
 \section{Wyniki dla wersji z limitem}
 
@@ -16,7 +16,7 @@ Liczba operacji wersji kwantowej została wyznaczona zgodnie ze sposobem zliczan
     \label{fig:quantum_mean_time_limit}
 \end{figure}
 
-Na rys.~\ref{fig:quantum_mean_time_limit} przedstawiono średnią liczbę operacji dla wersji z limitem. Dla wszystkich typów grafów liczba operacji rośnie wraz ze wzrostem liczby wierzchołków. Najmniejszy koszt występuje dla grafu rzadkiego, większe wartości obserwowane są dla przypadku szczególnego, natomiast największą liczbę operacji uzyskują grafy średnio gęste i gęste. Przypadek szczególny, mimo że ma tą samą liczbę krawędzi co graf gęsty, potrzebuje znacznie  mniejszej liczby operacji niż grafy średnio gęste i gęste. Pokazuje to, że koszt kwantowego wyszukiwania minimum w algorytmie Dijkstry zależy nie tylko od liczby krawędzi, ale też od wag krawędzi.
+Na rys.~\ref{fig:quantum_mean_time_limit} przedstawiono średnią liczbę operacji dla wersji z limitem. Dla wszystkich typów grafów liczba operacji rośnie wraz ze wzrostem liczby wierzchołków. Najmniejszy koszt występuje dla grafu rzadkiego, większe wartości obserwowane są dla przypadku szczególnego, natomiast największą liczbę operacji uzyskują grafy średnio gęste i gęste. Przypadek szczególny mimo, że ma tą samą liczbę krawędzi co graf gęsty, potrzebuje znacznie  mniejszej liczby operacji niż grafy średnio gęste i gęste. Pokazuje to, że koszt kwantowego wyszukiwania minimum w algorytmie Dijkstry zależy nie tylko od liczby krawędzi, ale też od ich wag.
 
 \subsection{Odchylenie standardowe}
 
@@ -79,7 +79,7 @@ Rys.~\ref{fig:quantum_std_time_limit_vs_no_time_limit} umożliwia bezpośrednie 
 
 \subsection{Dlaczego koszt wersji z limitem i bez limitu jest podobny}
 
-Porównując wyniki liczby operacji dla wersji z limitem jak i bez limitu można zauważyć, że są one do siebie bardzo podobne, mimo że w analizie poprawności algorytmu obie wersje zachowują się inaczej. Wersja z limitem dla wielu przypadków zwraca niepoprawny wynik algorytmu Dijkstry, podczas gdy wersja bez limitu jest zawsze poprawna. Wyjaśnić to można, analizując liczbę operacji w zależności od liczby błędnych wyborów minimum.
+Porównując wyniki liczby operacji dla wersji z limitem jak i bez limitu można zauważyć, że są one do siebie bardzo zbliżone, mimo że w analizie poprawności algorytmu obie wersje zachowują się inaczej. Wersja z limitem dla wielu przypadków zwraca niepoprawny wynik algorytmu Dijkstry, podczas gdy wersja bez limitu jest zawsze poprawna. Wyjaśnić to można, analizując liczbę operacji w zależności od liczby błędnych wyborów minimum.
 
 \begin{figure}[H]
     \centering
@@ -90,8 +90,8 @@ Porównując wyniki liczby operacji dla wersji z limitem jak i bez limitu można
 
 Na rys.~\ref{fig:quantum_cost_for_error_minimum} przedstawiono zależność pomiędzy liczbą błędnych wyszukiwań minimum a średnią liczbą wykonanych operacji. Dla grafów rzadkich, średnio gęstych oraz gęstych można zaobserwować, że wraz ze wzrostem liczby błędnych wyszukiwań minimum rośnie również średni koszt operacji. Na tej podstawie można stwierdzić, że większej liczbie błędnych wyszukiwań minimum towarzyszy wyższy koszt. Wynika to z faktu, że błędne wyniki wyszukiwania mogą prowadzić do konieczności wykonania kolejnych wyszukiwań, zwiększając liczbę wykonywanych operacji.
 
-Oprócz tego jak przedstawiono w rozdziale~\ref{chap:quantum_probability_results} stosunkowo niewielka część wyszukiwań minimum kończy się niepowodzeniem. Oznacza to, że zarówno w wersji z limitem, jak i bez limitu, głównym czynnikiem wpływającym na średnią liczbę operacji jest koszt poprawnie przeprowadzonych wyszukiwań. W przypadku wersji z limitem niewielka część błędnych wyszukiwań zostaje przerwana po przekroczeniu limitu, co powoduje wykonywanie kolejnych wyszukiwań i w konsekwencji zwiększa ich średni koszt. W wersji bez limitu takie wyszukiwania nie są przerywane, przez co mogą powodować większą liczbę operacji. W rezultacie średnie koszty uzyskane dla obu wersji są podobne.
+Oprócz tego jak przedstawiono w rozdziale~\ref{chap:quantum_probability_results} stosunkowo niewielka część wyszukiwań minimum kończy się niepowodzeniem. Oznacza to, że zarówno w wersji z limitem, jak i bez limitu, głównym czynnikiem wpływającym na średnią liczbę operacji jest koszt wyszukiwań zakończonych sukcesem. W przypadku wersji z limitem niewielka część błędnych wyszukiwań zostaje przerwana po przekroczeniu limitu, co powoduje wykonywanie kolejnych wyszukiwań i w konsekwencji zwiększa ich średni koszt. W wersji bez limitu takie wyszukiwania nie są przerywane, przez co mogą powodować większą liczbę operacji. W rezultacie średnie koszty uzyskane dla obu wersji są podobne.
 
 \section{Zależność pomiędzy kosztem a poprawnością}
 
-Porównanie wyników z analizą poprawności pozwala zauważyć, że ogólnie wprowadzenie limitu nie wpływa pozytywnie na całość algorytmu. Jednak w szczegółach ten wniosek jest zależny od rodzaju rozpatrywanego grafu. Dla grafów rzadkich oraz przypadku szczególnego wprowadzenie limitu nie powoduje znaczących zmian, ponieważ zarówno koszt jak i poprawność jest podobna dla obu wersji. Natomiast dla grafów średnio gęstych i gęstych limit nie powoduje zmniejszenia wykonywanej przez algorytm liczby operacji a tylko znacząco zmniejsza jego skuteczność.
+Porównanie wyników z analizą poprawności pozwala zauważyć, że wprowadzenie limitu nie wpływa pozytywnie na całość algorytmu. Ten wniosek jest jednak zależny konkretnie od rodzaju rozpatrywanego grafu. Dla grafów rzadkich oraz przypadku szczególnego wprowadzenie limitu nie powoduje znaczących zmian, ponieważ zarówno koszt jak i poprawność jest podobna dla obu wersji. Natomiast dla grafów średnio gęstych i gęstych, limit nie powoduje zmniejszenia wykonywanej przez algorytm liczby operacji a tylko znacząco zmniejsza jego skuteczność.

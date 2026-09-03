@@ -2,17 +2,19 @@
 
 \section{Instalacja}
 
-Repozytorium zawierające kod źródłowy znajduje się pod tym linkiem \cite{repo}. W celu uruchomienia aplikacji wymagane jest wcześniejsze zainstalowanie języka Python \cite{python}, a także dowolnego środowiska umożliwiającego edycję oraz wykonywanie programów napisanych w tym języku, takiego jak na przykład PyCharm \cite{pycharm} lub Visual Studio Code \cite{visualstudiocode}.
+Repozytorium zawierające kod źródłowy znajduje się pod tym linkiem \cite{repo}. W celu uruchomienia aplikacji wymagane jest wcześniejsze zainstalowanie języka Python \cite{python}, a także dowolnego środowiska umożliwiającego edycję oraz wykonywanie programów napisanych w tym języku takiego jak na przykład PyCharm \cite{pycharm} lub Visual Studio Code \cite{visualstudiocode}. 
 
-Następnie, w celu pobrania repozytorium na środowisko lokalne, należy otworzyć folder docelowy w terminalu i użyć następującej komendy:\newline
+Następnie, w celu pobrania repozytorium na środowisko lokalne, należy otworzyć folder docelowy w terminalu i użyć następującej komendy:
+
 \hfill \break
 \textbf{git clone https://github.com/Sandpitturtleee/Thesis.git}\newline
-\hfill \break
+\hfill 
 
-Oprócz tego konieczne jest również zainstalowanie wszystkich wymaganych zewnętrznych paczek. Lista wykorzystywanych bibliotek wraz z ich wersjami znajduje się w pliku \textbf{requirements.txt}. Ich instalację można przeprowadzić za pomocą następującej komendy:\newline
+Oprócz tego konieczne jest również zainstalowanie wszystkich wymaganych zewnętrznych paczek. Lista wykorzystywanych bibliotek wraz z ich wersjami znajduje się w pliku \textbf{requirements.txt}. Ich instalację można przeprowadzić za pomocą następującej komendy:
+
 \hfill \break
 \textbf{pip install -r requirements.txt}\newline
-\hfill \break
+\hfill 
 
 \section{Instrukcja obsługi}
 
@@ -20,17 +22,17 @@ Projekt został podzielony na trzy główne części odpowiadające kolejnym jeg
 
 \subsection{Generowanie grafów}
 
-Pierwszym etapem działania aplikacji jest przygotowanie grafów wykorzystywanych następnie podczas testowania algorytmów. Kod odpowiedzialny za ten proces znajduje się w katalogu \textbf{graphs\_creation/src}. Głównym plikiem służącym do uruchomienia procesu generowania grafów jest \textbf{graphs\_creation/src/main.py}. Program generuje grafy o parametrach określonych w konfiguracji projektu. W pliku \textbf{config.py} możliwe jest określenie maksymalnego rozmiaru grafu oraz liczby generowanych przypadków. 
+Pierwszym etapem działania aplikacji jest przygotowanie grafów wykorzystywanych następnie podczas testowania algorytmów. Kod odpowiedzialny za ten proces znajduje się w katalogu \path{graphs_creation/src}. Głównym plikiem służącym do uruchomienia procesu generowania grafów jest \path{graphs_creation/src/main.py}. Program generuje grafy o parametrach określonych w konfiguracji projektu. W pliku \path{config.py} możliwe jest określenie maksymalnego rozmiaru grafu oraz liczby generowanych przypadków. 
 
 \subsection{Analiza grafów}
 
-Kolejnym etapem jest wykonanie algorytmów wyznaczania najkrótszych ścieżek Dijkstry dla wcześniej przygotowanych grafów. Kod odpowiedzialny za ten proces znajduje się w katalogu \textbf{graphs\_analysis/src}. Główny plik uruchamiający analizę znajduje się pod ścieżką \textbf{graphs\_analysis/src/main.py}. W katalogu \textbf{graphs\_analysis/src} implementacje zostały rozdzielone na dwie części: \textbf{standard} oraz \textbf{quantum}. Pierwsza z nich zawiera klasyczne implementacje algorytmu Dijkstry, natomiast druga odpowiada za implementację kwantową.
+Kolejnym etapem jest wykonanie algorytmów wyznaczania najkrótszych ścieżek Dijkstry dla wcześniej przygotowanych grafów. Kod odpowiedzialny za ten proces znajduje się w katalogu \path{graphs_analysis/src}. Główny plik uruchamiający analizę znajduje się pod ścieżką \path{graphs_analysis/src/main.py}. W katalogu \path{graphs_analysis/src} implementacje zostały rozdzielone na dwie części: \path{standard} oraz \path{quantum}. Pierwsza z nich zawiera klasyczne implementacje algorytmu Dijkstry, natomiast druga odpowiada za implementację kwantową.
 
 \subsection{Analiza statystyczna wyników}
 
-Po przeprowadzeniu eksperymentów otrzymane wyniki mogą zostać poddane dalszej analizie. Do jej przeprowadzenia wykorzystywany jest plik \textbf{data\_analysis/src/main\_analysis.py} znajdujący się w katalogu \textbf{data\_analysis/src}..
+Po przeprowadzeniu eksperymentów otrzymane wyniki mogą zostać poddane dalszej analizie. Do jej przeprowadzenia wykorzystywany jest plik \path{data_analysis/src/main_analysis.py} znajdujący się w katalogu \path{data_analysis/src}.
 
 \subsection{Generowanie wykresów}
 
-W celu graficznego przedstawienia rezultatów przeprowadzonych eksperymentów w projekcie przygotowany został osobny moduł odpowiedzialny za tworzenie wykresów. Głównym plikiem wykorzystywanym w tym celu jest \textbf{data\_analysis/src/main\_plots.py}. Po wykonaniu generowane są wykresy pozwalające na porównanie rezultatów otrzymanych dla różnych implementacji algorytmu oraz różnych rodzajów i rozmiarów grafów. 
+W celu graficznego przedstawienia rezultatów przeprowadzonych eksperymentów w projekcie przygotowany został osobny moduł odpowiedzialny za tworzenie wykresów. Głównym plikiem wykorzystywanym w tym celu jest \path{data_analysis/src/main_plots.py}. Po wykonaniu generowane są wykresy pozwalające na porównanie rezultatów otrzymanych dla różnych implementacji algorytmu oraz różnych rodzajów i rozmiarów grafów. 
 

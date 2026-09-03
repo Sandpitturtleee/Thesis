@@ -25,7 +25,7 @@ Uzyskane wyniki pokazują, że wpływ limitu nie zależy wyłącznie od liczby w
     \label{fig:quantum_min_time_limit}
 \end{figure}
 
-Na rys.~\ref{fig:quantum_min_time_limit} przedstawiono średnią liczbę błędnych wyszukiwań minimum w zależności od liczby wierzchołków. Wraz ze wzrostem rozmiaru grafu liczba błędów zauważalnie rośnie przede wszystkim dla grafów o średniej gęstości oraz grafów gęstych. Dla grafu rzadkiego wartości pozostają niewielkie, natomiast w przypadku szczególnym błędne wyszukiwania minimum nie występują. 
+Na rys.~\ref{fig:quantum_min_time_limit} przedstawiono średnią liczbę błędnych wyszukiwań minimum w zależności od liczby wierzchołków. Wraz ze wzrostem rozmiaru grafu liczba błędów znacznie rośnie przede wszystkim dla grafów o średniej gęstości oraz grafów gęstych. Dla grafu rzadkiego wartości pozostają niewielkie, natomiast w przypadku szczególnym błędne wyszukiwania minimum nie występują. 
 
 \section{Skuteczność algorytmu Dijkstry z limitem}
 
@@ -42,7 +42,6 @@ Widoczna jest podobna zależność jak w przypadku samego wyszukiwania minimum, 
 
 Różnica ta wynika z wielokrotnego wykonywania wyszukiwania minimum podczas jednego uruchomienia algorytmu Dijkstry. Nawet jeżeli pojedyncze wyszukiwanie minimum ma wysokie prawdopodobieństwo sukcesu, każde kolejne wywołanie stanowi dodatkową możliwość wystąpienia błędu. Dlatego wraz ze wzrostem rozmiaru grafu coraz bardziej widoczna staje się różnica pomiędzy skutecznością pojedynczej operacji wyszukiwania minimum a skutecznością całego algorytmu Dijkstry. 
 
-
 \section{Skuteczność wyszukiwania minimum bez limitu}
 
 \begin{figure}[H]
@@ -54,7 +53,7 @@ Różnica ta wynika z wielokrotnego wykonywania wyszukiwania minimum podczas jed
 
 Na rys.~\ref{fig:quantum_prob_min_no_time_limit} przedstawiono skuteczność wyszukiwania minimum bez ograniczenia liczby operacji.
 
-W tej wersji dla wszystkich typów grafów oraz wszystkich badanych rozmiarów otrzymano pełną skuteczność. W porównaniu do wersji z limitem widać, że ograniczenie liczby wykonywanych operacji odpowiada za obserwowane wcześniej błędy. Gdy algorytm wyszukiwania minimum może wykonać nieograniczoną ilość prób, zwiększanie liczby wierzchołków nie prowadzi do pogorszenia poprawności wyszukiwania minimum.
+W tej wersji dla wszystkich typów grafów oraz wszystkich badanych rozmiarów otrzymano pełną skuteczność. W porównaniu do wersji z limitem widać, że ograniczenie liczby wykonywanych operacji odpowiada za obserwowane wcześniej błędy. Gdy algorytm wyszukiwania minimum może wykonać nieograniczoną liczbę iteracji, zwiększanie liczby wierzchołków nie prowadzi do pogorszenia poprawności wyszukiwania minimum.
 
 \section{Skuteczność algorytmu Dijkstry bez limitu}
 
@@ -87,6 +86,7 @@ Na rys.~\ref{fig:quantum_prob_1vs_time_limit} przedstawiono przypadki, w któryc
     \label{fig:quantum_prob_2vs_time_limit}
 \end{figure}
 
+\noindent
 Rys.~\ref{fig:quantum_prob_2vs_time_limit} przedstawia tę samą zależność od strony błędnych wyników końcowych.
 
 \subsection{Dlaczego błędne minimum nie zawsze prowadzi do błędnego wyniku}
@@ -99,4 +99,5 @@ Aktualizacja odległości zachodzi tylko wtedy, gdy
 d(v) > d(u) + w(u,v).
 \end{equation}
 
+\noindent
 W wersji kwantowej jeżeli algorytm wyszukiwania minimum Dürra-Høyera wybierze wierzchołek o nie najmniejszej odległości, nie oznacza to jeszcze, że końcowy wynik będzie niepoprawny. Dzięki relaksacji optymalne ścieżki między wierzchołkami mogą być poprawione. Oprócz tego w grafie może też istnieć wiele ścieżek prowadzących do tego samego wierzchołka. Relaksacje mogą wtedy doprowadzić do poprawnych wartości, nawet jeśli wcześniej wykonano niepoprawny wybór.
