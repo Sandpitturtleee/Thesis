@@ -1,27 +1,26 @@
 \chapter{Podstawy teoretyczne}
 \section{Problem najkrótszej scieżki}
-\indent Problem wyznaczania najkrótszej ścieżki należy do podstawowych zagadnień teorii grafów. Jego celem jest znalezienie ścieżki pomiędzy dwoma wierzchołkami grafu, której suma wag wszystkich krawędzi jest minimalna. Problem ten znajduje zastosowanie w wielu dziedzinach informatyki, takich jak systemy nawigacji, routing w sieciach komputerowych, logistyka, planowanie tras czy analiza sieci społecznościowych.
-\newline
-Formalnie graf definiowany jest jako para \cite[s.~2]{diestel2017}
+
+Problem wyznaczania najkrótszej ścieżki należy do podstawowych zagadnień teorii grafów. Jego celem jest znalezienie ścieżki pomiędzy dwoma wierzchołkami grafu, której suma wag wszystkich krawędzi jest minimalna. Problem ten znajduje zastosowanie w wielu dziedzinach informatyki, takich jak systemy nawigacji, routing w sieciach komputerowych, logistyka, planowanie tras czy analiza sieci społecznościowych. Formalnie graf definiowany jest jako para \cite[s.~2]{diestel2017}
+
 \begin{equation}
 \label{eq:graph}
 G = (V, E)
 \end{equation}
-gdzie (V) oznacza zbiór wierzchołków, natomiast (E) zbiór krawędzi łączących pary wierzchołków. W przypadku grafów ważonych każdej krawędzi przypisana jest waga określająca koszt przejścia pomiędzy dwoma sąsiadującymi wierzchołkami.
-Jeżeli wszystkie wagi są nieujemne, jednym z najbardziej efektywnych algorytmów rozwiązujących problem najkrótszych ścieżek z początkowego wierzchołka jest algorytm Dijkstry.
+gdzie (V) oznacza zbiór wierzchołków, natomiast (E) zbiór krawędzi łączących pary wierzchołków. W przypadku grafów ważonych każdej krawędzi przypisana jest waga określająca koszt przejścia pomiędzy dwoma sąsiadującymi wierzchołkami. Jeżeli wszystkie wagi są nieujemne, jednym z najbardziej efektywnych algorytmów rozwiązujących problem najkrótszych ścieżek z początkowego wierzchołka jest algorytm Dijkstry.
 \newpage
 
 \section{Algorytm Dijkstry}
 
-Algorytm Dijkstry \cite{dijkstra} został po raz pierwszy przedstawiony w 1959 roku przez Edsger W. Dijkstra. Jest to algorytm zachłanny, który znajduje najkrótsze ścieżki od jednego wierzchołka źródłowego do wszystkich pozostałych wierzchołków w grafie o nieujemnych wagach krawędzi.
-Podstawową ideą algorytmu jest stopniowe powiększanie zbioru odwiedzonych wierzchołków, dla których wyznaczono już najkrótszą możliwą odległość od źródła. W każdej kolejnej iteracji wybierany jest wierzchołek o najmniejszej znanej odległości spośród nieodwiedzonych, po czym wykonywana jest operacja relaksacji wszystkich wychodzących z niego krawędzi.
+Algorytm Dijkstry \cite{dijkstra} został po raz pierwszy przedstawiony w 1959 roku przez Edsger W. Dijkstrę. Jest to algorytm zachłanny, który znajduje najkrótsze ścieżki od jednego wierzchołka źródłowego do wszystkich pozostałych wierzchołków w grafie o nieujemnych wagach krawędzi. Podstawową ideą algorytmu jest stopniowe powiększanie zbioru odwiedzonych wierzchołków, dla których wyznaczono już najkrótszą możliwą odległość. W każdej kolejnej iteracji wybierany jest wierzchołek o najmniejszej znanej odległości spośród nieodwiedzonych, po czym wykonywana jest operacja relaksacji wszystkich wychodzących z niego krawędzi.
 
-Relaksacja polega na sprawdzeniu, czy przejście przez aktualnie analizowany wierzchołek prowadzi do krótszej ścieżki do sąsiada. Jeżeli zachodzi zależność \cite[s.~649]{cormen}\begin{equation}
+Relaksacja polega na sprawdzeniu, czy przejście przez aktualnie analizowany wierzchołek prowadzi do krótszej ścieżki do sąsiada. Jeżeli zachodzi zależność \cite[s.~649]{cormen}
+
+\begin{equation}
 \label{eq:relax}
 d(v) > d(u) + w(u,v)
 \end{equation}
-wartość (d(v)) zostaje zaktualizowana.
-Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołków.
+wartość (d(v)) zostaje zaktualizowana. Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołków.
 
 \begin{algorithm}[H]
 \caption{Algorytm Dijkstry}
@@ -29,20 +28,17 @@ Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołkó
 \begin{enumerate}
     \item Zainicjalizuj odległości wszystkich wierzchołków od wierzchołka źródłowego.
     
-    \item Utwórz pusty zbiór odwiedzonych wierzchołków 
-    $S \leftarrow \emptyset$.
-    
+    \item Utwórz pusty zbiór odwiedzonych wierzchołków $S \leftarrow \emptyset$.
+
     \item Umieść wszystkie wierzchołki grafu w zbiorze $Q$.
     
     \item Dopóki zbiór $Q$ nie jest pusty, wykonuj:
     \begin{enumerate}
-        \item Wybierz i usuń ze zbioru $Q$ wierzchołek $u$ 
-        o najmniejszej aktualnej odległości od źródła.
-        
+        \item Wybierz i usuń ze zbioru $Q$ wierzchołek $u$ o najmniejszej aktualnej odległości od źródła.
+   
         \item Dodaj wierzchołek $u$ do zbioru odwiedzonych $S$.
         
-        \item Dla każdego sąsiada $v$ wierzchołka $u$ wykonaj 
-        relaksację krawędzi $(u,v)$.
+        \item Dla każdego sąsiada $v$ wierzchołka $u$ wykonaj relaksację krawędzi $(u,v)$.
     \end{enumerate}
 \end{enumerate}
 \begin{center}
@@ -59,7 +55,8 @@ Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołkó
 
 \section{Znajdowanie minumum}
 
-Najbardziej kosztownym etapem algorytmu Dijkstry jest wyznaczenie kolejnego nieodwiedzonego wierzchołka o najmniejszej odległości. Sposób w jaki jest to zaimplementowane znacząco wpływa na złożoność całego algorytmu Dijkstry. Dlatego w celu porównania różnych podejść w niniejszej pracy wykorzystano trzy wersje algorytmu Dijkstry z różnymi sposobami znajdowania minimum:\begin{itemize}
+Najbardziej kosztownym etapem algorytmu Dijkstry jest wyznaczenie kolejnego nieodwiedzonego wierzchołka o najmniejszej odległości. Sposób w jaki jest to zaimplementowane znacząco wpływa na złożoność całego algorytmu Dijkstry. Dlatego w celu porównania różnych podejść w niniejszej pracy wykorzystano trzy wersje algorytmu Dijkstry z różnymi sposobami znajdowania minimum:
+\begin{itemize}
     \item warsje naiwną,
     \item wersję z wykorzystaniem kopca binarnego,
     \item wersję wykorzystującą kwantowy algorytm wyszukiwania minimum.
@@ -67,13 +64,14 @@ Najbardziej kosztownym etapem algorytmu Dijkstry jest wyznaczenie kolejnego nieo
 
 \subsection{Wersja naiwna}
 \label{subsec:naive_minimum}
-W wersji naiwnej wybór kolejnego wierzchołka realizowany jest poprzez liniowe przeszukanie tablicy odległości w celu znalezienia najmniejszej wartości spośród wszystkich nieodwiedzonych wierzchołków. Operacja ta jest wykonywana w każdej iteracji algorytmu Dijkstry, a ponieważ liczba iteracji jest proporcjonalna do liczby wierzchołków $V$, całkowity koszt wyszukiwania
-minimum wynosi $O(V^2)$. Pomimo niskiej wydajności, wersja naiwna cechuje się prostotą implementacji i często wykorzystywana jest jako punkt odniesienia podczas porównywania bardziej zaawansowanych wariantów algorytmu jak na przykład kopiec binarny.
+
+W wersji naiwnej wybór kolejnego wierzchołka realizowany jest poprzez liniowe przeszukanie tablicy odległości w celu znalezienia najmniejszej wartości spośród wszystkich nieodwiedzonych wierzchołków. Operacja ta jest wykonywana w każdej iteracji algorytmu Dijkstry, a ponieważ liczba iteracji jest proporcjonalna do liczby wierzchołków $V$, całkowity koszt wyszukiwania minimum wynosi $O(V^2)$. Pomimo niskiej wydajności, wersja naiwna cechuje się prostotą implementacji i często wykorzystywana jest jako punkt odniesienia podczas porównywania bardziej zaawansowanych wariantów algorytmu jak na przykład kopiec binarny.
 
 \subsection{Wersja z kopcem binarnym}
 \label{subsec:naive_heap}
-W celu przyspieszenia operacji wyboru kolejnego wierzchołka można zastosować kopiec binarny przechowujący pary składające się z identyfikatora wierzchołka oraz aktualnej wartości odległości. Kopiec binarny jest strukturą danych reprezentowaną w postaci niemal pełnego drzewa binarnego, w którym każdy węzeł posiada co najwyżej dwoje dzieci. W kopcu minimalnym
-spełniona jest własność, zgodnie z którą wartość klucza każdego węzła jest nie większa od wartości kluczy jego potomków. Oznacza to, że element o najmniejszym kluczu znajduje się zawsze w korzeniu drzewa. Jego pobranie oraz usunięcie wymaga czasu $O(\log V)$. Wstawienie nowego elementu lub aktualizacja wartości klucza również wykonywane są w czasie $O(\log V)$ poprzez odpowiednie odtworzenie własności kopca. Dzięki zastosowaniu kopca binarnego wyszukiwanie wierzchołka o najmniejszej odległości nie wymaga liniowego przeszukiwania wszystkich elementów \cite[r.~6]{cormen}.
+
+W celu przyspieszenia operacji wyboru kolejnego wierzchołka można zastosować kopiec binarny przechowujący pary składające się z identyfikatora wierzchołka oraz aktualnej wartości odległości. Kopiec binarny jest strukturą danych reprezentowaną w postaci niemal pełnego drzewa binarnego, w którym każdy węzeł posiada co najwyżej dwoje dzieci. W kopcu minimalnym spełniona jest własność, zgodnie z którą wartość klucza każdego węzła jest nie większa od wartości kluczy jego potomków. Oznacza to, że element o najmniejszym kluczu znajduje się zawsze w korzeniu drzewa. Jego pobranie oraz usunięcie wymaga czasu $O(\log V)$. Wstawienie nowego elementu lub aktualizacja wartości klucza również wykonywane są w czasie $O(\log V)$ poprzez odpowiednie odtworzenie własności kopca. Dzięki zastosowaniu kopca binarnego wyszukiwanie wierzchołka o najmniejszej odległości nie wymaga liniowego przeszukiwania wszystkich elementów \cite[r.~6]{cormen}.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{images/documentation/binary_heap.png}
@@ -102,18 +100,13 @@ Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania 
 \caption{Algorytm Grovera}
 \label{alg:grover}
 \begin{enumerate}
-    \item Przygotuj rejestr kwantowy w stanie równomiernej superpozycji
-    wszystkich $N$ możliwych stanów.
+    \item Przygotuj rejestr kwantowy w stanie równomiernej superpozycji wszystkich $N$ możliwych stanów.
 
     \item Powtarzaj operator Grovera odpowiednią liczbę razy:
     \begin{enumerate}
-        \item Zastosuj wyrocznię (\textit{oracle}), która zmienia znak
-        amplitudy stanów odpowiadających rozwiązaniom problemu.
+        \item Zastosuj wyrocznię (\textit{oracle}), która zmienia znak amplitudy stanów odpowiadających rozwiązaniom problemu.
 
-        \item Zastosuj operator dyfuzji (\textit{diffusion transform}),
-        który odbija amplitudy wszystkich stanów względem ich średniej
-        wartości, zwiększając amplitudę stanów oznaczonych przez wyrocznię
-        i zmniejszając amplitudy pozostałych.
+        \item Zastosuj operator dyfuzji (\textit{diffusion transform}), który odbija amplitudy wszystkich stanów względem ich średniejnwartości, zwiększając amplitudę stanów oznaczonych przez wyrocznię zmniejszając amplitudy pozostałych.
     \end{enumerate}
 
     \item Wykonaj pomiar rejestru kwantowego.
@@ -124,50 +117,43 @@ Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania 
 \end{center}
 \end{algorithm}
 
-W pierwszym kroku tworzona jest superpozycja wszystkich możliwych stanów.  Żeby to uzyskać w rejestrze kwantowym złożonym z \textit{n} kubitów stosujemy \textit{n}-krotnie bramkę Hadamarda. 
-\cite[s.~162, wz.~(4.66)]{inf_kwant}  
+W pierwszym kroku tworzona jest superpozycja wszystkich możliwych stanów.  Żeby to uzyskać w rejestrze kwantowym złożonym z \textit{n} kubitów stosujemy \textit{n}-krotnie bramkę Hadamarda \cite[s.~162, wz.~(4.66)]{inf_kwant}.
+
 \begin{equation}
 \label{eq:superposition}
-|\psi\rangle
-=
-H^{\otimes n}|00\cdots0\rangle
-=
-(H|0\rangle)^{\otimes n}
-=
-\left(
-\frac{|0\rangle+|1\rangle}{\sqrt2}
-\right)^{\otimes n}
-=
-\frac1{\sqrt N}
-\sum_{i=0}^{N-1}|i\rangle .
+|\psi\rangle = H^{\otimes n}|00\cdots0\rangle = (H|0\rangle)^{\otimes n} = \left( \frac{|0\rangle+|1\rangle}{\sqrt2} \right)^
+{\otimes n} =\frac1{\sqrt N} \sum_{i=0}^{N-1}|i\rangle .
 \end{equation}
 
 \noindent
-Dla stanu kubitu złożonego z \textit{n=3} kubitów odpowiada to temu zapisowi \cite[s.~278, wz.~(5.366)]{inf_kwant}  
+Dla stanu kubitu złożonego z \textit{n=3} kubitów odpowiada to temu zapisowi \cite[s.~278, wz~(5.366)]{inf_kwant}.
 \begin{equation}
 \label{eq:superposition_example}
 |\psi'\rangle = \frac1{2\sqrt2} ( |000\rangle+ |001\rangle+ |010\rangle+ |011\rangle+ |100\rangle+ |101\rangle+ |110\rangle+ |111\rangle ).
 \end{equation}
+
 \noindent
 Wszystkie amplitudy prawdopodobieństwa mają wartość $1/\sqrt{N}$ co oznacza że każdy stan jest jednakowo prawdopodobny w przypadku pomiaru.
 \newpage
+
 Kolejny etap stanowi iteracyjne wykonywanie operatora Grovera. Każda iteracja składa się z dwóch operacji. Pierwszą z nich jest działanie wyroczni, która identyfikuje stany spełniające zadany warunek poprzez odwrócenie znaku ich amplitudy. Jest to funkcja która odpowiada za wskazanie szukanego elementu \cite[s.~162, wz.~(4.67)]{inf_kwant}.
+
 \begin{equation}
 \label{eq:oracle}
-f(i)=
-\begin{cases}
+f(i)=\begin{cases}
 1,& \text{jeśli } i \text{ reprezentuje szukany element},\\
 0,& \text{w przeciwnym przypadku.}
 \end{cases}
 \end{equation}
 
-Oczekuje się, że działanie tej funkcji implementowanej przez unitarny operator $U_f$ można opisać wzorem
-\cite[s.~162, wz.~(4.68)]{inf_kwant}   
+\noindent
+Oczekuje się, że działanie tej funkcji implementowanej przez unitarny operator $U_f$ można opisać wzorem \cite[s.~162, wz.~(4.68)]{inf_kwant}   
 \begin{equation}
 \label{eq:oracle_quantum}
 U_f(|i\rangle|j\rangle)=|i\rangle|j\oplus f(i)\rangle.
 \end{equation}
 
+\noindent
 Przypadek w którym funkcja ta zmienia znak na rejestrze kwantowym przy trzeciej amplitudzie można zapisać w ten sposób \cite[s~278, wz.~(5.367)]{inf_kwant}  
 \begin{equation}
 \label{eq:oracle_example}
@@ -179,17 +165,20 @@ Wykonanie pomiaru bezpośrednio po zastosowaniu wyroczni nie pozwala jeszcze na 
 Definicja operatora obrotu wokół średniej, oznaczonego jako A przybiera postać \cite[s.~163, wz.~(4.71)]{inf_kwant}   
 \begin{equation}
 \label{eq:diffusion_operator}
-A=2|\psi\rangle\langle\psi|-I.
+A=2|\psi\rangle\langle\psi|-I,
 \end{equation}
 \noindent
-gdzie $|\psi\rangle$ to stan opisany wzorem ~\eqref{eq:superposition}
+gdzie $|\psi\rangle$ to stan opisany wzorem ~\eqref{eq:superposition}.
 
+\newpage
+\noindent
 Po zastosowaniu operatora $U_f$ otrzymuje się stan \cite[s.~163, wz.~(4.72)]{inf_kwant}   
 \begin{equation}
 \label{eq:diffusion_operator1}
 |\psi_1\rangle=|\psi\rangle-\frac{2}{\sqrt{2^n}}|i_{U_f}\rangle.
 \end{equation}
 
+\noindent
 Odpowiada to takiej bramce kwantowej przedstawionej w formie macierzy \cite[s.~277, wz.~(5.364)]{inf_kwant}
 \begin{equation}
 \label{eq:diffusion_matrix} 
@@ -204,6 +193,7 @@ G_{L\times L}=
 L=2^n.
 \end{equation}
 
+\noindent
 Całość działania operatora obrotu wokół średniej G na stanie ~\eqref{eq:oracle_example} można przedstawić w ten sposób \cite[s.~278, wz.~(5.368)]{inf_kwant}
 \begin{equation}
 \label{eq:matrix_example} 
@@ -245,31 +235,26 @@ Powtarzanie tych dwóch operacji (wyroczni i dyfuzji) prowadzi do stopniowego zw
 
 \newpage
 \subsubsection{Algorytm BBHT}
-Algorytm opracowany przez Boyera, Brassarda, Høyera i Tappa stanowi rozszerzenie algorytmu Grovera przeznaczone dla sytuacji, w której liczba rozwiązań problemu nie jest znana. W przeciwieństwie do klasycznej wersji algorytmu nie można z góry określić optymalnej liczby iteracji operatora Grovera. Zamiast tego algorytm stopniowo zwiększa zakres możliwej liczby iteracji.\cite{bbht1996}
+Algorytm opracowany przez Boyera, Brassarda, Høyera i Tappa stanowi rozszerzenie algorytmu Grovera przeznaczone dla sytuacji, w której liczba rozwiązań problemu nie jest znana. W przeciwieństwie do klasycznej wersji algorytmu nie można z góry określić optymalnej liczby iteracji operatora Grovera. Zamiast tego algorytm stopniowo zwiększa zakres możliwej liczby iteracji \cite{bbht1996}.
 
 \begin{algorithm}[H]
 \caption{Algorytm BBHT}
 \label{alg:bbht}
 \begin{enumerate}
 
-    \item Zainicjalizuj parametry algorytmu: ustaw $m=1$ oraz wybierz
-    współczynnik $\lambda=\frac{6}{5}$.
+    \item Zainicjalizuj parametry algorytmu: ustaw $m=1$ oraz wybierz współczynnik $\lambda=\frac{6}{5}$.
 
-    \item Wylosuj liczbę całkowitą $j$ równomiernie z przedziału
-    $\{0,1,\dots,m-1\}$.
+    \item Wylosuj liczbę całkowitą $j$ równomiernie z przedziału $\{0,1,\dots,m-1\}$.
 
-    \item Przygotuj rejestr kwantowy w stanie superpozycji wszystkich
-    $N$ możliwych stanów.
+    \item Przygotuj rejestr kwantowy w stanie superpozycji wszystkich $N$ możliwych stanów.
 
     \item Wykonaj $j$ iteracji algorytmu Grovera (Alg.~\ref{alg:grover}).
 
     \item Wykonaj pomiar rejestru kwantowego i otrzymaj stan $i$.
 
-    \item Jeżeli $T[i]=x$, zakończ działanie algorytmu i zwróć
-    znalezione rozwiązanie.
+    \item Jeżeli $T[i]=x$, zakończ działanie algorytmu i zwróć znalezione rozwiązanie.
 
-    \item W przeciwnym razie zwiększ wartość parametru $m$ zgodnie
-    z zależnością
+    \item W przeciwnym razie zwiększ wartość parametru $m$ zgodnie z zależnością
     \[
         m=\min(\lambda m,\sqrt{N}),
     \]
@@ -288,7 +273,6 @@ O\left(\sqrt{\frac{N}{t}}\right)
 \end{equation}
 gdzie $t$ oznacza liczbę rozwiązań problemu \cite{bbht1996}.
 
-
 \subsubsection{Kwantowy algorytm wyszukiwania minimum}
 
 Algorytm wyszukiwania minimum, zaproponowany przez Dürra i Høyera, wykorzystuje algorytm BBHT jako podprocedurę służącą do znajdowania elementów o wartości mniejszej od aktualnie przyjętego progu. Algorytm ten iteracyjnie aktualizuje indeks elementu o najmniejszej dotychczas znalezionej wartości. Dzięki zastosowaniu kwantowego przeszukiwania możliwe jest znalezienie minimum tablicy w oczekiwanym czasie rzędu $\mathcal{O}(\sqrt{N})$ przy prawdopodobieństwie sukcesu wynoszącym co najmniej $\frac{1}{2}$ \cite{duerr1996}.
@@ -298,24 +282,19 @@ Algorytm wyszukiwania minimum, zaproponowany przez Dürra i Høyera, wykorzystuj
 \label{alg:quantum_minimum}
 \begin{enumerate}
 
-    \item Wylosuj indeks $y$ z przedziału
-    $\{0,1,\ldots,N-1\}$ i przyjmij go jako początkowy próg.
+    \item Wylosuj indeks $y$ z przedziału $\{0,1,\ldots,N-1\}$ i przyjmij go jako początkowy próg.
 
-    \item Powtarzaj poniższe kroki do momentu przekroczenia limitu
-    czasu działania opisanego w~\eqref{eq:minimum_time}:
+    \item Powtarzaj poniższe kroki do momentu przekroczenia limitu czasu działania opisanego w~\eqref{eq:minimum_time}:
     
     \begin{enumerate}
-        \item Przygotuj rejestr kwantowy w stanie równomiernej
-        superpozycji wszystkich stanów.
+        \item Przygotuj rejestr kwantowy w stanie równomiernej superpozycji wszystkich stanów.
 
-        \item Oznacz wszystkie stany odpowiadające indeksom $j$,
-        dla których zachodzi
+        \item Oznacz wszystkie stany odpowiadające indeksom $j$, dla których zachodzi
         \[
             T[j] < T[y].
         \]
 
-        \item Uruchom algorytm BBHT (Alg.~\ref{alg:bbht}) w celu znalezienia jednego
-        z oznaczonych elementów.
+        \item Uruchom algorytm BBHT (Alg.~\ref{alg:bbht}) w celu znalezienia jednego z oznaczonych elementów.
 
         \item Wykonaj pomiar rejestru kwantowego i otrzymaj indeks $y'$.
 
@@ -326,8 +305,7 @@ Algorytm wyszukiwania minimum, zaproponowany przez Dürra i Høyera, wykorzystuj
         to zaktualizuj próg, przyjmując $y \leftarrow y'$.
     \end{enumerate}
 
-    \item Po zakończeniu iteracji zwróć indeks $y$ jako wynik
-    działania algorytmu.
+    \item Po zakończeniu iteracji zwróć indeks $y$ jako wynik działania algorytmu.
 
 \end{enumerate}
 \begin{center}
@@ -336,7 +314,7 @@ Algorytm wyszukiwania minimum, zaproponowany przez Dürra i Høyera, wykorzystuj
 
 \end{algorithm}
 \newpage
-Łączny oczekiwany czas działania algorytmu do momentu, w którym zmienna $y$ będzie wskazywać indeks elementu minimalnego, wynosi\cite{duerr1996}
+Łączny oczekiwany czas działania algorytmu do momentu, w którym zmienna $y$ będzie wskazywać indeks elementu minimalnego, wynosi~\cite{duerr1996}
 \begin{equation}
 \label{eq:minimum_time} 
 m_0=\frac{45}{4}\sqrt{N}+\frac{7}{10}\lg^2 N.
@@ -345,19 +323,19 @@ m_0=\frac{45}{4}\sqrt{N}+\frac{7}{10}\lg^2 N.
 \section{Rodzaje grafów}
 \label{sec:graph_types}
 
-Wpływ rodzaju grafu na wydajność algorytmu jest jednym z najważniejszych aspektów niniejszej pracy. Analiza zostanie przeprowadzona na czterech różnych rodzajach grafów: grafie rzadkim, średnio gęstym, gęstym oraz specjalnie przygotowanym grafie, który wymusza dużą liczbę relaksacji.
-We wszystkich analizowanych przypadkach rozpatrywane są grafy nieskierowane, bez pętli własnych, o nieujemnych wagach krawędzi. W przypadku tego ostatniego rodzaju grafu wagi krawędzi będą ściśle określone. Natomiast dla pozostałych grafów wagi będą losowane z przedziału \(1\) do \(n^2\), gdzie \(n\)  oznacza liczbę wierzchołków.
+Wpływ rodzaju grafu na wydajność algorytmu jest jednym z najważniejszych aspektów niniejszej pracy. Analiza zostanie przeprowadzona na czterech różnych rodzajach grafów: grafie rzadkim, średnio gęstym, gęstym oraz specjalnie przygotowanym grafie, który wymusza maksymalną liczbę relaksacji. We wszystkich analizowanych przypadkach rozpatrywane są grafy nieskierowane, bez pętli własnych, o nieujemnych wagach krawędzi. W przypadku tego ostatniego rodzaju grafu wagi krawędzi będą ściśle określone. Natomiast dla pozostałych grafów wagi będą losowane z przedziału \(1\) do \(n^2\), gdzie \(n\)  oznacza liczbę wierzchołków.
 \newpage
 
 \subsection {Graf gęsty}
 \label{subsec:graph_dense}
-Graf gęsty zawiera liczbę krawędzi bliską maksymalnej  \cite{graph_metrics} 
+Graf gęsty zawiera liczbę krawędzi bliską maksymalnej~\cite{graph_metrics} 
 \begin{equation}
 \label{eq:graph_dense_create1} 
  |E| = O(|V|^2).
 \end{equation}
 
-W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym liczba krawędzi jest równa maksymalnej liczbie krawędzi dopuszczalnej dla grafu nieskierowanego bez pętli \cite{graph_complete} 
+\noindent
+W niniejszej pracy graf gęsty jest grafem pełnym nieskierowanym, w którym liczba krawędzi jest równa maksymalnej liczbie krawędzi dopuszczalnej dla grafu nieskierowanego bez pętli~\cite{graph_complete} 
 \begin{equation}
 \label{eq:graph_dense_create2} 
 E = \frac{V(V-1)}{2}.
@@ -366,20 +344,20 @@ E = \frac{V(V-1)}{2}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_dense.png}
-    \caption{Przykład grafu "dense" analizowanego w pracy} 
+    \caption{Przykład grafu gęstego analizowanego w pracy} 
     \label{fig:graph_dense}
 \end{figure}
 \newpage
 
 \subsection {Graf o średniej gęstości}
 \label{subsec:graph_half_dense}
-Graf średnio gęsty zajmuje pośrednią pozycję pomiędzy grafami rzadkimi i pełnymi. Liczba krawędzi jest znacznie większa niż liczba wierzchołków, jednak nadal nie osiąga wartości maksymalnej jak w grafach gęstych \cite{graph_metrics} 
 
+Graf średnio gęsty zajmuje pośrednią pozycję pomiędzy grafami rzadkimi i pełnymi. Liczba krawędzi jest znacznie większa niż liczba wierzchołków, jednak nadal nie osiąga wartości maksymalnej jak w grafach gęstych \cite{graph_metrics} 
 \begin{equation}
 \label{eq:graph_half_dense_create1} 
 |E| = O(|V|^2).
 \end{equation}
-
+\noindent
 W niniejszej pracy jako graf o średniej gęstości przyjęto graf nieskierowany, którego liczba krawędzi stanowi połowę maksymalnej liczby krawędzi
 \begin{equation}
 \label{eq:graph_half_dense_create2} 
@@ -389,7 +367,7 @@ E = \frac{V(V-1)}{4}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_half_edges.png}
-    \caption{Przykład grafu "half-edges" analizowanego w pracy} 
+    \caption{Przykład grafu średnio gęstego analizowanego w pracy} 
     \label{fig:graph_half_edges}
 \end{figure}
 \newpage
@@ -402,6 +380,7 @@ Graf rzadki charakteryzuje się niewielką liczbą krawędzi względem maksymaln
 |E| = O(|V|).
 \end{equation}
 
+\noindent
 Przykładami grafów rzadkich są sieci drogowe, drzewa oraz wiele rzeczywistych sieci komputerowych. W niniejszej pracy jako graf rzadki przyjęto graf nieskierowany, w którym liczba krawędzi jest równa liczbie wierzchołków
 \begin{equation}
 \label{eq:graph_sprase_create2} 
@@ -411,19 +390,21 @@ E = V.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_sparse.png}
-    \caption{Przykład grafu "sparse" analizowanego w pracy} 
+    \caption{Przykład grafu rzadkiego analizowanego w pracy} 
     \label{fig:graph_sparse}
 \end{figure}
 \newpage
 
 \subsection {Przypadek szczególny}
 \label{subsec:graph_special_case}
-Przypadek szczególny jest specjalnie przygotowanym grafem pełnym. W odróżnieniu od pozostałych analizowanych grafów jego struktura oraz wagi krawędzi nie są losowe, lecz zostały dobrane w taki sposób, aby wymusić dużą liczbę operacji relaksacji wykonywanych przez algorytm Dijkstry. Tak jak graf gęsty, przypadek szczególny zawiera maksymalną liczbę krawędzi dla grafu nieskierowanego bez pętli \cite{graph_complete} 
+
+Przypadek szczególny jest specjalnie przygotowanym grafem pełnym. W odróżnieniu od pozostałych analizowanych grafów jego struktura oraz wagi krawędzi nie są losowe, lecz zostały dobrane w taki sposób, aby wymusić maksymalną liczbę operacji relaksacji wykonywanych przez algorytm Dijkstry. Tak jak graf gęsty, przypadek szczególny zawiera maksymalną liczbę krawędzi dla grafu nieskierowanego bez pętli \cite{graph_complete} 
 \begin{equation}
 \label{eq:graph_special_case_create1} 
 E = \frac{V(V-1)}{2}.
 \end{equation}
 
+\noindent
 Wagi krawędzi są wyznaczane zgodnie z następującą zależnością
 \begin{equation}
 \label{eq:graph_special_case_create2} 
@@ -435,7 +416,7 @@ w(i,j)=\begin{cases}1, & \text{gdy } j=i+1,\\[6pt]2\left(|V|-i\right), & \text{g
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{images/documentation/graph_special_case.png}
-    \caption{Przykład grafu "special case" analizowanego w pracy} 
+    \caption{Przykład przypadku szczególnego analizowanego w pracy} 
     \label{fig:graph_special_case}
 \end{figure}
 \newpage
@@ -462,6 +443,7 @@ A =
 \end{pmatrix}
 \end{equation}
 
+\noindent
 Macierz sąsiedztwa przedstawia graf w postaci dwuwymiarowej tablicy, w której element znajdujący się na przecięciu \(i\)-tego wiersza i \(j\)-tej kolumny określa wagę krawędzi pomiędzy odpowiadającymi im wierzchołkami.
 \begin{equation}
 \label{eq:adjacency_list}
@@ -480,4 +462,5 @@ Macierz sąsiedztwa przedstawia graf w postaci dwuwymiarowej tablicy, w której 
 \end{aligned}
 \end{equation}
 
+\noindent
 W implementacji przedstawionej w niniejszej pracy graf został zapisany w postaci listy sąsiedztwa. W niej dla każdego wierzchołka przechowywana jest lista wszystkich wierzchołków z nim połączonych wraz z odpowiadającymi im wagami krawędzi.

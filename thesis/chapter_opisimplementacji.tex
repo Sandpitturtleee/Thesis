@@ -1,6 +1,6 @@
 \chapter{Opis implementacji}
 
-W niniejszym rozdziale przedstawiono sposób implementacji rozwiązania opisanego od strony teoretycznej w poprzednim rozdziale. Implementacja obejmuje generowanie grafów, trzy warianty algorytmu Dijkstry, analizę otrzymanych wyników oraz towrzenie wykresów umożliwiających ich porównanie.
+W niniejszym rozdziale przedstawiono sposób implementacji rozwiązania opisanego od strony teoretycznej w poprzednim rozdziale. Implementacja obejmuje generowanie grafów, różne warianty algorytmu Dijkstry, analizę otrzymanych wyników oraz tworzenie wykresów umożliwiających ich porównanie.
 
 Poszczególne etapy działania programu zostały rozdzielone, żeby mogły być uruchamiane niezależnie. Dane pomiędzy nimi przekazywane są przy użyciu plików \texttt{JSON}. Wygenerowane grafy są zapisywane do plików, a następnie odczytywane przez moduły wykonujące odpowiednie wersje algorytmu Dijkstry. Wyniki zapisywane są w plikach \texttt{JSON}, które następnie wykorzystywane są przez moduły do analizy statystycznej. Jej wyniki stanowią z kolei dane wejściowe dla modułów odpowiedzialnych za generowanie wykresów. Cały proces przetwarzania danych w implementacji można przedstawić w następujący sposób:
 \begin{center}
@@ -28,8 +28,7 @@ Pierwszym etapem jest przygotowanie grafów stanowiących dane wejściowe dla ws
 
 Liczba wierzchołków grafów oraz liczba różnych grafów generowanych dla każdego badanego rozmiaru są określane za pomocą pliku konfiguracyjnego. Pozwala to na łatwe dostosowanie parametrów bez konieczności modyfikowania kodu źródłowego. 
 
-Grafy przechowywane są w postaci listy sąsiedztwa, zgodnie z reprezentacją opisaną wcześniej w rozdziale~\ref{sec:graph_representation}. Po wygenerowaniu każdy graf jest zapisywany do pliku  \texttt{JSON}. Jego nazwa zawiera informacje pozwalające określić typ grafu, jego rozmiar oraz numer. Dzięki temu wszystkie implementacje algorytmu Dijkstry mogą korzystać z tych samych danych wejściowych.
-
+Grafy przechowywane są w postaci listy sąsiedztwa, zgodnie z reprezentacją opisaną wcześniej w rozdziale~\ref{sec:graph_representation}. Po wygenerowaniu każdy graf jest zapisywany do pliku \texttt{JSON}. Jego nazwa zawiera informacje pozwalające określić typ grafu, jego rozmiar oraz numer. Dzięki temu wszystkie implementacje algorytmu Dijkstry mogą korzystać z tych samych danych wejściowych.
 
 \subsection{Generowanie grafu gęstego}
 
@@ -60,24 +59,21 @@ Graf rzadki generowany jest zgodnie z definicją przyjętą w części teoretycz
     |E| = |V|.
 \end{equation}
 \noindent
-Mechanizm losowania krawędzi oraz ich wag jest analogiczny jak w przypadku grafu o średniej gęstości. Różnica polega na większej liczbie tworzonych połączeń. Przykład grafu tego typu przedstawiono na rys.~\ref{fig:graph_sparse}.
-
+Mechanizm losowania krawędzi oraz ich wag jest taki sam jak w przypadku grafu o średniej gęstości. Różnica polega na większej liczbie tworzonych połączeń. Przykład grafu tego typu przedstawiono na rys.~\ref{fig:graph_sparse}.
 
 \subsection{Generowanie przypadku szczególnego}
 
 Ostatnim generowanym typem jest przypadek szczególny przedstawiony na rys.~\ref{fig:graph_special_case}. Podobnie jak graf gęsty jest on grafem pełnym, jednak wagi jego krawędzi nie są losowane. Sposób ich wyznaczania odpowiada zależności przedstawionej w części teoretycznej w rozdziale~\ref{subsec:graph_special_case}. 
-\[
-w(i,j)=
-\begin{cases}
-1, & \text{gdy } j=i+1,\\[6pt]
-2\left(|V|-i\right), & \text{gdy } j>i+1.
+\begin{equation}
+\label{eq:graph_special_case_create2} 
+w(i,j)=\begin{cases}1, & \text{gdy } j=i+1,\\[6pt]2\left(|V|-i\right), & \text{gdy } j>i+1.
 \end{cases}
-\]
+\end{equation}
 
 \section{Implementacja algorytmu Dijkstry}
 \label{sec:dijkstra_implementation}
 
-Podstawowy sposób działania algorytmu Dijkstry został przedstawiony w alg.~\ref{alg:dijkstra}. Wszystkie trzy implementacje użyte w części działają według tego samego schematu. Różnią się przede wszystkim sposobem wykonania operacji wyboru nieodwiedzonego wierzchołka o najmniejszej aktualnie znanej odległości.
+Podstawowy sposób działania algorytmu Dijkstry został przedstawiony w alg.~\ref{alg:dijkstra}. Wszystkie implementacje użyte w części działają według tego samego schematu. Różnią się przede wszystkim sposobem wykonania operacji wyboru nieodwiedzonego wierzchołka o najmniejszej aktualnie znanej odległości.
 
 W celu porównania różnych metod wyszukiwania minimum zaimplementowano trzy warianty:
 \begin{itemize}
@@ -97,6 +93,8 @@ Na potrzeby zliczania operacji podczas wyszukiwania wprowadzono zmienną przecho
     C_{\mathrm{search}} = n.
 \end{equation}
 
+\newpage
+
 Wyszukiwanie wykonywane jest $n$ razy, ponieważ zewnętrzna pętla algorytmu również wykonuje $n$ iteracji. Całkowita liczba operacji zliczonych dla jednego uruchomienia wersji naiwnej wynosi więc
 
 \begin{equation}
@@ -105,13 +103,12 @@ Wyszukiwanie wykonywane jest $n$ razy, ponieważ zewnętrzna pętla algorytmu r�
     n^2.
 \end{equation}
 
-Po zakończeniu działania algorytmu wartość zmiennej liczącej liczbe operacji jest zapisywana, a następnie przekazywana w pliku \texttt{JSON} do dalszej analizy statystycznej.
-
+Po zakończeniu działania algorytmu wartość zmiennej liczącej liczbę operacji jest zapisywana, a następnie przekazywana w pliku \texttt{JSON} do dalszej analizy.
 
 \subsection{Wersja z kopcem binarnym}
 \label{subsec:binary_implementation}
 
-Druga klasyczna implementacja wykorzystuje kopiec binarny opisany w części teoretycznej w rozdziale~\ref{subsec:naive_minimum}. Przykładową strukturę kopca przedstawiono na rys.~\ref{fig:binary_heap_list}. W przeciwieństwie do wersji naiwnej wybór wierzchołka o najmniejszej odległości nie wymaga liniowego przeglądania wszystkich nieodwiedzonych wierzchołków.
+Druga klasyczna implementacja wykorzystuje kopiec binarny opisany w części teoretycznej w rozdziale~\ref{subsec:naive_minimum}. Przykładową strukturę kopca przedstawiono na rys.~\ref{fig:binary_heap_list}. W przeciwieństwie do wersji naiwnej wybór wierzchołka o najmniejszej odległości nie wymaga liniowego sprawdzania wszystkich nieodwiedzonych wierzchołków.
 
 Na potrzeby algorytmu zaimplementowano własną strukturę kopca, która zlicza wykonywane podczas jego działania operacje. Uwzględniane są ich dwa rodzaje:
 \begin{itemize}
@@ -131,8 +128,9 @@ Wstawienie nowego elementu może wymagać ponownego uporządkowania kopca, co wi
 
 Trzecia implementacja algorytmu Dijkstry wykorzystuje kwantowy algorytm wyszukiwania minimum Dürra-Høyera przedstawiony w alg.~\ref{alg:quantum_minimum}. Algorytm ten wykorzystuje algorytm BBHT (alg.~\ref{alg:bbht}), który z kolei wykonuje określoną liczbę iteracji algorytmu Grovera (alg.~\ref{alg:grover}).
 
-Ogólna struktura algorytmu Dijkstry pozostaje taka sama jak w alg.~\ref{alg:dijkstra}. W każdej iteracji tworzona jest lista
-wierzchołków wraz z odpowiadającymi im odległościami. Lista może zawierać również wierzchołki o odległości równej nieskończoności. Takie wierzchołki mogą zostać pominięte podczas dostosowywania rozmiaru przestrzeni wyszukiwania dlatego liczba elementów jest następnie zwiększana lub zmniejszana do najbliższej odpowiedniej potęgi liczby~2. Wynika to ze sposobu reprezentacji stanów przez rejestr kwantowy. Rejestr składający się z $n$ kubitów pozwala reprezentować $2^n$ stanów bazowych. Liczba operacji w wersji kwantowej wyznaczana jest na podstawie dwóch elementów:
+Ogólna struktura algorytmu Dijkstry pozostaje taka sama jak w alg.~\ref{alg:dijkstra}. W każdej iteracji tworzona jest lista wierzchołków wraz z odpowiadającymi im odległościami. Lista może zawierać również wierzchołki o odległości równej nieskończoności. Takie wierzchołki mogą zostać pominięte podczas dostosowywania rozmiaru przestrzeni wyszukiwania dlatego liczba elementów jest następnie zwiększana lub zmniejszana do najbliższej odpowiedniej potęgi liczby 2. Wynika to ze sposobu reprezentacji stanów przez rejestr kwantowy. Rejestr składający się z $n$ kubitów pozwala reprezentować $2^n$ stanów bazowych. 
+
+Liczba operacji w wersji kwantowej wyznaczana jest na podstawie dwóch elementów:
 \begin{itemize}
     \item kosztu przygotowania rejestru kwantowego w stanie równomiernej superpozycji,
     \item liczby wykonanych iteracji algorytmu Grovera.
@@ -148,17 +146,13 @@ wzorem~\eqref{eq:superposition}. Koszt przygotowania rejestru wynosi zatem
 \begin{equation}
     C_{\mathrm{init}} = \log_2 N.
 \end{equation}
-
+\noindent
 W procedurze BBHT losowana jest dodatkowo wartość $j$, określająca liczbę iteracji algorytmu Grovera wykonywanych w danej próbie. Koszt pojedynczej próby BBHT określono więc jako
 \begin{equation}
-    C_{\mathrm{BBHT}}
-    =
-    \log_2 N + j.
+    C_{\mathrm{BBHT}} = \log_2 N + j.
 \end{equation}
 
-Pierwszy składnik odpowiada koszcie przygotowania superpozycji, natomiast drugi liczbie wykonanych iteracji algorytmu Grovera. Jeżeli algorytm BBHT wymaga kilku prób,
-ich koszty są sumowane. Algorytm Dürra-Høyera może następnie wielokrotnie wywoływać algorytm BBHT podczas znajdowania kolejnych elementów mniejszych od aktualnego
-kandydata na minimum. Koszty tych wywołań są również sumowane. Ostatecznie liczba operacji zarejestrowana podczas działania algorytmu Dijkstry odpowiada sumie kosztów wszystkich prób BBHT wykonanych podczas wszystkich wywołań kwantowego wyszukiwania minimum.
+Pierwszy składnik odpowiada koszcie przygotowania superpozycji, natomiast drugi liczbie wykonanych iteracji algorytmu Grovera. Jeżeli algorytm BBHT wymaga kilku prób, ich koszty są sumowane. Algorytm Dürra-Høyera może następnie wielokrotnie wywoływać algorytm BBHT podczas znajdowania kolejnych elementów mniejszych od aktualnego kandydata na minimum. Koszty tych wywołań są również sumowane. Ostatecznie liczba operacji zarejestrowana podczas działania algorytmu Dijkstry odpowiada sumie kosztów wszystkich prób BBHT wykonanych podczas wszystkich wywołań kwantowego wyszukiwania minimum.
 
 Dodatkowo rejestrowane są: liczba wywołań algorytmu wyszukiwania minimum, liczba przypadków, w których minimum znalezione przez algorytm kwantowy różniło się od rzeczywistego minimum, oraz informacja o niepoprawności końcowego wyniku algorytmu Dijkstry. Po zakończeniu działania wszystkie zliczone wartości zapisywane są do pliku w formacie \texttt{JSON}.
 
@@ -170,15 +164,15 @@ Na tym etapie działania programu dane są wczytywane z plików \texttt{JSON} za
 \subsection{Ogólna analiza wyników}
 \label{subsec:broad_results_analysis}
 
-Dla każdej grupy pomiarów, obejmującej naiwną implementację klasycznego algorytmu Dijkstry, implementację wykorzystującą kopiec binarny oraz kwantowy algorytm Dijkstry, obliczane są następujące statystyki dotyczące liczby operacji wykonywanych przez poszczególne algorytmy:
+Dla każdej wersji, obejmującej naiwną implementację klasycznego algorytmu Dijkstry, implementację wykorzystującą kopiec binarny oraz kwantowy algorytm Dijkstry, obliczane są następujące statystyki dotyczące liczby operacji wykonywanych przez poszczególne algorytmy:
 \begin{itemize}
 \item średnia,
 \item mediana,
 \item odchylenie standardowe,
 \item wartość minimalna i maksymalna,
 \end{itemize}
-\noindent
-W dalszej analizie wyników szczególnie istotne są mediana oraz odchylenie standardowe. Mediana jest wykorzystywana, ponieważ jest mniej wrażliwa na pojedyncze wartości odstające niż średnia. Odchylenie standardowe pozwala natomiast określić sam rozrzut wyników. Ma to znaczenie przede wszystkim w przypadku wersji kwantowej, ale jest obliczane też dla obu implementacji klasycznych, dzięki czemu możliwe jest porównanie stabilności wszystkich analizowanych wersji algorytmu.
+\newpage
+W dalszej analizie wyników szczególnie istotne są średnia oraz odchylenie standardowe. Średnia jest wykorzystywana w celu pokazania liczby operacji każdej z wersji algorytmu. Odchylenie standardowe pozwala natomiast określić sam rozrzut wyników. Dzięki temu możliwe jest porównanie stabilności wszystkich analizowanych wersji algorytmu.
 
 Obliczone statystyki zapisywane są do kolejnych plików \texttt{JSON}, które stanowią dane wejściowe dla modułów odpowiedzialnych za tworzenie wykresów.
 
@@ -187,11 +181,11 @@ Obliczone statystyki zapisywane są do kolejnych plików \texttt{JSON}, które s
 
 W przypadku wersji kwantowej przeprowadzana jest dodatkowa analiza związana z probabilistycznym działaniem algorytmu wyszukiwania minimum Dürra-Høyera przedstawionego w algorytmie~\ref{alg:quantum_minimum}. Algorytm ten wykorzystuje algorytm BBHT (alg.~\ref{alg:bbht}), która wykonuje określoną liczbę iteracji algorytmu Grovera (alg.~\ref{alg:grover}).
 
-Oprócz analizy liczby wykonanych operacji opisanej w  poprzednim podrozdziale~\ref{subsec:broad_results_analysis}, analizowane są również: liczba wywołań algorytmu wyszukiwania minimum, liczba przypadków, w których znalezione minimum różniło się od opprawnego minimum, oraz liczba niepoprawnych wyników samego algorytmu Dijkstry. Dla tych wartości obliczane są podstawowe statystyki, takie jak średnia, mediana, odchylenie standardowe, minimum oraz maksimum. Porównywana jest również liczba błędnie znalezionych minimów z liczbą niepoprawnych wyników algorytmu Dijkstry. Pozwala to sprawdzić, czy błędne znalezienie minimum zawsze prowadzi do niepoprawnego wyniku  algorytmu Dijkstry.
+Oprócz analizy liczby wykonanych operacji opisanej w  poprzednim podrozdziale~\ref{subsec:broad_results_analysis}, analizowane są również: liczba wywołań algorytmu wyszukiwania minimum, liczba przypadków, w których znalezione minimum różniło się od poprawnego minimum oraz liczba niepoprawnych wyników samego algorytmu Dijkstry. Dla tych wartości obliczane są podstawowe statystyki, takie jak średnia, mediana, odchylenie standardowe, minimum oraz maksimum. Porównywana jest również liczba błędnie znalezionych minimów z liczbą niepoprawnych wyników algorytmu Dijkstry. Pozwala to sprawdzić, czy błędne znalezienie minimum zawsze prowadzi do niepoprawnego wyniku algorytmu Dijkstry.
 
-Dodatkowo analizowana jest skuteczność algorytmu Dijkstry, określając liczbę poprawnych wyników wśród wszystkich otrzymanych wyników. W podobny sposób oceniana jest skuteczność algorytmu wyszukiwania minimum Dürra-Høyera na podstawie tego, jak często znalezione minimum było zgodne z poprawnym minimum.
+Dodatkowo poprzez określenie liczby poprawnych wyników wśród wszystkich otrzymanych wyników analizowana jest skuteczność algorytmu Dijkstry. W podobny sposób oceniana jest skuteczność algorytmu wyszukiwania minimum Dürra-Høyera na podstawie tego, jak często znalezione minimum było zgodne z poprawnym minimum.
 
-Oddzielnie analizowane są konfiguracje z limitem wynikającym ze wzoru~\eqref{eq:minimum_time} oraz bez limitu. Pozwala to sprawdzić, jaki wpływ zastosowanie limitu ma na liczbę wykonywanych operacji oraz na prawdopodobieństwo otrzymania poprawnego wyniku.
+Oddzielnie analizowane są wersje z limitem wynikającym ze wzoru~\eqref{eq:minimum_time} oraz bez limitu. Pozwala to sprawdzić, jaki wpływ zastosowanie limitu ma na liczbę wykonywanych operacji oraz na prawdopodobieństwo otrzymania poprawnego wyniku.
 
 Wszystkie wyniki przeprowadzonej analizy są następnie zapisywane do plików \texttt{JSON}.
 \newpage
