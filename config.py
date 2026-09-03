@@ -27,7 +27,9 @@ STATS_DIRECTORY_STANDARD_HEAP = "dijkstra_stats/standard/heap"
 STATS_DIRECTORY_STANDARD_NAIVE = "dijkstra_stats/standard/naive"
 
 STATS_DIRECTORY_QUANTUM_TIME_LIMIT = "dijkstra_stats/quantum/time_limit"
-STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON = "dijkstra_stats/quantum/time_limit_cost_comparison"
+STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON = (
+    "dijkstra_stats/quantum/time_limit_cost_comparison"
+)
 STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT = "dijkstra_stats/quantum/no_time_limit"
 STATS_DIRECTORY_QUANTUM_PROB_TIME_LIMIT = "dijkstra_stats/quantum_prob/time_limit"
 STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT = "dijkstra_stats/quantum_prob/no_time_limit"
@@ -135,28 +137,20 @@ GRAPH_LABELS_MAP = {
     "half_edges": "Graf średnio gęsty",
     "dense": "Graf gęsty",
     "special_case": "Przypadek szczególny",
-
     "standard_naive_sparse": "Wersja naiwna",
     "standard_heap_sparse": "Wersja z kopcem binarnym",
-
     "standard_naive_half_edges": "Wersja naiwna",
     "standard_heap_half_edges": "Wersja z kopcem binarnym",
-
     "standard_naive_dense": "Wersja naiwna",
     "standard_heap_dense": "Wersja z kopcem binarnym",
-
     "standard_naive_special_case": "Wersja naiwna",
     "standard_heap_special_case": "Wersja z kopcem binarnym",
-
     "quantum_no_time_limit_sparse": "Wersja kwantowa z limitem",
     "quantum_time_limit_sparse": "Wersja kwantowa bez limitu",
-
     "quantum_no_time_limit_half_edges": "Wersja kwantowa z limitem",
     "quantum_time_limit_half_edges": "Wersja kwantowa bez limitu",
-
     "quantum_no_time_limit_dense": "Wersja kwantowa z limitem",
     "quantum_time_limit_dense": "Wersja kwantowa bez limitu",
-
     "quantum_no_time_limit_special_case": "Wersja kwantowa z limitem",
     "quantum_time_limit_special_case": "Wersja kwantowa bez limitu",
 }

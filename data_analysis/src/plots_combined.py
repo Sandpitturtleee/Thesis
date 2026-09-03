@@ -35,12 +35,13 @@ from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
 
-from config import (GRAPH_TYPES_MAPPING, STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+from config import (GRAPH_LABELS_MAP, GRAPH_TYPES_MAPPING, STAT_NAME_MAP,
+                    STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
                     STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
                     STATS_DIRECTORY_STANDARD_HEAP,
-                    STATS_DIRECTORY_STANDARD_NAIVE, VERTICES_X_PLOT_LABEL, GRAPH_LABELS_MAP, STAT_NAME_MAP)
+                    STATS_DIRECTORY_STANDARD_NAIVE, VERTICES_X_PLOT_LABEL)
 from data_analysis.src.helpers import merge_stats_dicts, read_results_from_json
 
 DataStats = Dict[str, Any]
@@ -175,9 +176,7 @@ def plots_types_by_stat(
             y = [records[str(size)][stat_key] for size in x]
             file_label = filename.replace(".json", "")
             label_nice = GRAPH_LABELS_MAP.get(file_label, file_label)
-            (handle,) = axs[idx].plot(
-                x, y, marker="o", color=shades[i]
-            )
+            (handle,) = axs[idx].plot(x, y, marker="o", color=shades[i])
             handles_dict[label_nice] = handle
 
         y_label = STAT_NAME_MAP.get(stat_key, stat_key.capitalize())

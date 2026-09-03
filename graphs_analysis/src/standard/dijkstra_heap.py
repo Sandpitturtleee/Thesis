@@ -181,7 +181,6 @@ def dijkstra_heap(
     heap.push((0, start_node))
 
     while heap.data:
-        #heap.visualize()
         result = heap.pop()
 
         if result is None:
@@ -189,7 +188,6 @@ def dijkstra_heap(
 
         dist_u, u = result
 
-        # Ignore an outdated heap entry.
         if dist_u > distances[u]:
             continue
 
@@ -199,8 +197,6 @@ def dijkstra_heap(
             if alt < distances[v]:
                 distances[v] = alt
                 previous[v] = u
-
-                # Add a new entry with the improved distance.
                 heap.push((alt, v))
 
     return distances, previous, heap.total_work()

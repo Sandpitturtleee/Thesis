@@ -26,8 +26,9 @@ from typing import Any, Dict, List, Optional
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from config import DATA_DIRECTORY, RESULTS_DIRECTORY_STANDARD_NAIVE, RESULTS_DIRECTORY_STANDARD_HEAP, \
-    RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT
+from config import (DATA_DIRECTORY, RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
+                    RESULTS_DIRECTORY_STANDARD_HEAP,
+                    RESULTS_DIRECTORY_STANDARD_NAIVE)
 
 
 def plot_all_other() -> None:

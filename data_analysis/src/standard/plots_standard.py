@@ -31,8 +31,8 @@ from typing import Any, Dict, Tuple
 
 import matplotlib.pyplot as plt
 
-from config import (COLOR_MAP, STATS_DIRECTORY_STANDARD_HEAP,
-                    STATS_DIRECTORY_STANDARD_NAIVE, STAT_NAME_MAP, VERTICES_X_PLOT_LABEL)
+from config import (COLOR_MAP, STAT_NAME_MAP, STATS_DIRECTORY_STANDARD_HEAP,
+                    STATS_DIRECTORY_STANDARD_NAIVE, VERTICES_X_PLOT_LABEL)
 from data_analysis.src.helpers import (add_custom_legend,
                                        get_type_from_filename,
                                        merge_stats_dicts,
@@ -68,7 +68,9 @@ def plot_naive_vs_heap_all() -> None:
     """
     plot_naive_vs_heap(stat_key="mean", stat_label="średnia", fig_size=(16, 6))
     plot_naive_vs_heap(stat_key="median", stat_label="mediana", fig_size=(16, 6))
-    plot_naive_vs_heap(stat_key="std", stat_label="odchylenie standardowe", fig_size=(16, 6))
+    plot_naive_vs_heap(
+        stat_key="std", stat_label="odchylenie standardowe", fig_size=(16, 6)
+    )
 
 
 def plot_naive_vs_heap(
@@ -93,8 +95,12 @@ def plot_naive_vs_heap(
     naive_stats = read_results_from_json(directory=STATS_DIRECTORY_STANDARD_NAIVE)
     heap_stats = read_results_from_json(directory=STATS_DIRECTORY_STANDARD_HEAP)
     merged = merge_stats_dicts(dicts=[naive_stats, heap_stats])
-    plot_stat_subplot(merged, "naive", stat_key, axs[0], f"Wersja naiwna - {stat_label}")
-    plot_stat_subplot(merged, "heap", stat_key, axs[1], f"Wersja z kopcem binarnym - {stat_label}")
+    plot_stat_subplot(
+        merged, "naive", stat_key, axs[0], f"Wersja naiwna - {stat_label}"
+    )
+    plot_stat_subplot(
+        merged, "heap", stat_key, axs[1], f"Wersja z kopcem binarnym - {stat_label}"
+    )
     fig.tight_layout()
     plt.show()
 

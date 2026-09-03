@@ -4,7 +4,6 @@ from thesis_config import (GRAPH_DENSE, GRAPH_HALF_EDGES, GRAPH_SPARSE,
 
 if __name__ == "__main__":
     print()
-
     draw_graph_small(graph=GRAPH_SPARSE)
     draw_graph_small(graph=GRAPH_HALF_EDGES)
     draw_graph_small(graph=GRAPH_DENSE)

@@ -103,12 +103,10 @@ def grover_oracle(n: int, targets: List[int]) -> QuantumCircuit:
     for target in targets:
         bitstring = format(target, f"0{n}b")
 
-        # Flip qubits corresponding to 0 bits
         for qubit, bit in enumerate(bitstring):
             if bit == "0":
                 circ.x(qubit)
 
-        # Multi-controlled Z
         circ.h(n - 1)
         if n == 1:
             circ.z(0)
@@ -116,7 +114,6 @@ def grover_oracle(n: int, targets: List[int]) -> QuantumCircuit:
             circ.mcx(list(range(n - 1)), n - 1)
         circ.h(n - 1)
 
-        # Undo the X gates
         for qubit, bit in enumerate(reversed(bitstring)):
             if bit == "0":
                 circ.x(qubit)
@@ -208,7 +205,7 @@ def bbht_search(size: int, marked_states: List[int]) -> Tuple[Optional[int], int
 
         candidate = grover_search(size=size, marked_states=marked_states, iterations=j)
 
-        cost += j  # Grover iterations
+        cost += j
 
         if candidate is not None:
             return candidate, cost

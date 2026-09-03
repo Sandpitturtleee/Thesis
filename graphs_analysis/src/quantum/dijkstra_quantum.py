@@ -242,14 +242,12 @@ def dijkstra_quantum(
     distances[start_node] = 0
 
     for _ in range(n):
-        # Build active nodes/distances arrays
         active_indices = [i for i in range(n) if in_heap[i]]
         if not active_indices:
             break
 
         active_distances = [distances[i] for i in active_indices]
 
-        # Skip if all are inf (nothing reachable)
         if all(x == float("inf") for x in active_distances):
             break
 
@@ -265,12 +263,12 @@ def dijkstra_quantum(
         true_idx = min(range(len(padded_distances)), key=lambda i: padded_distances[i])
         if padded_distances[min_idx_active] != padded_distances[true_idx]:
             mismatch_count += 1
-        operation_count += cost  # Approximate runtime cost
+        operation_count += cost
         search_calls += 1
 
         u = padded_indices[min_idx_active]
         if distances[u] == float("inf"):
-            break  # Remaining nodes are unreachable
+            break
 
         in_heap[u] = False
 

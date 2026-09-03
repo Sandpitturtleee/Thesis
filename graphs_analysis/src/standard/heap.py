@@ -107,12 +107,7 @@ class CountingHeap:
 
         self._print_tree(0, "", True)
 
-    def _print_tree(
-            self,
-            index: int,
-            prefix: str,
-            is_left: bool
-    ) -> None:
+    def _print_tree(self, index: int, prefix: str, is_left: bool) -> None:
         """Recursively print the heap tree."""
 
         if index >= len(self.data):
@@ -123,23 +118,11 @@ class CountingHeap:
 
         # Print right subtree first
         if right < len(self.data):
-            self._print_tree(
-                right,
-                prefix + ("│   " if is_left else "    "),
-                False
-            )
+            self._print_tree(right, prefix + ("│   " if is_left else "    "), False)
 
         # Print current node
-        print(
-            prefix
-            + ("└── " if is_left else "┌── ")
-            + str(self.data[index])
-        )
+        print(prefix + ("└── " if is_left else "┌── ") + str(self.data[index]))
 
         # Print left subtree
         if left < len(self.data):
-            self._print_tree(
-                left,
-                prefix + ("    " if is_left else "│   "),
-                True
-            )
+            self._print_tree(left, prefix + ("    " if is_left else "│   "), True)

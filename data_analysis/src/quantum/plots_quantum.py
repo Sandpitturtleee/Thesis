@@ -30,17 +30,19 @@ Types:
 - Axes:    Matplotlib Axes object for custom plotting.
 """
 
-import matplotlib.pyplot as plt
 from typing import Any, Dict
+
+import matplotlib.pyplot as plt
 
 from config import (COLOR_MAP, PLOT_TITLE_SAME_GRAPH_TYPE_NO_TIME_LIMIT,
                     PLOT_TITLE_SAME_GRAPH_TYPE_TIME_LIMIT,
                     PLOT_TITLE_TYPE_NO_TIME_LIMIT, PLOT_TITLE_TYPE_TIME_LIMIT,
-                    STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
+                    STAT_NAME_MAP, STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
                     STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
+                    STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
-                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT, VERTICES_X_PLOT_LABEL, STAT_NAME_MAP,
-                    STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON)
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
+                    VERTICES_X_PLOT_LABEL)
 from data_analysis.src.helpers import (add_custom_legend,
                                        get_type_from_filename,
                                        quantum_stat_from_dict,
@@ -59,12 +61,24 @@ def plot_all_quantum_time_limit() -> None:
     plots_mean_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
     plots_median_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
     plots_std_quantum(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_mismatch_quantum_mean(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_mismatch_quantum_median(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_mismatch_quantum_std(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_invalid_quantum_mean(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_invalid_quantum_median(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
-    plots_invalid_quantum_std(data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT)
+    plots_mismatch_quantum_mean(
+        data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    )
+    plots_mismatch_quantum_median(
+        data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    )
+    plots_mismatch_quantum_std(
+        data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    )
+    plots_invalid_quantum_mean(
+        data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    )
+    plots_invalid_quantum_median(
+        data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    )
+    plots_invalid_quantum_std(
+        data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
+    )
     plots_search_calls_quantum_mean(
         data=time_limit_stats, title_type=PLOT_TITLE_TYPE_TIME_LIMIT
     )
@@ -83,7 +97,7 @@ def plot_quantum_time_limit_cost_comparison_all() -> None:
 
     plot_quantum_time_limit_cost_comparison(
         stats=time_limit_stats,
-        #vertices_count=100,
+        # vertices_count=100,
     )
 
 
@@ -228,7 +242,9 @@ def plot_quantum_time_limit_vs_no_time_limit_all() -> None:
     """
     plot_quantum_stat_time_limit_vs_no_time_limit("cost", "mean", "średnia")
     plot_quantum_stat_time_limit_vs_no_time_limit("cost", "median", "mediana")
-    plot_quantum_stat_time_limit_vs_no_time_limit("cost", "std", "odchylenie standardowe")
+    plot_quantum_stat_time_limit_vs_no_time_limit(
+        "cost", "std", "odchylenie standardowe"
+    )
     plot_quantum_stat_time_limit_vs_no_time_limit(
         "mismatch_counts", "mean", "mean mismatch count"
     )
@@ -500,6 +516,7 @@ def plots_mismatch_quantum_mean(data: QuantumStatsDict, title_type: str) -> None
     fig.tight_layout()
     plt.show()
 
+
 def plots_mismatch_quantum_median(data: QuantumStatsDict, title_type: str) -> None:
     """
     Plot the median mismatch count as a function of graph size.
@@ -529,6 +546,7 @@ def plots_mismatch_quantum_median(data: QuantumStatsDict, title_type: str) -> No
     fig.tight_layout()
     plt.show()
 
+
 def plots_mismatch_quantum_std(data: QuantumStatsDict, title_type: str) -> None:
     """
     Plot the std mismatch count as a function of graph size.
@@ -551,7 +569,9 @@ def plots_mismatch_quantum_std(data: QuantumStatsDict, title_type: str) -> None:
         (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Wersja kwantowa {title_type} - odchylenie standardowe błędne minimum")
+    ax.set_title(
+        f"Wersja kwantowa {title_type} - odchylenie standardowe błędne minimum"
+    )
     ax.set_xlabel(VERTICES_X_PLOT_LABEL)
     ax.set_ylabel("Odchylenie standardowe")
     ax.grid(True)
@@ -592,6 +612,7 @@ def plots_invalid_quantum_mean(data: QuantumStatsDict, title_type: str) -> None:
     fig.tight_layout()
     plt.show()
 
+
 def plots_invalid_quantum_median(data: QuantumStatsDict, title_type: str) -> None:
     """
     Plot the mean invalid count as a function of graph size.
@@ -621,6 +642,7 @@ def plots_invalid_quantum_median(data: QuantumStatsDict, title_type: str) -> Non
     fig.tight_layout()
     plt.show()
 
+
 def plots_invalid_quantum_std(data: QuantumStatsDict, title_type: str) -> None:
     """
     Plot the mean invalid count as a function of graph size.
@@ -643,12 +665,15 @@ def plots_invalid_quantum_std(data: QuantumStatsDict, title_type: str) -> None:
         (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Wersja kwantowa {title_type} - odchylenie standardowe niepoprawny wynik Dijkstra")
+    ax.set_title(
+        f"Wersja kwantowa {title_type} - odchylenie standardowe niepoprawny wynik Dijkstra"
+    )
     ax.set_xlabel(VERTICES_X_PLOT_LABEL)
     ax.set_ylabel("Odchylenie standardowe")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
+
 
 def plots_search_calls_quantum_mean(data: QuantumStatsDict, title_type: str) -> None:
     """
@@ -678,6 +703,7 @@ def plots_search_calls_quantum_mean(data: QuantumStatsDict, title_type: str) -> 
     ax.grid(True)
     fig.tight_layout()
     plt.show()
+
 
 def plots_search_calls_quantum_median(data: QuantumStatsDict, title_type: str) -> None:
     """
@@ -731,25 +757,27 @@ def plots_search_calls_quantum_std(data: QuantumStatsDict, title_type: str) -> N
         (line,) = ax.plot(x, y, marker="o", color=color)
         handles_dict[type_key] = line
     add_custom_legend(ax, handles_dict)
-    ax.set_title(f"Wersja kwantowa {title_type} - odchylenie standardowe liczba wyszukiwań minumum")
+    ax.set_title(
+        f"Wersja kwantowa {title_type} - odchylenie standardowe liczba wyszukiwań minumum"
+    )
     ax.set_xlabel(VERTICES_X_PLOT_LABEL)
     ax.set_ylabel("Odchylenie standardowe")
     ax.grid(True)
     fig.tight_layout()
     plt.show()
 
+
 def plot_quantum_time_limit_cost_comparison(
     stats: Dict[str, Dict[str, Any]],
 ) -> None:
     """
-    Rysuje średni koszt algorytmu kwantowego z limitem
-    w zależności od liczby błędnych wyborów minimum
-    dla 50 i 100 wierzchołków.
+    Plots the average cost of quantum algorithm depending on number of search minimum errors for 50 and 70 vertices.
 
-    50 wierzchołków  - odcienie czerwonego.
-    100 wierzchołków - odcienie niebieskiego.
+    Parameters
+    ----------
+    stats : Dict
+        Dictionary with data for plotting.
     """
-
     graph_names = {
         "sparse": "Graf rzadki",
         "half_edges": "Graf średnio gęsty",
@@ -775,12 +803,9 @@ def plot_quantum_time_limit_cost_comparison(
 
     plt.figure(figsize=(12, 7))
 
-    for graph_idx, (graph_key, graph_name) in enumerate(
-        graph_names.items()
-    ):
+    for graph_idx, (graph_key, graph_name) in enumerate(graph_names.items()):
         for vertices_count in vertices_counts:
 
-            # Znalezienie pliku odpowiadającego danemu typowi grafu
             matching_file = None
 
             for file_name in stats:
@@ -804,8 +829,7 @@ def plot_quantum_time_limit_cost_comparison(
                 continue
 
             mismatch_counts = sorted(
-                int(mismatch_count)
-                for mismatch_count in by_mismatch.keys()
+                int(mismatch_count) for mismatch_count in by_mismatch.keys()
             )
 
             mean_costs = [
@@ -830,8 +854,7 @@ def plot_quantum_time_limit_cost_comparison(
     plt.ylabel("Średnia liczba operacji")
 
     plt.title(
-        "Średnia liczba operacji w zależności od liczby "
-        "błędnych wyborów minimum"
+        "Średnia liczba operacji w zależności od liczby " "błędnych wyborów minimum"
     )
 
     plt.grid(True)

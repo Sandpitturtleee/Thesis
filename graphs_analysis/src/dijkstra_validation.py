@@ -156,7 +156,6 @@ def compare_dijkstra_results(
         set1 = set(tuple(lst) for lst in lists1)
         set2 = set(tuple(lst) for lst in lists2)
         if not (set1 & set2):
-            # print(f"Key {key} has no intersection: {lists1} vs {lists2}")
             return False
     return True
 

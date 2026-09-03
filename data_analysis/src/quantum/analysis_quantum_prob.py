@@ -65,25 +65,25 @@ def prob_stats_quantum_analysis() -> None:
         directory=STATS_DIRECTORY_QUANTUM_PROB_NO_TIME_LIMIT,
     )
 
-    # same_graph_time_limit_results = read_results_from_json(
-    #     directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT
-    # )
-    # same_graph_time_limit_stats = compute_and_merge_all_probs(
-    #     results=same_graph_time_limit_results
-    # )
-    # save_merged_prob_stats_by_file(
-    #     merged=same_graph_time_limit_stats,
-    #     directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT,
-    # )
-    #
-    # no_time_limit_results = read_results_from_json(
-    #     directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT
-    # )
-    # no_time_limit_stats = compute_and_merge_all_probs(results=no_time_limit_results)
-    # save_merged_prob_stats_by_file(
-    #     merged=no_time_limit_stats,
-    #     directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_NO_TIME_LIMIT,
-    # )
+    same_graph_time_limit_results = read_results_from_json(
+        directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT
+    )
+    same_graph_time_limit_stats = compute_and_merge_all_probs(
+        results=same_graph_time_limit_results
+    )
+    save_merged_prob_stats_by_file(
+        merged=same_graph_time_limit_stats,
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_TIME_LIMIT,
+    )
+
+    no_time_limit_results = read_results_from_json(
+        directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT
+    )
+    no_time_limit_stats = compute_and_merge_all_probs(results=no_time_limit_results)
+    save_merged_prob_stats_by_file(
+        merged=no_time_limit_stats,
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_PROB_NO_TIME_LIMIT,
+    )
 
 
 def compute_and_merge_all_probs(results: ResultsDict) -> StatsDict:
@@ -111,7 +111,6 @@ def compute_and_merge_all_probs(results: ResultsDict) -> StatsDict:
     for filename in results:
         if not filename.startswith("quantum"):
             continue
-        # Keep this order!
         vertices = results[filename]["vertices"]
         merged_results[filename] = {}
         for v in vertices:

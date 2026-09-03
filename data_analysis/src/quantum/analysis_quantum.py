@@ -22,6 +22,7 @@ import json
 from pathlib import Path
 from pprint import pprint
 from typing import Any, Dict
+
 import pandas as pd
 
 from config import (DATA_DIRECTORY, RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
@@ -30,8 +31,9 @@ from config import (DATA_DIRECTORY, RESULTS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
                     RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT,
                     STATS_DIRECTORY_QUANTUM_NO_TIME_LIMIT,
                     STATS_DIRECTORY_QUANTUM_TIME_LIMIT,
+                    STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON,
                     STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
-                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT, STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON)
+                    STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT)
 from data_analysis.src.helpers import (per_count_row_statistics,
                                        read_results_from_json)
 
@@ -62,33 +64,33 @@ def stats_analysis_quantum() -> None:
     time_limit_results = read_results_from_json(
         directory=RESULTS_DIRECTORY_QUANTUM_TIME_LIMIT
     )
-    time_limit_stats = stats_by_file_quantum_time_limit_cost(
-        results=time_limit_results
-    )
+    time_limit_stats = stats_by_file_quantum_time_limit_cost(results=time_limit_results)
     save_stats_by_file_quantum_time_limit(
         stats=time_limit_stats,
-        directory=STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON
+        directory=STATS_DIRECTORY_QUANTUM_TIME_LIMIT_COST_COMPARISON,
     )
-    #
-    # same_graph_time_limit_results = read_results_from_json(
-    #     directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT
-    # )
-    # same_graph_time_limit_stats = stats_by_file_quantum(
-    #     results=same_graph_time_limit_results
-    # )
-    # save_stats_by_file_quantum(
-    #     stats=same_graph_time_limit_stats,
-    #     directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
-    # )
-    #
-    # same_graph_no_time_limit_results = read_results_from_json(
-    #     directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT
-    # )
-    # same_graph_no_time_limit_stats = stats_by_file_quantum(results=same_graph_no_time_limit_results)
-    # save_stats_by_file_quantum(
-    #     stats=same_graph_no_time_limit_stats,
-    #     directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
-    # )
+
+    same_graph_time_limit_results = read_results_from_json(
+        directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_TIME_LIMIT
+    )
+    same_graph_time_limit_stats = stats_by_file_quantum(
+        results=same_graph_time_limit_results
+    )
+    save_stats_by_file_quantum(
+        stats=same_graph_time_limit_stats,
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_TIME_LIMIT,
+    )
+
+    same_graph_no_time_limit_results = read_results_from_json(
+        directory=RESULTS_DIRECTORY_QUANTUM_SAME_GRAPH_NO_TIME_LIMIT
+    )
+    same_graph_no_time_limit_stats = stats_by_file_quantum(
+        results=same_graph_no_time_limit_results
+    )
+    save_stats_by_file_quantum(
+        stats=same_graph_no_time_limit_stats,
+        directory=STATS_DIRECTORY_SAME_GRAPH_QUANTUM_NO_TIME_LIMIT,
+    )
 
 
 def stats_by_file_quantum(
@@ -162,7 +164,20 @@ def save_stats_by_file_quantum(
 def stats_by_file_quantum_time_limit_cost(
     results: Dict[str, Dict[str, Any]],
 ) -> Dict[str, Dict[str, Any]]:
+    """
+    For 'quantum' time limit cost result files, calculate statistics.
 
+    Parameters
+    ----------
+    results : dict
+        Mapping from result file name to loaded data ({key: value} per file).
+
+    Returns
+    -------
+    dict
+        Nested dict: {file_name: {field_name: statistics_df, ...}, ...}
+        Each statistics_df is a DataFrame computed per field.
+    """
     all_stats = {}
 
     for file_name, data in results.items():
@@ -218,7 +233,17 @@ def save_stats_by_file_quantum_time_limit(
     stats: Dict[str, Dict[str, Any]],
     directory: str,
 ) -> None:
+    """
+    Save quantum time limit stats for each file in the provided directory.
 
+    Parameters
+    ----------
+    stats : dict
+        Output from stats_by_file_quantum, a nested dict by file and field, mapping onto pandas DataFrames
+
+    directory : str
+        Subdirectory (under DATA_DIRECTORY/) to save the stats files.
+    """
     project_root = Path(__file__).parent.parent.parent.parent
     output_dir = project_root / DATA_DIRECTORY / directory
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -237,6 +262,4 @@ def save_stats_by_file_quantum_time_limit(
                 ensure_ascii=False,
             )
 
-    print(
-        f"Quantum time-limit stats saved to: {output_dir}"
-    )
+    print(f"Quantum time-limit stats saved to: {output_dir}")
