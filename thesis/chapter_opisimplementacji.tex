@@ -26,7 +26,7 @@ Taki podział na niezależne moduły ułatwia przeprowadzanie eksperymentów z w
 
 Pierwszym etapem jest przygotowanie grafów stanowiących dane wejściowe dla wszystkich analizowanych wariantów algorytmu. W części teoretycznej przedstawiono cztery rodzaje grafów wykorzystywane w pracy: graf rzadki, graf o średniej gęstości, graf gęsty oraz przypadek szczególny. Ich właściwości, a także przyjęte liczby krawędzi, opisano w rozdziale dotyczącym rodzajów grafów~\ref{sec:graph_types}.
 
-Liczba wierzchołków grafów oraz liczba różnych grafów generowanych dla każdego badanego rozmiaru są określane za pomocą pliku konfiguracyjnego. Pozwala to na łatwe dostosowanie parametrów bez konieczności modyfikowania kodu źródłowego. 
+Liczba wierzchołków grafów oraz liczba różnych grafów generowanych dla każdego badanego rozmiaru są określane za pomocą pliku konfiguracyjnego. Pozwala to na łatwe dostosowanie parametrów bez konieczności modyfikowania kodu źródłowego. W ramach pracy dla każdego rozmiaru i typu grafu wygenerowano 100 różnych losowych grafów, dla których następnie uruchamiano algorytm Dijkstry.
 
 Grafy przechowywane są w postaci listy sąsiedztwa, zgodnie z reprezentacją opisaną wcześniej w rozdziale~\ref{sec:graph_representation}. Po wygenerowaniu każdy graf jest zapisywany do pliku \texttt{JSON}. Jego nazwa zawiera informacje pozwalające określić typ grafu, jego rozmiar oraz numer. Dzięki temu wszystkie implementacje algorytmu Dijkstry mogą korzystać z tych samych danych wejściowych.
 
@@ -73,7 +73,7 @@ w(i,j)=\begin{cases}1, & \text{gdy } j=i+1,\\[6pt]2\left(|V|-i\right), & \text{g
 \section{Implementacja algorytmu Dijkstry}
 \label{sec:dijkstra_implementation}
 
-Podstawowy sposób działania algorytmu Dijkstry został przedstawiony w alg.~\ref{alg:dijkstra}. Wszystkie implementacje użyte w części działają według tego samego schematu. Różnią się przede wszystkim sposobem wykonania operacji wyboru nieodwiedzonego wierzchołka o najmniejszej aktualnie znanej odległości.
+Podstawowy sposób działania algorytmu Dijkstry został przedstawiony w alg.~\ref{alg:dijkstra}. Wszystkie implementacje użyte w pracy działają według tego samego schematu. Różnią się przede wszystkim sposobem wykonania operacji wyboru nieodwiedzonego wierzchołka o najmniejszej aktualnie znanej odległości. Każdą z sprawdzanych wersji algorytmu uruchomiono dla każdego analizowanego rozmiaru grafu na 100 losowo wygenerowanych grafach.  Zebrane w ten sposób wyniki pozwalają na obliczenie wartości średniej oraz odchylenia standardowego.
 
 W celu porównania różnych metod wyszukiwania minimum zaimplementowano trzy warianty:
 \begin{itemize}
