@@ -1,0 +1,13 @@
+Niniejsza praca przedstawia implementację oraz analizę klasycznych i kwantowych metod wyszukiwania minimum
+wykorzystywanych w algorytmie Dijkstry do rozwiązywania problemu najkrótszej ścieżki. Analizie poddano trzy wersje
+algorytmu: naiwną wykorzystującą wyszukiwanie liniowe, klasyczną wersję z wykorzystaniem kopca binarnego oraz
+wersję kwantową opartą na algorytmie wyszukiwania minimum Dürra-Høyera, wykorzystującym algorytmy BBHT i Grovera.
+Celem pracy jest zbadanie wydajności oraz poprawności poszczególnych wersji dla grafów o różnych rozmiarach i cechach.
+W pracy badania przeprowadzono dla grafów rzadkich, średnio gęstych i gęstych, a także dla specjalnie
+skonstruowanego przypadku, którego zadaniem jest wymuszenie maksymalnej liczby relaksacji.
+Dla każdego rodzaju i rozmiaru wygenerowano wiele grafów, a następnie przeprowadzono analizę statystyczną obejmującą
+między innymi średnią liczbę operacji oraz odchylenie standardowe. W przypadku wersji kwantowej wzięto również pod uwagę
+probabilistyczny charakter wyszukiwania oraz jego wpływ na poprawność i zmienność wyników. Uzyskane wyniki
+pokazują, że wydajność badanych implementacji zależy w dużym stopniu od struktury i gęstości grafu, jego spójności,
+wag krawędzi oraz przebiegu relaksacji. Dla analizowanych grafów nie zaobserwowano przewagi implementacji kwantowej
+nad rozwiązaniami klasycznymi.

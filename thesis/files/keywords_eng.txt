@@ -1,0 +1,10 @@
+Dijkstra’s algorithm
+shortest-path problem
+quantum algorithms
+minimum finding
+Dürr-Høyer algorithm
+BBHT algorithm
+Grover’s algorithm
+graph algorithms
+
+Quantum Algorithms for Selected Graph Problems

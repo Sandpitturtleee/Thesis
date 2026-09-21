@@ -1,0 +1,13 @@
+This thesis presents the implementation and analysis of classical and quantum minimum-finding methods used in
+Dijkstra’s algorithm to solve the shortest-path problem. Three versions of the algorithm are analyzed: a naive version
+using linear search, a classical version using a binary heap, and a quantum version based on Dürr and Høyer’s
+minimum-finding algorithm, which utilizes the BBHT and Grover algorithms. The aim of the thesis is to investigate
+the performance and correctness of the individual versions for graphs of different sizes and characteristics.
+The study was conducted on sparse, medium-density, and dense graphs, as well as on a specially constructed graphs
+designed to force the maximum number of relaxations. For each graph type and size, multiple graphs were generated,
+followed by a statistical analysis including, the mean number of operations and standard deviation. In the case of
+the quantum version, the probabilistic nature of the search and its impact on the correctness and variability of the
+results were also taken into account. The obtained results show that the performance of the investigated
+implementations depends to a large extent on the structure and density of the graph, its connectivity, edge weights,
+and the course of the relaxation process. For the analyzed graphs, no performance advantage of the quantum
+implementation over the classical solutions was observed.
