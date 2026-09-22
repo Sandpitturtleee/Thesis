@@ -1,5 +1,5 @@
 \chapter{Podstawy teoretyczne}
-\section{Problem najkrótszej scieżki}
+\section{Problem najkrótszej ścieżki}
 
 Problem wyznaczania najkrótszej ścieżki należy do podstawowych zagadnień teorii grafów. Jego celem jest znalezienie ścieżki pomiędzy dwoma wierzchołkami grafu, której suma wag wszystkich krawędzi jest minimalna. Problem ten znajduje zastosowanie w wielu dziedzinach informatyki, takich jak systemy nawigacji, routing w sieciach komputerowych, logistyka, planowanie tras czy analiza sieci społecznościowych. Formalnie graf definiowany jest jako para \cite[s.~2]{diestel2017}
 
@@ -7,7 +7,7 @@ Problem wyznaczania najkrótszej ścieżki należy do podstawowych zagadnień te
 \label{eq:graph}
 G = (V, E)
 \end{equation}
-gdzie (V) oznacza zbiór wierzchołków, natomiast (E) zbiór krawędzi łączących pary wierzchołków. W przypadku grafów ważonych każdej krawędzi przypisana jest waga określająca koszt przejścia pomiędzy dwoma sąsiadującymi wierzchołkami. Jeżeli wszystkie wagi są nieujemne, jednym z najbardziej efektywnych algorytmów rozwiązujących problem najkrótszych ścieżek z początkowego wierzchołka jest algorytm Dijkstry.
+gdzie V oznacza zbiór wierzchołków, natomiast E zbiór krawędzi łączących pary wierzchołków. W przypadku grafów ważonych każdej krawędzi przypisana jest waga określająca koszt przejścia pomiędzy dwoma sąsiadującymi wierzchołkami. Jeżeli wszystkie wagi są nieujemne, jednym z najbardziej efektywnych algorytmów rozwiązujących problem najkrótszych ścieżek z początkowego wierzchołka jest algorytm Dijkstry.
 \newpage
 
 \section{Algorytm Dijkstry}
@@ -20,7 +20,7 @@ Relaksacja polega na sprawdzeniu, czy przejście przez aktualnie analizowany wie
 \label{eq:relax}
 d(v) > d(u) + w(u,v)
 \end{equation}
-wartość (d(v)) zostaje zaktualizowana. Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołków.
+wartość d(v) zostaje zaktualizowana. Algorytm kończy działanie po odwiedzeniu wszystkich osiągalnych wierzchołków.
 
 \begin{algorithm}[H]
 \caption{Algorytm Dijkstry}
@@ -53,11 +53,11 @@ wartość (d(v)) zostaje zaktualizowana. Algorytm kończy działanie po odwiedze
     \label{fig:dijkstra}
 \end{figure}
 
-\section{Znajdowanie minumum}
+\section{Znajdowanie minimum}
 
-Najbardziej kosztownym etapem algorytmu Dijkstry jest wyznaczenie kolejnego nieodwiedzonego wierzchołka o najmniejszej odległości. Sposób w jaki jest to zaimplementowane znacząco wpływa na złożoność całego algorytmu Dijkstry. Dlatego w celu porównania różnych podejść w niniejszej pracy wykorzystano trzy wersje algorytmu Dijkstry z różnymi sposobami znajdowania minimum:
+Najbardziej kosztownym etapem algorytmu Dijkstry jest wyznaczenie kolejnego nieodwiedzonego wierzchołka o najmniejszej odległości. Sposób, w jaki jest to zaimplementowane, znacząco wpływa wpływa na złożoność całego algorytmu Dijkstry. Dlatego w celu porównania różnych podejść w niniejszej pracy wykorzystano trzy wersje algorytmu Dijkstry z różnymi sposobami znajdowania minimum:
 \begin{itemize}
-    \item warsje naiwną,
+    \item wersję naiwną,
     \item wersję z wykorzystaniem kopca binarnego,
     \item wersję wykorzystującą kwantowy algorytm wyszukiwania minimum.
 \end{itemize}
@@ -106,7 +106,7 @@ Ważnym ograniczeniem podstawowej wersji algorytmu jest konieczność wykonania 
     \begin{enumerate}
         \item Zastosuj wyrocznię (\textit{oracle}), która zmienia znak amplitudy stanów odpowiadających rozwiązaniom problemu.
 
-        \item Zastosuj operator dyfuzji (\textit{diffusion transform}), który odbija amplitudy wszystkich stanów względem ich średniejnwartości, zwiększając amplitudę stanów oznaczonych przez wyrocznię zmniejszając amplitudy pozostałych.
+        \item Zastosuj operator dyfuzji (\textit{diffusion transform}), który odbija amplitudy wszystkich stanów względem ich średniej wartości, zwiększając amplitudę stanów oznaczonych przez wyrocznię zmniejszając amplitudy pozostałych.
     \end{enumerate}
 
     \item Wykonaj pomiar rejestru kwantowego.

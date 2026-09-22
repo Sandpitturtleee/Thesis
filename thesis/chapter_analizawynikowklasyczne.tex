@@ -77,7 +77,7 @@ W każdym z tych przypadków osiągalnych jest około \(80\%\) wszystkich wierzc
 
 Rysunek~\ref{fig:standard_naive_std} to potwierdza. Dla grafu średnio gęstego, gęstego oraz przypadku szczególnego odchylenie standardowe wynosi zero. Każde uruchomienie dla ustalonej liczby wierzchołków wykonuje dokładnie taką samą liczbę operacji równą \(n^2\). Losowość wag i połączeń nie ma wpływu na koszt wyszukiwania w tablicy w celu znalezienia minimum.
 
-Inaczej zachowują się grafy rzadkie. W ich przypadku widoczny jest bardzo duży wzrost odchylenia standardowego wraz ze wzrostem liczby wierzchołków. Powodem jest występowanie dwóch odległych grup wyników - tej gdzie jest osiągana duża liczba wierzchołków oraz drugiej gdzie algorytm kończy działanie bardzo wcześnie.
+Inaczej zachowują się grafy rzadkie. W ich przypadku widoczny jest bardzo duży wzrost odchylenia standardowego wraz ze wzrostem liczby wierzchołków. Powodem jest występowanie dwóch odległych grup wyników – tej, gdzie jest osiągana duża liczba wierzchołków oraz drugiej, gdzie algorytm kończy działanie bardzo wcześnie.
 
 \section{Wyniki wersji z kopcem binarnym}
 \label{sec:heap_results}
@@ -161,7 +161,7 @@ Oznacza to, że krawędzie łączące kolejne wierzchołki
 mają wagę równą \(1\). Pozostałe krawędzie wychodzące od wierzchołka o mniejszym numerze mają odpowiednio większe wagi. 
 
 \newpage
-Przykładowo dla wierzchołka \(0\) wszystkie krawędzie prowadzące dalej niż do wierzchołka\(1\) mają wagę
+Przykładowo dla wierzchołka \(0\) wszystkie krawędzie prowadzące dalej niż do wierzchołka \(1\) mają wagę
 
 \[
 2(10-0)=20.
@@ -429,4 +429,4 @@ W wersji naiwnej dla grafów spójnych liczba operacji zależy wyłącznie od li
 
 W wersji z kopcem wyniki zależą znacznie bardziej od konkretnego układu wag i liczby udanych relaksacji. Nawet dla grafów o tej samej liczbie wierzchołków i krawędzi różna kolejność poprawiania odległości może spowodować inną liczbę operacji wstawiania i pobierania wierzchołków z kopca. W przypadku grafu rzadkiego dodatkowo występuje ten sam efekt związany z brakiem spójności grafów co w wersji naiwnej. Powoduje to występowanie zarówno bardzo niskich i wysokich wyników, co jest widoczne na rys.~\ref{fig:heap_vertices_raw}.
 
-Natomiast dla przypadku szczególnego zarówno w wersji z kopcem jak i naiwnej odchylenie standardowe jest równe zeru. Jest to spowodowane specyficzną konstrukcją grafu która wymuszając maksymalną liczbę relaksacji poprzez odpowiedni dobór wag sprawia że algorytm działa zawsze w ten sam powtarzalny sposób.
+Natomiast dla przypadku szczególnego zarówno w wersji z kopcem jak i naiwnej odchylenie standardowe jest równe zeru. Jest to spowodowane specyficzną konstrukcją grafu, która, wymuszając maksymalną liczbę relaksacji poprzez odpowiedni dobór wag, sprawia, że algorytm działa zawsze w ten sam powtarzalny sposób.” 
